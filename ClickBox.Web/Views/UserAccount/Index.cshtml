@@ -1,0 +1,32 @@
+﻿@using ClickBox.Web.Models
+@{
+    ViewBag.Title = "User Accounts";
+}
+
+<h2>Client Accounts</h2>
+@(Html.Kendo().Grid<UserAccount>().Name("grid").Columns(columns =>
+      {
+          // columns.Bound(p => p.Id);
+          columns.Bound(p => p.ContactName);
+          columns.Bound(p => p.CompanyName);
+          columns.Bound(p => p.UserName);
+          columns.Bound(p => p.Password);
+          columns.Bound(p => p.SupportEndDate).Format("{0:dd-MMM-yyyy}");
+          columns.Bound(p => p.AllocatedSeats);
+          columns.Bound(p => p.IsolationEnabled);
+          columns.Bound(p => p.KoderEnabled);
+          columns.Bound(p => p.AccountType);
+          columns.Bound(p => p.MaxVersionNumber);
+          columns.Command(c =>
+              {
+                  c.Edit();
+                  c.Destroy();
+              });
+
+          // columns.ForeignKey(p => p.AccountType, (System.Collections.IEnumerable) ViewData["accountTypes"], "AccountTypeId", "Name");
+      }).Pageable().Scrollable().Selectable(s => s.Mode(GridSelectionMode.Multiple)).ToolBar(t => t.Create()).Editable(e => e.Mode(GridEditMode.PopUp)).DataSource(dataSource => dataSource.Ajax().Model(model =>
+          {
+              model.Id(p => p.Id);
+              model.Field(p => p.Id).Editable(false);
+              model.Field(p => p.Salt).Editable(false);
+          }).Read(read => read.Action("Get", "UserAccount").Type(HttpVerbs.Get)).Create(create => create.Action("Create", "UserAccount").Type(HttpVerbs.Post)).Destroy(destroy => destroy.Action("Delete", "UserAccount").Type(HttpVerbs.Post)).Update(update => update.Action("Update", "UserAccount").Type(HttpVerbs.Post)).PageSize(1024).Events(events => events.Error("error_handler"))))

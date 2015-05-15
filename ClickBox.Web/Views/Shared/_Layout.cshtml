@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>@ViewBag.Title</title>
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.flat.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.flat.min.css")" rel="stylesheet" type="text/css" />
+        <script src="@Url.Content("~/Scripts/kendo/2014.1.318/jquery.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.all.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.aspnetmvc.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/kendo/2014.1.318/cultures/kendo.culture.en-AU.min.js")"></script>
+        <script type="text/javascript">
+            kendo.culture("en-AU");
+        </script>
+        <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    </head>
+    <body>
+        <div>
+            @RenderBody()
+        </div>
+        @RenderSection("scripts", required: false)
+        <script type="text/javascript">
+            function error_handler(e) {
+                if (e.errors) {
+                    var message = "Errors:\n";
+                    $.each(e.errors, function(key, value) {
+                        if ('errors' in value) {
+                            $.each(value.errors, function() {
+                                message += this + "\n";
+                            });
+                        }
+                    });
+                    alert(message);
+                }
+            }
+        </script>
+    </body>
+</html>
