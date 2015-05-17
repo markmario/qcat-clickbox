@@ -73,7 +73,7 @@
       <HintPath>..\packages\RavenDB.Client.MvcIntegration.2.5.2750\lib\net45\Raven.Client.MvcIntegration.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Licensing">
-      <HintPath>..\..\..\..\ext-bin\Rhino.Licensing.dll</HintPath>
+      <HintPath>..\ext-bin\Rhino.Licensing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -154,8 +154,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App_Start\AutofactMvcConfig.cs" />
     <Compile Include="App_Start\Seed.cs" />
@@ -163,6 +163,7 @@
     <Compile Include="Controllers\IsolationController.cs" />
     <Compile Include="Controllers\KodingController.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RavenDbApiController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Global.asax.cs">

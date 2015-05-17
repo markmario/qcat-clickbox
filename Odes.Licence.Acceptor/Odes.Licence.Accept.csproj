@@ -34,16 +34,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper">
-      <HintPath>..\..\..\..\ext-bin\Dapper.dll</HintPath>
+      <HintPath>..\ext-bin\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\ext-bin\log4net.dll</HintPath>
+      <HintPath>..\ext-bin\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\ext-bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Licensing">
-      <HintPath>..\..\..\..\ext-bin\Rhino.Licensing.dll</HintPath>
+      <HintPath>..\ext-bin\Rhino.Licensing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\CommonAssemblyInfo.cs">
+    <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
@@ -70,8 +70,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\..\..\Resources\pubkey.xml">
-      <Link>pubkey.xml</Link>
+    <EmbeddedResource Include="..\Resources\PubKey.resx">
+      <Link>PubKey.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odes.Licence.Accept", "Odes.Licence.Acceptor\Odes.Licence.Accept.csproj", "{145B5A26-B292-46DC-904F-78398BA65D21}"
 EndProject
@@ -42,7 +42,6 @@ Global
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19D27333-4637-4157-86B3-753A0FCBFFEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19D27333-4637-4157-86B3-753A0FCBFFEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19D27333-4637-4157-86B3-753A0FCBFFEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19D27333-4637-4157-86B3-753A0FCBFFEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
