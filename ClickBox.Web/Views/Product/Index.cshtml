@@ -8,13 +8,20 @@
 <link href="@Url.Content("~/Content/Custom/product-table.css")" rel="stylesheet" type="text/css" />
 
 <div ng-app="productModule"
-     ng-controller="productController" 
+     ng-controller="productController"
      class="div-table-outer-wrapper">
     <div style="width: 60%;">
         <h2 class="pull-left">Products</h2>
         <div class="pull-right fa fa-save action-buttons"
              ng-if="selectedProduct"
              ng-click="saveSelectedProduct()">
+        </div>
+        <div class="pull-right fa fa-plus action-buttons"
+             ng-if="!selectedProduct"
+             ng-click="addNewProduct()">
+        </div>
+        <div class="pull-right fa fa-remove action-buttons"
+             ng-click="cancel()">
         </div>
     </div>
     <div style="width: 60%;">
@@ -48,6 +55,7 @@
             <div class="clearfix detail-row">
                 <span class="pull-left detail-label">Product Name:</span>
                 <input type="text"
+                       required
                        ng-model="selectedProduct.Name"
                        class="pull-left detail-value">
             </div>
@@ -60,15 +68,47 @@
                 <textarea class="pull-left detail-value">{{selectedProduct.PublicKey}}</textarea>
             </div>
         </div>
+        <h3 ng-if="newProduct"
+            ng-cloak>
+            New Product
+        </h3>
+        <form>
+            <div ng-if="newProduct"
+                 ng-cloak>
+                <div class="clearfix detail-row">
+                    <span class="pull-left detail-label">Product ID:</span>
+                    <span class="pull-left detail-value">{{newProduct.Id}}</span>
+                </div>
+                <div class="clearfix detail-row">
+                    <span class="pull-left detail-label">Product Name:</span>
+                    <input type="text"
+                           required
+                           ng-model="newProduct.Name"
+                           class="pull-left detail-value">
+                </div>
+                <div class="clearfix detail-row edit-row">
+                    <span class="pull-left detail-label">Private Key:</span>
+                    <textarea class="pull-left detail-value"
+                              ng-model="newProduct.PrivateKey"></textarea>
+                </div>
+                <div class="clearfix detail-row edit-row">
+                    <span class="pull-left detail-label">Public Key:</span>
+                    <textarea class="pull-left detail-value"
+                              ng-model="newProduct.PublicKey"></textarea>
+                </div>
+                <div class="clearfix detail-row pull-right">
+                    <button ng-click="saveNewProduct()">Save</button>
+                </div>
+            </div>
+        </form>
     </div>
-</div>
 
-<script>
+    <script>
 
-    var productModule = angular.module("productModule", []);
-    var data = @Html.Raw(Json.Encode(Model));
-    productModule.value("Products", data.Products);
+        var productModule = angular.module("productModule", []);
+        var data = @Html.Raw(Json.Encode(Model));
+        productModule.value("Products", data.Products);
 
-</script>
+    </script>
 
-<script src="~/AngularModules/modules/product.module.js" language="javascript"></script>
+    <script src="~/AngularModules/modules/product.module.js" language="javascript"></script>

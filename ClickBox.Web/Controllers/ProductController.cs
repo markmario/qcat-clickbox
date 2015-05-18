@@ -52,6 +52,12 @@ namespace ClickBox.Web.Controllers
                  { Content = "Product Details HTTP GET" + id };
         }
 
+        public ActionResult NewProductId()
+        {
+            var prodId = Guid.NewGuid();
+            return this.Json(prodId, JsonRequestBehavior.AllowGet);
+        }
+
         //
         // GET: /Product/Create
 
@@ -65,17 +71,26 @@ namespace ClickBox.Web.Controllers
         // POST: /Product/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Product newProduct)
         {
             try
             {
                 // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                var newQCatProduct = new Product()
+                                         {
+                                             Id = newProduct.Id,
+                                             Name = newProduct.Name,
+                                             PrivateKey = newProduct.PrivateKey,
+                                             PublicKey = newProduct.PublicKey
+                                         };
+                this._session.Store(newQCatProduct);
+                var toRet = this._session.Query<Product>().ToList();
+                var model = new { Products = toRet };
+                return this.Json(model);
             }
             catch
-            {return new ContentResult()
-                 { Content = "Create Product HTTP POST" };
+            {
+                return this.Json("Product failed!");
             }
         }
 

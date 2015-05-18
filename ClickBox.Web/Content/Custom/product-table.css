@@ -92,4 +92,5 @@
     font-size: 26px; 
     vertical-align: text-bottom; 
     cursor: pointer;
+    margin-left: 20px !important;
 }
