@@ -19,10 +19,10 @@ namespace ClickBox.Web.App_Start
             // var session = DependencyResolver.Current.GetService<IDocumentSession>();
             using (var session = MvcApplication.DocumentStore.OpenSession())
             {
-                session.Store(
-                    new Product());
+                //session.Store(
+                //    new Product());
 
-                session.SaveChanges();
+                //session.SaveChanges();
             }
         }
 

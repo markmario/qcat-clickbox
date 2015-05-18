@@ -1,0 +1,43 @@
+﻿.div-table {
+    display: block;
+    width: 100%;
+}
+
+.div-table-heading, .div-table-body, .div-table-foot, .div-table-row {
+    clear: both;
+    height: 30px;
+}
+
+.div-table-row:hover {
+    background-color:#f8f8f3;
+    background-color:rgba(248, 248, 243, 0.8);
+    cursor: pointer;
+}
+
+.div-table-head, .div-table-foot {
+    background-color: #DDD;
+    font-weight: bold;
+}
+
+.div-table-cell, .div-table-head {
+    border: 1px solid #999999;
+    float: left;
+    height: 30px;
+    overflow: hidden;
+    padding: 3px 1.8%;
+    width: 25%;
+}
+
+.div-table:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+
+.div-table-outer-wrapper {
+    margin: 20px;
+}

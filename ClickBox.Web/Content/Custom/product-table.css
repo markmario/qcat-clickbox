@@ -1,0 +1,87 @@
+﻿.id-cell, .id-head {
+    border: 1px solid #999999;
+    float: left;
+    height: 30px;
+    overflow: hidden;
+    padding: 3px 1.8%;
+    width: 15%;
+    white-space: nowrap;
+}
+
+.id-cell {
+    text-overflow: ellipsis;
+}
+
+.name-cell, .name-head {
+    border: 1px solid #999999;
+    float: left;
+    height: 30px;
+    overflow: hidden;
+    padding: 3px 1.8%;
+    width: 15%;
+    white-space: nowrap;
+}
+
+.name-cell {
+    text-overflow: ellipsis;
+}
+
+.pubkey-cell, .pubkey-head {
+    border: 1px solid #999999;
+    float: left;
+    height: 30px;
+    overflow: hidden;
+    padding: 3px 1.8%;
+    width: 35%;
+    white-space: nowrap;
+}
+
+.pubkey-cell {
+    text-overflow: ellipsis;
+}
+
+.privkey-cell, .privkey-head {
+    border: 1px solid #999999;
+    float: left;
+    height: 30px;
+    overflow: hidden;
+    padding: 3px 1.8%;
+    width: 35%;
+    white-space: nowrap;
+}
+
+.privkey-cell {
+    text-overflow: ellipsis;
+}
+
+.detail-label {
+    width: 20%;
+}
+
+.detail-value {
+    width: 80%;
+    max-width: 80%
+}
+
+.detail-row {
+    margin-bottom: 10px;
+}
+
+.edit-row {
+    height: 100px;
+}
+
+.detail-row > textarea {
+    max-height: 370px;
+    max-width: 80%;
+    height: inherit;
+    margin-bottom: 10px;
+}
+
+.h2 {
+    margin-top: 15px !important;
+}
+
+.h3 {
+    margin-top: 15px !important;
+}

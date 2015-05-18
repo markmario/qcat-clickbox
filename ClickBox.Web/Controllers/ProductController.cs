@@ -6,24 +6,50 @@ using System.Web.Mvc;
 
 namespace ClickBox.Web.Controllers
 {
+    using ClickBox.Web.Models;
+
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
+    using Raven.Client;
+
     public class ProductController : Controller
     {
+        private readonly IDocumentSession _session;
+
+        #region Constructors and Destructors
+
+        public ProductController(IDocumentSession session)
+        {
+            this._session = session;
+        }
+
+        #endregion
         //
         // GET: /Product/
 
-        public ActionResult Index()
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Get([DataSourceRequest] DataSourceRequest request)
         {
-            return new ContentResult()
-                 { Content = "Product HTTP GET (index)" };
+            // var toRet = _ctx.Applications.OrderBy(o => o.Id).ToDataSourceResult(request);
+            var toRet = this._session.Query<Product>().ToDataSourceResult(request);
+            return this.Json(toRet, JsonRequestBehavior.AllowGet);
         }
+
+        //public ActionResult Index()
+        //{
+        //    var toRet = this._session.Query<Product>().ToList();
+        //    var model = new { Products = toRet };
+        //    return this.View(model);
+        //}
 
         //
         // GET: /Product/Details/5
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
             return new ContentResult()
-                 { Content = "Product Details" };
+                 { Content = "Product Details HTTP GET" + id };
         }
 
         //
