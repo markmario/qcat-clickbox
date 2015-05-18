@@ -44,12 +44,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BatchIsolated.cs" />
-    <Compile Include="BatterySize.cs" />
-    <Compile Include="BatterySizes.cs" />
     <Compile Include="CredentialAgent.cs" />
-    <Compile Include="DatabaseLicenseFragment.cs" />
     <Compile Include="DocumentCoded.cs" />
-    <Compile Include="Licence.cs" />
     <Compile Include="LicenceTypes.cs" />
     <Compile Include="LicenseRequest.cs" />
     <Compile Include="LicenseRequestExtensions.cs" />

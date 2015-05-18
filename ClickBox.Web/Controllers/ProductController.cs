@@ -86,7 +86,7 @@
             }
             catch
             {
-                return this.Json("Product failed!");
+                return this.Json("Product creation failed!");
             }
         }
 
