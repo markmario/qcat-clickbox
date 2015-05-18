@@ -73,7 +73,6 @@ namespace ClickBox.Web
             var ds = new DocumentStore() { ConnectionStringName = "RavenDB" };
             DocumentStore = ds.Initialize();
 
-            Seed.It();
         }
 
         #endregion

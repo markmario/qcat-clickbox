@@ -158,7 +158,6 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App_Start\AutofactMvcConfig.cs" />
-    <Compile Include="App_Start\Seed.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IsolationController.cs" />
     <Compile Include="Controllers\KodingController.cs" />
