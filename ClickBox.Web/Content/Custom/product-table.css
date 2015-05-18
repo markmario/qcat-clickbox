@@ -85,3 +85,11 @@
 .h3 {
     margin-top: 15px !important;
 }
+
+.action-buttons {
+    color: rgb(88, 152, 218);
+    margin-top: 20px; 
+    font-size: 26px; 
+    vertical-align: text-bottom; 
+    cursor: pointer;
+}

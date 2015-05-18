@@ -28,20 +28,20 @@ namespace ClickBox.Web.Controllers
         //
         // GET: /Product/
 
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Get([DataSourceRequest] DataSourceRequest request)
-        {
-            // var toRet = _ctx.Applications.OrderBy(o => o.Id).ToDataSourceResult(request);
-            var toRet = this._session.Query<Product>().ToDataSourceResult(request);
-            return this.Json(toRet, JsonRequestBehavior.AllowGet);
-        }
-
-        //public ActionResult Index()
+        //[AcceptVerbs(HttpVerbs.Get)]
+        //public ActionResult Get([DataSourceRequest] DataSourceRequest request)
         //{
-        //    var toRet = this._session.Query<Product>().ToList();
-        //    var model = new { Products = toRet };
-        //    return this.View(model);
+        //    // var toRet = _ctx.Applications.OrderBy(o => o.Id).ToDataSourceResult(request);
+        //    var toRet = this._session.Query<Product>().ToDataSourceResult(request);
+        //    return this.Json(toRet, JsonRequestBehavior.AllowGet);
         //}
+
+        public ActionResult Index()
+        {
+            var toRet = this._session.Query<Product>().ToList();
+            var model = new { Products = toRet };
+            return this.View(model);
+        }
 
         //
         // GET: /Product/Details/5

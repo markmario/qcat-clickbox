@@ -4,6 +4,11 @@ productModule.controller('productController', ['$scope', 'Products', function ($
 
     $scope.Products = products;
 
+    $scope.saveSelectedProduct = function () {
+        console.log("save the selected product", $scope.selectedProduct);
+        $scope.selectedProduct = undefined;
+    }
+
     $scope.showProductDetails = function(id) {
         console.log("show details for:", id);
         var selected = _.first($scope.Products, function(p) {
