@@ -11,7 +11,17 @@ productModule.controller('productController', ['$scope', '$http', '$timeout' , '
 
     $scope.saveSelectedProduct = function () {
         console.log("save the selected product", $scope.selectedProduct);
-        $scope.selectedProduct = undefined;
+        $http.post('/product/edit', $scope.selectedProduct).
+          success(function (data, status, headers, config) {
+              console.log('save by api',data);
+              
+              $timout(function () {
+                  $scope.selectedProduct = undefined;
+              }, 500);
+
+          }).
+          error(function (data, status, headers, config) {
+          });
     }
 
     $scope.showProductDetails = function(product) {

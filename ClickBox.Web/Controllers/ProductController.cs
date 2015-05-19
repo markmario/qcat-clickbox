@@ -80,24 +80,25 @@
             }
         }
 
-        // GET: /Product/Edit/5
-        public ActionResult Edit(Product editProduct)
-        {
-            return new ContentResult() { Content = "Edit Product HTTP GET" };
-        }
-
         // POST: /Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Product editProduct)
         {
             try
             {
                 // TODO: Add update logic here
-                return RedirectToAction("Index");
+                var edited = this.session.Load<Product>(editProduct.Id);
+                edited.Name = editProduct.Name;
+                edited.PrivateKey = editProduct.PrivateKey;
+                edited.PublicKey = editProduct.PublicKey;
+                this.session.SaveChanges();
+                var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
+                var model = new { Products = toRet };
+                return this.Json(model);
             }
             catch
             {
-                return new ContentResult() { Content = "Edit Product POST" };
+                return this.Json("Product edit failed!");
             }
         }
 
