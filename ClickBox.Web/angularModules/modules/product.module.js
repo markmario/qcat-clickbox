@@ -14,13 +14,13 @@ productModule.controller('productController', ['$scope', '$http', '$timeout' , '
         $scope.selectedProduct = undefined;
     }
 
-    $scope.showProductDetails = function(id) {
-        console.log("show details for:", id);
-        var selected = _.first($scope.Products, function(p) {
-            return p.Id === id;
+    $scope.showProductDetails = function(product) {
+        console.log("show details for:", product);
+        var selected = _.filter($scope.Products, function(p) {
+            return p.Id == product.product;
         });
         $scope.newProduct = undefined;
-        $scope.selectedProduct = selected;
+        $scope.selectedProduct = selected[0];
     }
 
     $scope.addNewProduct = function () {
@@ -36,16 +36,12 @@ productModule.controller('productController', ['$scope', '$http', '$timeout' , '
               };
           }).
           error(function (data, status, headers, config) {
-              // called asynchronously if an error occurs
-              // or server returns response with an error status.
           });
     }
 
     $scope.saveNewProduct = function() {
         $http.post('/product/create', $scope.newProduct).
           success(function (data, status, headers, config) {
-              // this callback will be called asynchronously
-              // when the response is available
                 console.log(data);
                 $scope.newProduct = undefined;
                 $scope.selectedProduct = undefined;
@@ -55,8 +51,6 @@ productModule.controller('productController', ['$scope', '$http', '$timeout' , '
 
             }).
           error(function (data, status, headers, config) {
-              // called asynchronously if an error occurs
-              // or server returns response with an error status.
           });
     }
 

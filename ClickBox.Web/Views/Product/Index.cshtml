@@ -35,7 +35,7 @@
             <div ng-repeat="p in Products"
                  class="div-table-row"
                  ng-cloak
-                 ng-click="showProductDetails({id: p.Id})">
+                 ng-click="showProductDetails({product: p.Id})">
                 <div class="div-table-cell id-cell">{{p.Id}}</div>
                 <div class="div-table-cell name-cell">{{p.Name}}</div>
                 <div class="div-table-cell privkey-cell">{{p.PrivateKey}}</div>

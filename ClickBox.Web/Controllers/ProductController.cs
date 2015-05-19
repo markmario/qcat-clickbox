@@ -4,9 +4,7 @@
     using System.Linq;
     using System.Security.Cryptography;
     using System.Web.Mvc;
-
     using ClickBox.Web.Models;
-
     using Raven.Client;
 
     public class ProductController : Controller
@@ -21,16 +19,6 @@
         }
 
         #endregion
-
-        // GET: /Product/
-
-        // [AcceptVerbs(HttpVerbs.Get)]
-        // public ActionResult Get([DataSourceRequest] DataSourceRequest request)
-        // {
-        // // var toRet = _ctx.Applications.OrderBy(o => o.Id).ToDataSourceResult(request);
-        // var toRet = this._session.Query<Product>().ToDataSourceResult(request);
-        // return this.Json(toRet, JsonRequestBehavior.AllowGet);
-        // }
 
         public ActionResult Index()
         {
@@ -79,8 +67,10 @@
                                              PrivateKey = newProduct.PrivateKey, 
                                              PublicKey = newProduct.PublicKey
                                          };
+
                 this.session.Store(newQCatProduct);
-                var toRet = this.session.Query<Product>().ToList();
+                this.session.SaveChanges();
+                var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
                 var model = new { Products = toRet };
                 return this.Json(model);
             }
@@ -91,7 +81,7 @@
         }
 
         // GET: /Product/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(Product editProduct)
         {
             return new ContentResult() { Content = "Edit Product HTTP GET" };
         }
