@@ -124,36 +124,17 @@ namespace ClickBox.Web.Controllers
                         return this.Request.CreateResponse(HttpStatusCode.OK, oldRequests[0].LicenseText);
                     }
                 }
+                
+                if (account.IssuedLicenses >= account.AllocatedSeats)
+                {
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        "Too many activations please contact qcat");
+                }
 
                 var generator = new LicenseGenerator(data.PrivateKey);
-                this.attributes = new Dictionary<string, string>
-                                      {
-                                          { "SID", licx.SystemId }, 
-                                          { "MachineName", licx.SystemMachineName }, 
-                                          { "RequestId", licx.RequestId.ToString() }, 
-                                          {
-                                              "ServiceQueue", 
-                                              string.IsNullOrEmpty(licx.ServiceQueue)
-                                                  ? "Undefined"
-                                                  : licx.ServiceQueue
-                                          }, 
-                                          {
-                                              "ClicksRequested", 
-                                              licx.ClicksReqeusted.ToString(
-                                                  CultureInfo.InvariantCulture)
-                                          }, 
-                                          { "AccountEmail", licx.Email }, 
-                                          {
-                                              "RequestIp", 
-                                              string.IsNullOrEmpty(licx.PublicIp)
-                                                  ? "Unknown"
-                                                  : licx.PublicIp
-                                          }, 
-                                          { "CompanyName", account.CompanyName }, 
-                                          { "ContactName", account.ContactName }, 
-                                          { "MaxVersion", account.MaxVersionNumber }, 
-                                          { "IsEnterprise", account.IsEnterprise.ToString() }
-                                      };
+                
+                this.attributes = GetAttributesForLicense(licx, account);
 
                 var key = generator.Generate(
                     account.ContactName, 
@@ -185,6 +166,42 @@ namespace ClickBox.Web.Controllers
                     HttpStatusCode.InternalServerError, 
                     "Some bad things happened", 
                     ex);
+            }
+        }
+
+        private static Dictionary<string, string> GetAttributesForLicense(LicenseRequest licx, UserAccount account)
+        {
+            if (account.PageMakerEnabled)
+            {
+                return new Dictionary<string, string>
+                           {
+                               { "SID", licx.SystemId },
+                               { "MachineName", licx.SystemMachineName },
+                               { "RequestId", licx.RequestId.ToString() },
+                               { "AccountName", licx.Email },
+                               { "RequestIp", string.IsNullOrEmpty(licx.PublicIp) ? "Unknown"  : licx.PublicIp },
+                               { "CompanyName", account.CompanyName },
+                               { "ContactName", account.ContactName },
+                               { "MaxVersion", account.MaxVersionNumber },
+                               { "IsEnterprise", account.IsEnterprise.ToString() }
+                           };
+            }
+            else
+            {
+                return new Dictionary<string, string>
+                           {
+                               { "SID", licx.SystemId },
+                               { "MachineName", licx.SystemMachineName },
+                               { "RequestId", licx.RequestId.ToString() },
+                               { "ServiceQueue",  string.IsNullOrEmpty(licx.ServiceQueue)  ? "Undefined" : licx.ServiceQueue },
+                               { "ClicksRequested", licx.ClicksReqeusted.ToString(CultureInfo.InvariantCulture) },
+                               { "AccountEmail", licx.Email },
+                               { "RequestIp", string.IsNullOrEmpty(licx.PublicIp) ? "Unknown" : licx.PublicIp },
+                               { "CompanyName", account.CompanyName },
+                               { "ContactName", account.ContactName },
+                               { "MaxVersion", account.MaxVersionNumber },
+                               { "IsEnterprise", account.IsEnterprise.ToString() }
+                           };
             }
         }
 
