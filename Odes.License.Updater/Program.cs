@@ -132,7 +132,7 @@ namespace Odes.License.Updater
 
                 client.DefaultRequestHeaders.Add("Authorization-Token", Odes.License.Updater.Properties.Resources.appid);
 
-                var response = client.PostAsJsonAsync("api/PostLicense/", Licence).Result; // Blocking call!
+                var response = client.PostAsJsonAsync("api/License/", Licence).Result; // Blocking call!
                 if (response.IsSuccessStatusCode)
                 {
                     var rep = response.Content.ReadAsAsync<string>().Result;
