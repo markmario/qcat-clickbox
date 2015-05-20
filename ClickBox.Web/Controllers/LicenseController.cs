@@ -11,7 +11,9 @@ namespace ClickBox.Web.Controllers
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Security;
     using System.Threading.Tasks;
+    using System.Web.Http;
     using System.Web.Mvc;
 
     using ClickBox.Web.Models;
@@ -53,6 +55,16 @@ namespace ClickBox.Web.Controllers
         #endregion
 
         #region Public Methods and Operators
+
+        public async Task<HttpResponseMessage> GetProductDetail([FromUri] string productName)
+        {
+            var prod = await this.Session.Query<Product>().Where(p => p.Name == productName).FirstOrDefaultAsync();
+            if (prod != null)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = prod.Id, Key = prod.PublicKey });
+            }
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "No Product Found");
+        }
 
         /// <summary>
         /// The post license request.
