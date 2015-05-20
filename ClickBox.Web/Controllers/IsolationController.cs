@@ -19,6 +19,8 @@ namespace ClickBox.Web.Controllers
 
     using Raven.Client;
 
+    using Product = ClickBox.Web.Models.Product;
+
     [RequireHttps(Order = 1)]
     public class IsolationController : RavenDbApiController
     {

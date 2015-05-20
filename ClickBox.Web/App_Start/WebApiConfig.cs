@@ -24,6 +24,7 @@ namespace ClickBox.Web
             var settings = jsonFormatter.SerializerSettings;
             settings.Formatting = Formatting.Indented;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
             config.Filters.Add(new TokenValidationAttribute());
             config.Filters.Add(new CustomHttpsAttribute());

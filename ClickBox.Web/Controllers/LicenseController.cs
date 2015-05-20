@@ -18,11 +18,15 @@ namespace ClickBox.Web.Controllers
 
     using ClickBox.Web.Models;
 
+    using Newtonsoft.Json;
+
     using Odes.Licence.Model;
 
     using Raven.Client;
 
     using Rhino.Licensing;
+
+    using Product = ClickBox.Web.Models.Product;
 
     /// <summary>
     /// The license controller.
@@ -55,14 +59,17 @@ namespace ClickBox.Web.Controllers
         #endregion
 
         #region Public Methods and Operators
-
+        [System.Web.Http.HttpPost]
         public async Task<HttpResponseMessage> GetProductDetail([FromUri] string productName)
         {
             var prod = await this.Session.Query<Product>().Where(p => p.Name == productName).FirstOrDefaultAsync();
             if (prod != null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = prod.Id, Key = prod.PublicKey });
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
+                    new Odes.Licence.Model.Product { Id = prod.Id, PrivateKey = prod.PrivateKey });
             }
+
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "No Product Found");
         }
 

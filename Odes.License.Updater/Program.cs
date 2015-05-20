@@ -111,7 +111,7 @@ namespace Odes.License.Updater
             Licence.UserName = "caro";
         }
 
-        private static void GenerateLicenceFile()
+        private static void GenerateLicenceFile(string productName = "ODES")
         {
             Console.WriteLine();
             Console.WriteLine(Resources.genlicxfile);
@@ -124,14 +124,19 @@ namespace Odes.License.Updater
 #if ! DEBUG
                 var client = new HttpClient { BaseAddress = new Uri("https://clickbox.qcat.com.au/") };
 #else
-                var client = new HttpClient { BaseAddress = new Uri("https://localhost:44302/") };
+                var client = new HttpClient { BaseAddress = new Uri("https://ipv4.fiddler:44302/") };
 #endif
-
+                
                 // Add an Accept header for JSON format.
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 client.DefaultRequestHeaders.Add("Authorization-Token", Odes.License.Updater.Properties.Resources.appid);
-
+                var result = client.PostAsync(string.Format("api/GetProductDetail/{0}", productName),string.Empty,null).Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var re = result.Content.ReadAsAsync<Product>().Result;
+                    Licence.ProductId = new Guid(re.Id);
+                }
                 var response = client.PostAsJsonAsync("api/License/", Licence).Result; // Blocking call!
                 if (response.IsSuccessStatusCode)
                 {

@@ -49,6 +49,8 @@
     <Compile Include="LicenceTypes.cs" />
     <Compile Include="LicenseRequest.cs" />
     <Compile Include="LicenseRequestExtensions.cs" />
+    <Compile Include="OldDocmentCount.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
