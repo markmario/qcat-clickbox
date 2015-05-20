@@ -26,6 +26,8 @@
 
         public string SystemId { get; set; }
 
+        public Guid ProductId { get; set; }
+
         public DateTimeOffset SystemDateTimeStamp { get; set; }
 
         public string SystemNetworkCredential { get; set; }
