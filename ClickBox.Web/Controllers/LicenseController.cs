@@ -72,7 +72,8 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
-                Product data = await this.Session.LoadAsync<Product>("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
+                //Product data = await this.Session.LoadAsync<Product>("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
+                Product data = await this.Session.LoadAsync<Product>("155f9e1f-93ad-4aab-8c81-a76cdccaeb1e");
                 IList<UserAccount> accounts =
                     await
                     this.Session.Query<UserAccount>()

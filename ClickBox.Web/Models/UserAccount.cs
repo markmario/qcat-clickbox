@@ -33,6 +33,8 @@ namespace ClickBox.Web.Models
 
         public bool IsolationEnabled { get; set; }
 
+        public bool PageMakerEnabled { get; set; }
+
         [ScaffoldColumn(false)]
         [UIHint("Integer")]
         public int IssuedLicenses { get; set; }

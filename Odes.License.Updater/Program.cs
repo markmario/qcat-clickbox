@@ -95,15 +95,20 @@ namespace Odes.License.Updater
             // Licence.UserName = "offline.gen";
 
             /*ASIC*/
-            Licence.ServiceQueue = "SYDSQL4";
-            Licence.Email = "asic";
-            Licence.Password = "as1c";
+            //Licence.ServiceQueue = "SYDSQL4";
+            //Licence.Email = "asic";
+            //Licence.Password = "as1c";
 
-            Licence.SystemMachineName = "SYDSQL4"; ;
-            Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            Licence.UserName = @"a1\Svc.qcat";
-            Licence.SystemNetworkCredential = Licence.UserName;
+            //Licence.SystemMachineName = "SYDSQL4"; ;
+            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            //Licence.UserName = @"a1\Svc.qcat";
+            //Licence.SystemNetworkCredential = Licence.UserName;
             /* */
+
+            /*KORDA MENTHA*/
+            Licence.Email = "korda@qcat.com.au";
+            Licence.Password = "1234";
+            Licence.UserName = "caro";
         }
 
         private static void GenerateLicenceFile()
@@ -127,7 +132,7 @@ namespace Odes.License.Updater
 
                 client.DefaultRequestHeaders.Add("Authorization-Token", Odes.License.Updater.Properties.Resources.appid);
 
-                var response = client.PostAsJsonAsync("api/License/", Licence).Result; // Blocking call!
+                var response = client.PostAsJsonAsync("api/PostLicense/", Licence).Result; // Blocking call!
                 if (response.IsSuccessStatusCode)
                 {
                     var rep = response.Content.ReadAsAsync<string>().Result;
