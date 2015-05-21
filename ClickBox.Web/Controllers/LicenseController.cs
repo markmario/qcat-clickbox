@@ -59,8 +59,8 @@ namespace ClickBox.Web.Controllers
         #endregion
 
         #region Public Methods and Operators
-        [System.Web.Http.HttpPost]
-        public async Task<HttpResponseMessage> GetProductDetail([FromUri] string productName)
+        [System.Web.Http.HttpGet]
+        public async Task<HttpResponseMessage> GetProductDetail( string productName)
         {
             var prod = await this.Session.Query<Product>().Where(p => p.Name == productName).FirstOrDefaultAsync();
             if (prod != null)
@@ -96,7 +96,7 @@ namespace ClickBox.Web.Controllers
                     licx.ProductId = new Guid("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
                 }
 
-                var data = await this.Session.LoadAsync<Product>(licx.ProductId);
+                var data = await this.Session.LoadAsync<Product>(licx.ProductId.ToString());
                 IList<UserAccount> accounts =
                     await
                     this.Session.Query<UserAccount>()

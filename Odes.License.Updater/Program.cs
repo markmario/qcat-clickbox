@@ -17,6 +17,7 @@ namespace Odes.License.Updater
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Net.Http.Formatting;
     using System.Net.Http.Headers;
     using System.Security.Principal;
     using System.Text;
@@ -106,12 +107,12 @@ namespace Odes.License.Updater
             /* */
 
             /*KORDA MENTHA*/
-            Licence.Email = "korda@qcat.com.au";
+            Licence.Email = "simons";
             Licence.Password = "1234";
-            Licence.UserName = "caro";
+            Licence.UserName = "simons";
         }
 
-        private static void GenerateLicenceFile(string productName = "ODES")
+        private static void GenerateLicenceFile(string productName = "KingMaker")
         {
             Console.WriteLine();
             Console.WriteLine(Resources.genlicxfile);
@@ -124,14 +125,14 @@ namespace Odes.License.Updater
 #if ! DEBUG
                 var client = new HttpClient { BaseAddress = new Uri("https://clickbox.qcat.com.au/") };
 #else
-                var client = new HttpClient { BaseAddress = new Uri("https://ipv4.fiddler:44302/") };
+                var client = new HttpClient { BaseAddress = new Uri("https://localhost:44302/") };
 #endif
                 
                 // Add an Accept header for JSON format.
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 client.DefaultRequestHeaders.Add("Authorization-Token", Odes.License.Updater.Properties.Resources.appid);
-                var result = client.PostAsync(string.Format("api/GetProductDetail/{0}", productName),string.Empty,null).Result;
+                var result = client.GetAsync(string.Format("api/License/GetProductDetail?productName={0}", productName)).Result;
                 if (result.IsSuccessStatusCode)
                 {
                     var re = result.Content.ReadAsAsync<Product>().Result;
