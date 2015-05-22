@@ -37,5 +37,7 @@
         public Guid RequestId { get; set; }
 
         public string PublicIp { get; set; }
+
+        public string ProductName { get; set; }
     }
 }
