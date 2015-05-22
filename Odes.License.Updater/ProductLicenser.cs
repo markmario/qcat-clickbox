@@ -89,25 +89,26 @@
                 };
             }
         }
-    }
 
-    public class ProductLicenseResponse
-    {
-        public string LicenseText { get; set; }
+        public class ProductLicenseResponse
+        {
+            public string LicenseText { get; set; }
 
-        public bool RespondingWithSuccess { get; set; }
+            public bool RespondingWithSuccess { get; set; }
 
-        public Tuple<bool, string> ContainsException { get; set; }
+            public Tuple<bool, string> ContainsException { get; set; }
 
-        public FailedResponseDetails FailureDetails { get; set; }
-    }
+            public FailedResponseDetails FailureDetails { get; set; }
+        }
 
-    public class FailedResponseDetails
-    {
-        public int StatusCode { get; set; }
+        public class FailedResponseDetails
+        {
+            public int StatusCode { get; set; }
 
-        public string Reason { get; set; }
+            public string Reason { get; set; }
 
-        public string Error { get; set; }
+            public string Error { get; set; }
+        }
+
     }
 }
