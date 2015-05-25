@@ -84,7 +84,8 @@
             }
             catch (Exception ex)
             {
-                var exFile = Path.GetTempFileName() + ".qlic.elog";
+                var exFile = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                     + @"\qlic.error.log";
                 File.WriteAllText(exFile, ex.ToString(), Encoding.UTF8);
 
                 return new ProductLicenseResponse
