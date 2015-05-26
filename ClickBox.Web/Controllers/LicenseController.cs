@@ -67,7 +67,7 @@ namespace ClickBox.Web.Controllers
             {
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,
-                    new Odes.Licence.Model.Product { Id = prod.Id, PrivateKey = prod.PrivateKey });
+                    new Odes.Licence.Model.Product { Id = prod.Id });
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, new HttpError("No Product found by name " + productName));
@@ -141,8 +141,8 @@ namespace ClickBox.Web.Controllers
                 }
 
                 var generator = new LicenseGenerator(data.PrivateKey);
-                
-                this.attributes = GetAttributesForLicense(licx, account);
+
+                this.attributes = GetAttributesForLicense(licx, account, data);
 
                 var key = generator.Generate(
                     account.ContactName, 
@@ -177,7 +177,7 @@ namespace ClickBox.Web.Controllers
             }
         }
 
-        private static Dictionary<string, string> GetAttributesForLicense(LicenseRequest licx, UserAccount account)
+        private static Dictionary<string, string> GetAttributesForLicense(LicenseRequest licx, UserAccount account, Product product)
         {
             if (account.PageMakerEnabled)
             {
@@ -190,8 +190,8 @@ namespace ClickBox.Web.Controllers
                                { "RequestIp", string.IsNullOrEmpty(licx.PublicIp) ? "Unknown"  : licx.PublicIp },
                                { "CompanyName", account.CompanyName },
                                { "ContactName", account.ContactName },
-                               { "MaxVersion", account.MaxVersionNumber },
-                               { "IsEnterprise", account.IsEnterprise.ToString() }
+                               { "ProductName", product.Name },
+                               { "ProductId", product.Id }
                            };
             }
             else
