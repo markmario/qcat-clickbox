@@ -123,6 +123,7 @@ namespace ClickBox.Web.Controllers
                 {
                     if (account.SupportEndDate != oldRequests[0].ExpiryDate)
                     {
+                        account.IssuedLicenses--;
                         this.Session.Delete(oldRequests[0]);
                         await this.Session.SaveChangesAsync();
                     }
