@@ -70,7 +70,7 @@ namespace ClickBox.Web.Controllers
                     new Odes.Licence.Model.Product { Id = prod.Id, PrivateKey = prod.PrivateKey });
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, new HttpError("No Product Found"));
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, new HttpError("No Product found by name " + productName));
         }
 
         /// <summary>
@@ -91,10 +91,10 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new HttpError("Invalid Request. No license request provided."));
                 }
 
-                if (licx.ProductId == Guid.Empty)
-                {
-                    licx.ProductId = new Guid("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
-                }
+                //if (licx.ProductId == Guid.Empty)
+                //{
+                //    licx.ProductId = new Guid("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
+                //}
 
                 var data = await this.Session.LoadAsync<Product>(licx.ProductId.ToString());
                 IList<UserAccount> accounts =

@@ -54,6 +54,18 @@
                     var re = result.Content.ReadAsAsync<Product>().Result;
                     licenseRequest.ProductId = new Guid(re.Id);
                 }
+                else
+                {
+                    return new ProductLicenseResponse
+                    {
+                        RespondingWithSuccess = false,
+                        FailureDetails = new FailedResponseDetails()
+                        {
+                            Reason = result.Content.ReadAsAsync<MessageDeserial>().Result.Message,
+                            StatusCode = (int)result.StatusCode
+                        }
+                    };
+                }
 
                 var response = client.PostAsJsonAsync("api/License/", licenseRequest).Result; 
 
