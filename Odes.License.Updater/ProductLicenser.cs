@@ -80,8 +80,8 @@
                     };
                 }
 
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) 
-                    + @"\error_licx.log", response.ToString(), Encoding.UTF8);
+                //File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) 
+                //    + @"\error_licx.log", response.ToString(), Encoding.UTF8);
 
                 return new ProductLicenseResponse
                 {
@@ -96,9 +96,9 @@
             }
             catch (Exception ex)
             {
-                var exFile = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-                     + @"\qlic.error.log";
-                File.WriteAllText(exFile, ex.ToString(), Encoding.UTF8);
+                //var exFile = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                //     + @"\qlic.error.log";
+                //File.WriteAllText(exFile, ex.ToString(), Encoding.UTF8);
 
                 return new ProductLicenseResponse
                 {
@@ -108,7 +108,7 @@
                         Reason = "There was a problem licensing your product. Please contant QCAT.",
                         StatusCode = (int)HttpStatusCode.InternalServerError
                     },
-                    ContainsException = new Tuple<bool, string>(true, exFile)
+                    ContainsException = new Tuple<bool, string>(true, ex.Message + Environment.NewLine + ex.StackTrace)
                 };
             }
         }
