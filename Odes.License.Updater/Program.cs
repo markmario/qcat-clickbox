@@ -48,8 +48,8 @@ namespace Odes.License.Updater
         {
             Licence.LicenceType = LicenceTypes.Client;
 
-            Licence.SystemMachineName = Environment.MachineName;
-            Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            Licence.SystemMachineName = "LINUIX01";// Environment.MachineName;
+            Licence.SystemId = "S-1-5-21-3115597392-398023741-1760809799";// new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
             Licence.UserName = Environment.UserName + "@" + Environment.UserDomainName;
 
             /// *####NULEGAL
@@ -107,12 +107,12 @@ namespace Odes.License.Updater
             /* */
 
             /*KORDA MENTHA*/
-            Licence.Email = "simons";
-            Licence.Password = "1234";
-            Licence.UserName = "simons";
+            Licence.Email = "tobymasterson";
+            Licence.Password = "lawimagetest01";
+            Licence.UserName = "tobymasterson";
         }
 
-        private static void GenerateLicenceFile(string productName = "KingMaker")
+        private static void GenerateLicenceFile(string productName = "PageMaker")
         {
             Console.WriteLine();
             Console.WriteLine(Resources.genlicxfile);
