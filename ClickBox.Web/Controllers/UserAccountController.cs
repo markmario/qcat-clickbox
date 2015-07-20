@@ -9,6 +9,7 @@ namespace ClickBox.Web.Controllers
 
     using ClickBox.Web.Infrastructure;
     using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -25,7 +26,6 @@ namespace ClickBox.Web.Controllers
 
         #endregion
 
-        // GET: /UserAccount/
         #region Constructors and Destructors
 
         public UserAccountController(IDocumentSession session)
@@ -42,8 +42,11 @@ namespace ClickBox.Web.Controllers
         {
             if (account != null && this.ModelState.IsValid)
             {
-                this._session.Store(account);
-                this._session.SaveChanges();
+                //this._session.Store(account);
+                //this._session.SaveChanges();
+                
+                account.InitModelBinderVersion(account);
+                TableStorageUtil.InsertStorageEntity(account);
             }
 
             return this.Json(new[] { account }.ToDataSourceResult(request, this.ModelState));
@@ -53,7 +56,8 @@ namespace ClickBox.Web.Controllers
         public ActionResult Get([DataSourceRequest] DataSourceRequest request)
         {
             // var toRet = _ctx.Applications.OrderBy(o => o.Id).ToDataSourceResult(request);
-            var toRet = this._session.Query<UserAccount>().ToDataSourceResult(request);
+            //var toRet = this._session.Query<UserAccount>().ToDataSourceResult(request);
+            var toRet = TableStorageUtil.GetEntities<UserAccount>().ToDataSourceResult(request);
             return this.Json(toRet, JsonRequestBehavior.AllowGet);
         }
 

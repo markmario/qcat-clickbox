@@ -8,10 +8,16 @@ namespace ClickBox.Web.Models
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using ClickBox.Web.TableStorage;
+
+    using Microsoft.WindowsAzure.Storage.Table;
+
     using Rhino.Licensing;
 
-    public class UserAccount
+    public class UserAccount : TableEntity, IContainTableReference
     {
+        private string id;
+
         #region Public Properties
 
         [UIHint("LicenseTypeEditor")]
@@ -27,7 +33,18 @@ namespace ClickBox.Web.Models
         public string ContactName { get; set; }
 
         [ScaffoldColumn(false)]
-        public string Id { get; set; }
+        public string Id
+        {
+            get
+            {
+                return this.id;
+            }
+            set
+            {
+                this.id = value;
+                this.RowKey = value;
+            }
+        }
 
         public bool IsEnterprise { get; set; }
 
@@ -54,5 +71,80 @@ namespace ClickBox.Web.Models
         public string UserName { get; set; }
 
         #endregion
+
+        public UserAccount()
+        {
+            this.Id = Guid.NewGuid().ToString();
+            this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 2;
+        }
+
+        public void InitModelBinderVersion(UserAccount binderAccount)
+        {
+            binderAccount.Id = Guid.NewGuid().ToString();
+            binderAccount.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 2;
+        }
+
+        public override string ToString()
+        {
+            return this.RowKey + "\t\t" + this.UserName + "]";
+        }
+
+        [ScaffoldColumn(false)]
+        public string TableName
+        {
+            get { return "UserAccounts"; }
+        }
+
+        [ScaffoldColumn(false)]
+        public new string RowKey
+        {
+            get
+            {
+                return base.RowKey;
+            }
+            set
+            {
+                base.RowKey = value;
+            }
+        }
+
+        [ScaffoldColumn(false)]
+        public new string PartitionKey
+        {
+            get
+            {
+                return base.PartitionKey;
+            }
+            set
+            {
+                base.PartitionKey = value;
+            }
+        }
+
+        [ScaffoldColumn(false)]
+        public new DateTimeOffset Timestamp
+        {
+            get
+            {
+                return base.Timestamp;
+            }
+            set
+            {
+                base.Timestamp = value;
+            }
+        }
+
+        [ScaffoldColumn(false)]
+        public new string ETag
+        {
+            get
+            {
+                return base.ETag;
+            }
+            set
+            {
+                base.ETag = value;
+            }
+        }
     }
 }
