@@ -5,6 +5,10 @@
     using System.Security.Cryptography;
     using System.Web.Mvc;
     using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
+
+    using Microsoft.WindowsAzure.Storage.Table;
+
     using Raven.Client;
 
     public class ProductController : Controller
@@ -22,7 +26,8 @@
 
         public ActionResult Index()
         {
-            var toRet = this.session.Query<Product>().ToList();
+            //var toRet = this.session.Query<Product>().ToList();
+            var toRet = TableStorageUtil.GetEntities<Product>();
             var model = new { Products = toRet };
             return this.View(model);
         }
@@ -65,12 +70,16 @@
                                              Id = newProduct.Id, 
                                              Name = newProduct.Name, 
                                              PrivateKey = newProduct.PrivateKey, 
-                                             PublicKey = newProduct.PublicKey
+                                             PublicKey = newProduct.PublicKey,
+                                             RowKey = newProduct.Name
                                          };
 
-                this.session.Store(newQCatProduct);
-                this.session.SaveChanges();
-                var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
+                //this.session.Store(newQCatProduct);
+                //this.session.SaveChanges();
+                //var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
+
+                TableStorageUtil.InsertStorageEntity(newQCatProduct);
+                var toRet = TableStorageUtil.GetEntities<Product>();
                 var model = new { Products = toRet };
                 return this.Json(model);
             }

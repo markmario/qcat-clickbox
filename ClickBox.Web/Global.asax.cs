@@ -10,8 +10,6 @@ namespace ClickBox.Web
     using System.Web.Mvc;
     using System.Web.Routing;
 
-    using ClickBox.Web.App_Start;
-
     using Raven.Client;
     using Raven.Client.Document;
 
