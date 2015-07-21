@@ -61,3 +61,4 @@ Temporary Items
 *.swp
 *.userprefs
 tsconfig.json
+tsKey.json
