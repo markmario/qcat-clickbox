@@ -18,7 +18,8 @@ namespace ClickBox.Web.Controllers
 
         public ActionResult Index()
         {
-            return this.View();
+            //return this.View();
+            return this.RedirectToAction("Index", "UserAccount");
         }
 
         #endregion

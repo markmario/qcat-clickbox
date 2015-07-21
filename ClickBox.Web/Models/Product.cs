@@ -50,7 +50,7 @@ namespace ClickBox.Web.Models
 
         public override string ToString()
         {
-            return this.RowKey + "\t\t" + this.Name + "]";
+            return this.RowKey + "\t\t" + this.Id + "]";
         }
 
         public string TableName
