@@ -199,6 +199,7 @@
     <Compile Include="Models\License.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="Models\WebLicenseRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableStorage\TableStorageUtil.cs" />
   </ItemGroup>

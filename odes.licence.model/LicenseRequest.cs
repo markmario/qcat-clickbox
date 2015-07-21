@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class LicenseRequest
+    public class LicenseRequest : ILicenseRequest
     {
         public LicenseRequest()
         {

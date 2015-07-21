@@ -11,22 +11,15 @@ namespace ClickBox.Web.Controllers
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Security;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Mvc;
-
     using ClickBox.Web.Models;
     using ClickBox.Web.TableStorage;
-
-    using Newtonsoft.Json;
-
+    using Microsoft.WindowsAzure.Storage.Table;
     using Odes.Licence.Model;
-
     using Raven.Client;
-
     using Rhino.Licensing;
-
     using Product = ClickBox.Web.Models.Product;
 
     /// <summary>
@@ -65,8 +58,7 @@ namespace ClickBox.Web.Controllers
         [System.Web.Http.HttpGet]
         public async Task<HttpResponseMessage> GetProductDetail(string productName)
         {
-            //var prod = await this.Session.Query<Product>().Where(p => p.Name == productName).FirstOrDefaultAsync();
-            var prod = TableStorageUtil.GetEntityByPartitionAndRowKey<Product>(productName);
+            var prod = await TableStorageUtil.GetEntityByPartitionAndRowKeyAsync<Product>(productName);
             if (prod != null)
             {
                 return this.Request.CreateResponse(
@@ -86,7 +78,7 @@ namespace ClickBox.Web.Controllers
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public async Task<HttpResponseMessage> PostLicenseRequest(LicenseRequest licx)
+        public async Task<HttpResponseMessage> PostLicenseRequest(WebLicenseRequest licx)
         {
             try
             {
@@ -95,45 +87,50 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new HttpError("Invalid Request. No license request provided."));
                 }
 
-                //if (licx.ProductId == Guid.Empty)
-                //{
-                //    licx.ProductId = new Guid("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
-                //}
+                var data = await TableStorageUtil.GetEntityByPropertyFilterAsync<Product>("Id", licx.ProductId.ToString());
 
-                var data = await this.Session.LoadAsync<Product>(licx.ProductId.ToString());
-                IList<UserAccount> accounts =
-                    await
-                    this.Session.Query<UserAccount>()
-                        .Where(u => u.UserName == licx.Email && u.Password == licx.Password)
-                        .ToListAsync();
+                var filters = (TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new Product().PartitionKey),
+                        TableOperators.And,
+                        TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterCondition("UserName", QueryComparisons.Equal, licx.Email),
+                    TableOperators.And,
+                    TableQuery.GenerateFilterCondition("Password", QueryComparisons.Equal, licx.Password))));
+
+                var accounts = await TableStorageUtil.GetEntityListByPropertyFilterListAsync<UserAccount>(filters);
 
                 UserAccount account;
-                if (accounts.Count == 1)
+                var enumerable = accounts as UserAccount[] ?? accounts.ToArray();
+                if (enumerable.Count() == 1)
                 {
-                    account = accounts[0];
+                    account = enumerable[0];
                 }
                 else
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.Forbidden, new HttpError("Invaid Account Details"));
                 }
 
-                IList<ClientIssuedLicense> oldRequests =
-                    await
-                    this.Session.Query<ClientIssuedLicense>()
-                        .Where(u => u.MachineName == licx.SystemMachineName && u.UserAccountId == account.Id)
-                        .ToListAsync();
+                filters = (TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new ClientIssuedLicense().PartitionKey),
+                        TableOperators.And,
+                        TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterCondition("MachineName", QueryComparisons.Equal, licx.SystemMachineName),
+                    TableOperators.And,
+                    TableQuery.GenerateFilterCondition("UserAccountId", QueryComparisons.Equal, account.Id))));
 
-                if (oldRequests.Count > 0)
+                var oldRequests = await TableStorageUtil.GetEntityListByPropertyFilterListAsync<ClientIssuedLicense>(filters);
+
+                var clientIssuedLicenses = oldRequests as ClientIssuedLicense[] ?? oldRequests.ToArray();
+                if (clientIssuedLicenses.Any())
                 {
-                    if (account.SupportEndDate != oldRequests[0].ExpiryDate)
+                    if (account.SupportEndDate != clientIssuedLicenses[0].ExpiryDate)
                     {
                         account.IssuedLicenses--;
-                        this.Session.Delete(oldRequests[0]);
-                        await this.Session.SaveChangesAsync();
+                        await TableStorageUtil.DeleteEntityAsync(clientIssuedLicenses[0]);
                     }
                     else
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, oldRequests[0].LicenseText);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, clientIssuedLicenses[0].LicenseText);
                     }
                 }
 
@@ -168,8 +165,9 @@ namespace ClickBox.Web.Controllers
                 };
 
                 account.IssuedLicenses = account.IssuedLicenses + 1;
-                await this.Session.StoreAsync(lic);
-                await this.Session.StoreAsync(licx);
+
+                await TableStorageUtil.InsertStorageEntityAsync(lic);
+                await TableStorageUtil.InsertStorageEntityAsync(licx);
                 return this.Request.CreateResponse(HttpStatusCode.Created, key);
             }
             catch (Exception ex)
@@ -181,7 +179,7 @@ namespace ClickBox.Web.Controllers
             }
         }
 
-        private static Dictionary<string, string> GetAttributesForLicense(LicenseRequest licx, UserAccount account, Product product)
+        private static Dictionary<string, string> GetAttributesForLicense(ILicenseRequest licx, UserAccount account, Product product)
         {
             if (account.PageMakerEnabled)
             {

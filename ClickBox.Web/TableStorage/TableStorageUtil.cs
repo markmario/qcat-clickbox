@@ -9,6 +9,8 @@
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
 
+    using Raven.Client;
+
     public static class TableStorageUtil
     {
         static TableStorageUtil()
@@ -185,7 +187,7 @@
             return toRet;
         }
 
-        public static async Task<List<T>> GetEntityByPropertyFilterAsync<T>(string propertyName, string filterValue, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        public static async Task<T> GetEntityByPropertyFilterAsync<T>(string propertyName, string filterValue, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
 
@@ -206,7 +208,87 @@
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = await tableClientRef.ExecuteQuerySegmentedAsync(partitionScanQuery, null).ConfigureAwait(false);
+            return toRet.Results.FirstOrDefault();
+        }
+
+        public static T GetEntityByPropertyFilterList<T>(string filters, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        {
+            var tableOfT = new T();
+                
+            var partitionScanQuery = new TableQuery<T>().Where(filters);
+
+            var account = GetStorageAccount();
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
+            var toRet = tableClientRef.ExecuteQuery(partitionScanQuery, null).FirstOrDefault();
+            return toRet;
+        }
+
+        public static async Task<T> GetEntityByPropertyFilterListAsync<T>(string filters, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        {
+            var tableOfT = new T();
+
+            var partitionScanQuery = new TableQuery<T>().Where(filters);
+
+            var account = GetStorageAccount();
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
+            var toRet = await tableClientRef.ExecuteQuerySegmentedAsync(partitionScanQuery, null);
+            return toRet.Results.FirstOrDefault() as T;
+        }
+
+        public static IEnumerable<T> GetEntityListByPropertyFilterList<T>(string filters, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        {
+            var tableOfT = new T();
+
+            var partitionScanQuery = new TableQuery<T>().Where(filters);
+
+            var account = GetStorageAccount();
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
+            var toRet = tableClientRef.ExecuteQuery(partitionScanQuery, null);
+            return toRet;
+        }
+
+        public static async Task<IEnumerable<T>> GetEntityListByPropertyFilterListAsync<T>(string filters, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        {
+            var tableOfT = new T();
+
+            var partitionScanQuery = new TableQuery<T>().Where(filters);
+
+            var account = GetStorageAccount();
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
+            var toRet = await tableClientRef.ExecuteQuerySegmentedAsync(partitionScanQuery, null);
             return toRet.Results;
+        }
+
+        public static void DeleteEntity<T>(T deleteEntity) where T : TableEntity, IContainTableReference, new()
+        {
+            if (deleteEntity == null)
+            {
+                throw new ArgumentNullException(@"Cannot delete null entity");
+            }
+
+            var account = GetStorageAccount();
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(deleteEntity.TableName);
+            var deleteOperation = TableOperation.Delete(deleteEntity);
+            tableClientRef.ExecuteAsync(deleteOperation);
+        }
+
+        public static async Task DeleteEntityAsync<T>(T deleteEntity) where T : TableEntity, IContainTableReference, new()
+        {
+            if (deleteEntity == null)
+            {
+                throw new ArgumentNullException(@"Cannot delete null entity");
+            }
+
+            var account = GetStorageAccount();
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(deleteEntity.TableName);
+            var deleteOperation = TableOperation.Delete(deleteEntity);
+            await tableClientRef.ExecuteAsync(deleteOperation);
         }
     }
 }

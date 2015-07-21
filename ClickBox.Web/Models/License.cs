@@ -6,8 +6,9 @@
 namespace ClickBox.Web.Models
 {
     using System;
+    using Microsoft.WindowsAzure.Storage.Table;
 
-    public class ClientIssuedLicense
+    public class ClientIssuedLicense : TableEntity, IContainTableReference
     {
         #region Public Properties
 
@@ -32,5 +33,10 @@ namespace ClickBox.Web.Models
         public string UserAccountId { get; set; }
 
         #endregion
+
+        public string TableName
+        {
+            get { return "Licences"; }
+        }
     }
 }

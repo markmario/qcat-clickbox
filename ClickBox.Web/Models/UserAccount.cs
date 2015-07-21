@@ -86,7 +86,7 @@ namespace ClickBox.Web.Models
 
         public override string ToString()
         {
-            return this.RowKey + "\t\t" + this.UserName + "]";
+            return this.UserName + "\t\t" + this.RowKey + "]";
         }
 
         [ScaffoldColumn(false)]

@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Security.Cryptography;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using ClickBox.Web.Models;
     using ClickBox.Web.TableStorage;
@@ -24,10 +25,10 @@
 
         #endregion
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             //var toRet = this.session.Query<Product>().ToList();
-            var toRet = TableStorageUtil.GetEntities<Product>();
+            var toRet = await TableStorageUtil.GetEntitiesAsync<Product>();
             var model = new { Products = toRet };
             return this.View(model);
         }
@@ -52,7 +53,7 @@
 
         // POST: /Product/Create
         [HttpPost]
-        public ActionResult Create(Product newProduct)
+        public async Task<ActionResult> Create(Product newProduct)
         {
             try
             {
@@ -78,8 +79,8 @@
                 //this.session.SaveChanges();
                 //var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
 
-                TableStorageUtil.InsertStorageEntity(newQCatProduct);
-                var toRet = TableStorageUtil.GetEntities<Product>();
+                await TableStorageUtil.InsertStorageEntityAsync(newQCatProduct);
+                var toRet = await TableStorageUtil.GetEntitiesAsync<Product>();
                 var model = new { Products = toRet };
                 return this.Json(model);
             }
