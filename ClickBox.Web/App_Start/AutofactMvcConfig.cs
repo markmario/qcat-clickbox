@@ -31,7 +31,7 @@ namespace ClickBox.Web
         {
             bool injectParameters = false;
             bool.TryParse(
-                WebConfigurationManager.AppSettings["EnableControllerActionParameterInjection"], 
+                WebConfigurationManager.AppSettings["EnableControllerActionParameterInjection"],
                 out injectParameters);
             return injectParameters;
         }
@@ -41,40 +41,38 @@ namespace ClickBox.Web
             var builder = new ContainerBuilder();
             builder.RegisterControllers(Assembly.GetExecutingAssembly(), typeof(LicenseController).Assembly);
 
-            // Register the Web API controllers.
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly(), typeof(LicenseController).Assembly);
-
+          
             builder.RegisterModelBinders(Assembly.GetExecutingAssembly());
-
             builder.RegisterModelBinderProvider();
-            builder.RegisterModule(new AutofacWebTypesModule());
+
+            // OPTIONAL: Register web abstractions like HttpContextBase.
+            builder.RegisterModule<AutofacWebTypesModule>();
+
+            // OPTIONAL: Enable property injection in view pages.
+            builder.RegisterSource(new ViewRegistrationSource());
+
+            // OPTIONAL: Enable property injection into action filters.
+            builder.RegisterFilterProvider();
 
             builder.RegisterType<ExtensibleActionInvoker>()
                 .As<IActionInvoker>()
                 .WithParameter(
                     new NamedParameter("injectActionMethodParameters", IsControllerActionParameterInjectionEnabled()))
-                .InstancePerHttpRequest();
+                .InstancePerRequest();
 
-            // builder.Register(
-            // c => new FlexMembershipProvider(c.Resolve<IFlexUserStore>(), c.Resolve<IApplicationEnvironment>()))
-            // .As<IFlexMembershipProvider>().As<IFlexOAuthProvider>().InstancePerHttpRequest();
-
-            // builder.Register(c => new FlexRoleProvider(c.Resolve<IFlexRoleStore>()))
-            // .As<IFlexRoleProvider>()
-            // .InstancePerHttpRequest().PropertiesAutowired();
-            // builder.Register(c => new FlexMembershipUserStore<User, Role>(c.Resolve<IDocumentSession>())).As<IFlexUserStore>().As<IFlexRoleStore>().PropertiesAutowired();
-
-            // builder.Register(c => new AspnetEnvironment()).As<IApplicationEnvironment>().SingleInstance();
-            // builder.Register(c => new DefaultSecurityEncoder()).As<ISecurityEncoder>().SingleInstance();
             builder.Register(c => MvcApplication.DocumentStore.OpenSession())
                 .As<IDocumentSession>()
-                .InstancePerHttpRequest();
+                .InstancePerRequest();
+
             builder.Register(c => MvcApplication.DocumentStore).As<IDocumentStore>().SingleInstance();
 
-            // builder.Register(c => MvcApplication.Bus).As<IBus>().SingleInstance();
-            builder.RegisterFilterProvider();
-            IContainer container = builder.Build();
+            // Register the Web API controllers.
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly(), typeof(LicenseController).Assembly);
 
+            var config = GlobalConfiguration.Configuration;
+            builder.RegisterWebApiFilterProvider(config);
+
+            IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
             var resolver = new AutofacWebApiDependencyResolver(container);
