@@ -181,6 +181,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IsolationController.cs" />
     <Compile Include="Controllers\KodingController.cs" />
+    <Compile Include="Controllers\old_KodingController.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RavenDbApiController.cs" />

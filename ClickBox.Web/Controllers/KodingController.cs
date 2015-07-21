@@ -75,15 +75,15 @@ namespace ClickBox.Web.Controllers
                 else
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
-                        
-                        // change this to forbidden when we want to stop clients from connecting
+
+                    // change this to forbidden when we want to stop clients from connecting
                 }
             }
             catch (Exception ex)
             {
                 return this.Request.CreateErrorResponse(
-                    HttpStatusCode.InternalServerError, 
-                    "Some bad shit happened", 
+                    HttpStatusCode.InternalServerError,
+                    "Some bad shit happened",
                     ex);
             }
         }
