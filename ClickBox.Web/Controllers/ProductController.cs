@@ -3,8 +3,13 @@
     using System;
     using System.Linq;
     using System.Security.Cryptography;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
+
+    using Microsoft.WindowsAzure.Storage.Table;
+
     using Raven.Client;
 
     public class ProductController : Controller
@@ -20,9 +25,10 @@
 
         #endregion
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var toRet = this.session.Query<Product>().ToList();
+            //var toRet = this.session.Query<Product>().ToList();
+            var toRet = await TableStorageUtil.GetEntitiesAsync<Product>();
             var model = new { Products = toRet };
             return this.View(model);
         }
@@ -47,7 +53,7 @@
 
         // POST: /Product/Create
         [HttpPost]
-        public ActionResult Create(Product newProduct)
+        public async Task<ActionResult> Create(Product newProduct)
         {
             try
             {
@@ -65,12 +71,16 @@
                                              Id = newProduct.Id, 
                                              Name = newProduct.Name, 
                                              PrivateKey = newProduct.PrivateKey, 
-                                             PublicKey = newProduct.PublicKey
+                                             PublicKey = newProduct.PublicKey,
+                                             RowKey = newProduct.Name
                                          };
 
-                this.session.Store(newQCatProduct);
-                this.session.SaveChanges();
-                var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
+                //this.session.Store(newQCatProduct);
+                //this.session.SaveChanges();
+                //var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
+
+                await TableStorageUtil.InsertStorageEntityAsync(newQCatProduct);
+                var toRet = await TableStorageUtil.GetEntitiesAsync<Product>();
                 var model = new { Products = toRet };
                 return this.Json(model);
             }

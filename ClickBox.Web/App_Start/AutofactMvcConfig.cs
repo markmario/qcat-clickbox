@@ -4,13 +4,12 @@
 //  </copyright>
 // --------------------------------------------------------------------------------------------------
 
-using ClickBox.Web.App_Start;
+using ClickBox.Web;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(AutofactMvcConfig), "Start")]
 
-namespace ClickBox.Web.App_Start
+namespace ClickBox.Web
 {
-    using System;
     using System.Reflection;
     using System.Web.Configuration;
     using System.Web.Http;

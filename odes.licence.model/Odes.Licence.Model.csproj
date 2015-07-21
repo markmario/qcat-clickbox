@@ -46,6 +46,7 @@
     <Compile Include="BatchIsolated.cs" />
     <Compile Include="CredentialAgent.cs" />
     <Compile Include="DocumentCoded.cs" />
+    <Compile Include="ILicenseRequest.cs" />
     <Compile Include="LicenceTypes.cs" />
     <Compile Include="LicenseRequest.cs" />
     <Compile Include="LicenseRequestExtensions.cs" />
