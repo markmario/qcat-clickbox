@@ -17,6 +17,7 @@ namespace ClickBox.Web.Controllers
     using System.Web.Mvc;
 
     using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
 
     using Newtonsoft.Json;
 
@@ -46,7 +47,7 @@ namespace ClickBox.Web.Controllers
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LicenseController"/> class.
+        /// Initializes a new instance of the <see cref="ClickBox.Web.Controllers.LicenseController"/> class.
         /// </summary>
         /// <param name="store">
         /// The store.
@@ -56,13 +57,16 @@ namespace ClickBox.Web.Controllers
             this.Store = store;
         }
 
+        public LicenseController() { }
+
         #endregion
 
         #region Public Methods and Operators
         [System.Web.Http.HttpGet]
-        public async Task<HttpResponseMessage> GetProductDetail( string productName)
+        public async Task<HttpResponseMessage> GetProductDetail(string productName)
         {
-            var prod = await this.Session.Query<Product>().Where(p => p.Name == productName).FirstOrDefaultAsync();
+            //var prod = await this.Session.Query<Product>().Where(p => p.Name == productName).FirstOrDefaultAsync();
+            var prod = TableStorageUtil.GetEntityByPartitionAndRowKey<Product>(productName);
             if (prod != null)
             {
                 return this.Request.CreateResponse(
@@ -132,7 +136,7 @@ namespace ClickBox.Web.Controllers
                         return this.Request.CreateResponse(HttpStatusCode.OK, oldRequests[0].LicenseText);
                     }
                 }
-                
+
                 if (account.IssuedLicenses >= account.AllocatedSeats)
                 {
                     return this.Request.CreateErrorResponse(
@@ -145,23 +149,23 @@ namespace ClickBox.Web.Controllers
                 this.attributes = GetAttributesForLicense(licx, account, data);
 
                 var key = generator.Generate(
-                    account.ContactName, 
-                    licx.RequestId, 
-                    account.SupportEndDate, 
-                    this.attributes, 
+                    account.ContactName,
+                    licx.RequestId,
+                    account.SupportEndDate,
+                    this.attributes,
                     LicenseType.Subscription);
 
                 var lic = new ClientIssuedLicense
-                              {
-                                  ClickCount = licx.ClicksReqeusted, 
-                                  DateCreated = DateTimeOffset.UtcNow, 
-                                  ExpiryDate = account.SupportEndDate, 
-                                  LicenseText = key, 
-                                  ProductId = data.Id, 
-                                  RequestId = licx.RequestId, 
-                                  MachineName = licx.SystemMachineName, 
-                                  UserAccountId = account.Id
-                              };
+                {
+                    ClickCount = licx.ClicksReqeusted,
+                    DateCreated = DateTimeOffset.UtcNow,
+                    ExpiryDate = account.SupportEndDate,
+                    LicenseText = key,
+                    ProductId = data.Id,
+                    RequestId = licx.RequestId,
+                    MachineName = licx.SystemMachineName,
+                    UserAccountId = account.Id
+                };
 
                 account.IssuedLicenses = account.IssuedLicenses + 1;
                 await this.Session.StoreAsync(lic);
@@ -171,8 +175,8 @@ namespace ClickBox.Web.Controllers
             catch (Exception ex)
             {
                 return this.Request.CreateErrorResponse(
-                    HttpStatusCode.InternalServerError, 
-                    "There was a problem licensing your product. Please contant QCAT.", 
+                    HttpStatusCode.InternalServerError,
+                    "There was a problem licensing your product. Please contant QCAT.",
                     ex);
             }
         }

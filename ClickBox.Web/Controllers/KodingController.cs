@@ -13,6 +13,7 @@ namespace ClickBox.Web.Controllers
     using System.Web.Mvc;
 
     using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
 
     using Odes.Licence.Model;
 
@@ -24,6 +25,8 @@ namespace ClickBox.Web.Controllers
     public class KodingController : RavenDbApiController
     {
         #region Constructors and Destructors
+
+        public KodingController() { }
 
         public KodingController(IDocumentStore store)
         {
@@ -45,39 +48,42 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
-                var data = await this.Session.LoadAsync<Product>("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
-                var accounts =
-                    await this.Session.Query<UserAccount>().Where(u => u.UserName == codedDoc.UserName).ToListAsync();
+                var data = TableStorageUtil.GetEntityByPartitionAndRowKey<Product>("QCAT-Odes");
 
-                // var licx = await Session.Query<ClientIssuedLicense>().Where(u => u.RequestId == codedDoc.RequestId).ToListAsync();
-                UserAccount account;
-                if (accounts.Count == 1)
-                {
-                    account = accounts[0];
-                    codedDoc.Id = account.Id + "/" + codedDoc.ProjectId + "/" + codedDoc.DocumentId;
-                    accountFound = true;
-                }
-                else
-                {
-                    codedDoc.Id = codedDoc.UserName + "/" + codedDoc.ProjectId + "/" + codedDoc.DocumentId;
-                }
+                codedDoc = new DocumentCoded(){UserName = "simon@qcat.com.au"};
+                var accounts = TableStorageUtil.GetEntityByPropertyFilter<UserAccount>("UserName", codedDoc.UserName);
 
-                var doc = await this.Session.LoadAsync<DocumentCoded>(codedDoc.Id);
-                if (doc == null)
-                {
-                    await this.Session.StoreAsync(codedDoc);
-                }
+                return null;
 
-                if (accountFound)
-                {
-                    return this.Request.CreateResponse(HttpStatusCode.Created);
-                }
-                else
-                {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
+                //// var licx = await Session.Query<ClientIssuedLicense>().Where(u => u.RequestId == codedDoc.RequestId).ToListAsync();
+                //UserAccount account;
+                //if (accounts.Count == 1)
+                //{
+                //    account = accounts[0];
+                //    codedDoc.Id = account.Id + "/" + codedDoc.ProjectId + "/" + codedDoc.DocumentId;
+                //    accountFound = true;
+                //}
+                //else
+                //{
+                //    codedDoc.Id = codedDoc.UserName + "/" + codedDoc.ProjectId + "/" + codedDoc.DocumentId;
+                //}
 
-                    // change this to forbidden when we want to stop clients from connecting
-                }
+                //var doc = await this.Session.LoadAsync<DocumentCoded>(codedDoc.Id);
+                //if (doc == null)
+                //{
+                //    await this.Session.StoreAsync(codedDoc);
+                //}
+
+                //if (accountFound)
+                //{
+                //    return this.Request.CreateResponse(HttpStatusCode.Created);
+                //}
+                //else
+                //{
+                //    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
+
+                //    // change this to forbidden when we want to stop clients from connecting
+                //}
             }
             catch (Exception ex)
             {
