@@ -1,4 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------
+﻿#if false
+// --------------------------------------------------------------------------------------------------
 //  <copyright file="LicenseController.cs" company="QCAT Pty Ltd.">
 //    Copyright (c) 2015 QCAT Pty Ltd. All rights reserved.
 //  </copyright>
@@ -32,7 +33,7 @@ namespace ClickBox.Web.Controllers
     /// The license controller.
     /// </summary>
     [RequireHttps(Order = 1)]
-    public class old_LicenseController : RavenDbApiController
+    public class old_LicenseController
     {
         #region Fields
 
@@ -60,7 +61,7 @@ namespace ClickBox.Web.Controllers
 
         #region Public Methods and Operators
         [System.Web.Http.HttpGet]
-        public async Task<HttpResponseMessage> GetProductDetail( string productName)
+        public async Task<HttpResponseMessage> GetProductDetail(string productName)
         {
             var prod = await this.Session.Query<Product>().Where(p => p.Name == productName).FirstOrDefaultAsync();
             if (prod != null)
@@ -132,7 +133,7 @@ namespace ClickBox.Web.Controllers
                         return this.Request.CreateResponse(HttpStatusCode.OK, oldRequests[0].LicenseText);
                     }
                 }
-                
+
                 if (account.IssuedLicenses >= account.AllocatedSeats)
                 {
                     return this.Request.CreateErrorResponse(
@@ -145,23 +146,23 @@ namespace ClickBox.Web.Controllers
                 this.attributes = GetAttributesForLicense(licx, account, data);
 
                 var key = generator.Generate(
-                    account.ContactName, 
-                    licx.RequestId, 
-                    account.SupportEndDate, 
-                    this.attributes, 
+                    account.ContactName,
+                    licx.RequestId,
+                    account.SupportEndDate,
+                    this.attributes,
                     LicenseType.Subscription);
 
                 var lic = new ClientIssuedLicense
-                              {
-                                  ClickCount = licx.ClicksReqeusted, 
-                                  DateCreated = DateTimeOffset.UtcNow, 
-                                  ExpiryDate = account.SupportEndDate, 
-                                  LicenseText = key, 
-                                  ProductId = data.Id, 
-                                  RequestId = licx.RequestId, 
-                                  MachineName = licx.SystemMachineName, 
-                                  UserAccountId = account.Id
-                              };
+                {
+                    ClickCount = licx.ClicksReqeusted,
+                    DateCreated = DateTimeOffset.UtcNow,
+                    ExpiryDate = account.SupportEndDate,
+                    LicenseText = key,
+                    ProductId = data.Id,
+                    RequestId = licx.RequestId,
+                    MachineName = licx.SystemMachineName,
+                    UserAccountId = account.Id
+                };
 
                 account.IssuedLicenses = account.IssuedLicenses + 1;
                 await this.Session.StoreAsync(lic);
@@ -171,8 +172,8 @@ namespace ClickBox.Web.Controllers
             catch (Exception ex)
             {
                 return this.Request.CreateErrorResponse(
-                    HttpStatusCode.InternalServerError, 
-                    "There was a problem licensing your product. Please contant QCAT.", 
+                    HttpStatusCode.InternalServerError,
+                    "There was a problem licensing your product. Please contant QCAT.",
                     ex);
             }
         }
@@ -215,4 +216,5 @@ namespace ClickBox.Web.Controllers
 
         #endregion
     }
-}
+} 
+#endif

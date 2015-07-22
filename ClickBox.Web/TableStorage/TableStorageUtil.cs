@@ -21,16 +21,6 @@
             //object parsedData = se.Deserialize(reader);
         }
 
-        public static CloudStorageAccount GetStorageAccount()
-        {
-            var debug = CloudConfigurationManager.GetSetting("Runtime");
-            if (debug == "debug")
-            {
-                return CloudStorageAccount.DevelopmentStorageAccount;
-            }
-            return CreateStorageAccountFromConnectionString(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-        }
-
         public static string GetPartitionPrefix()
         {
             var debug = CloudConfigurationManager.GetSetting("Runtime");
@@ -41,68 +31,16 @@
             return "prod_";
         }
 
-        private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
-        {
-            CloudStorageAccount storageAccount;
-            try
-            {
-                storageAccount = CloudStorageAccount.Parse(storageConnectionString);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the application.");
-                throw;
-            }
-            catch (ArgumentException)
-            {
-                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the sample.");
-                Console.ReadLine();
-                throw;
-            }
-
-            return storageAccount;
-        }
-
-        public static void InsertStorageEntity<T>(T entity) where T : TableEntity, IContainTableReference
-        {
-            var account = GetStorageAccount();
-            var tableClient = account.CreateCloudTableClient();
-            var tableClientRef = tableClient.GetTableReference(entity.TableName);
-            tableClientRef.CreateIfNotExists();
-            TableOperation insertOperation = TableOperation.InsertOrReplace(entity);
-            tableClientRef.Execute(insertOperation);
-        }
-
         public static async Task InsertStorageEntityAsync<T>(T entity) where T : TableEntity, IContainTableReference
         {
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(entity.TableName);
             tableClientRef.CreateIfNotExists();
             TableOperation insertOperation = TableOperation.InsertOrReplace(entity);
             await tableClientRef.ExecuteAsync(insertOperation);
         }
-
-        public static IEnumerable<T> GetEntities<T>(string partitionKey = null) where T : TableEntity, IContainTableReference, new()
-        {
-            var tableOfT = new T();
-
-            string partition = partitionKey;
-
-            if (partitionKey == null)
-            {
-                partition = tableOfT.PartitionKey;
-            }
-
-            var partitionScanQuery = new TableQuery<T>().Where
-                    (TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition));
-            var account = GetStorageAccount();
-            var tableClient = account.CreateCloudTableClient();
-            var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
-            var toRet = tableClientRef.ExecuteQuery(partitionScanQuery, null);
-            return toRet;
-        }
-
+        
         public static async Task<IEnumerable<T>> GetEntitiesAsync<T>(string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -116,7 +54,7 @@
 
             var partitionScanQuery = new TableQuery<T>().Where
                     (TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition));
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = await tableClientRef.ExecuteQuerySegmentedAsync(partitionScanQuery, null);
@@ -135,7 +73,7 @@
             }
 
             var retrieveOperation = TableOperation.Retrieve<T>(partition, rowKey);
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var result =  tableClientRef.Execute(retrieveOperation);
@@ -155,7 +93,7 @@
             }
 
             var retrieveOperation = TableOperation.Retrieve<T>(partition, rowKey);
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var result = await tableClientRef.ExecuteAsync(retrieveOperation);
@@ -180,7 +118,7 @@
                             TableOperators.And,
                             TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition))));
             
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = tableClientRef.ExecuteQuery(partitionScanQuery, null).FirstOrDefault();
@@ -204,7 +142,7 @@
                             TableOperators.And,
                             TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition))));
 
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = await tableClientRef.ExecuteQuerySegmentedAsync(partitionScanQuery, null).ConfigureAwait(false);
@@ -217,7 +155,7 @@
                 
             var partitionScanQuery = new TableQuery<T>().Where(filters);
 
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = tableClientRef.ExecuteQuery(partitionScanQuery, null).FirstOrDefault();
@@ -230,7 +168,7 @@
 
             var partitionScanQuery = new TableQuery<T>().Where(filters);
 
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = await tableClientRef.ExecuteQuerySegmentedAsync(partitionScanQuery, null);
@@ -243,7 +181,7 @@
 
             var partitionScanQuery = new TableQuery<T>().Where(filters);
 
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = tableClientRef.ExecuteQuery(partitionScanQuery, null);
@@ -256,7 +194,7 @@
 
             var partitionScanQuery = new TableQuery<T>().Where(filters);
 
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(tableOfT.TableName);
             var toRet = await tableClientRef.ExecuteQuerySegmentedAsync(partitionScanQuery, null);
@@ -270,7 +208,7 @@
                 throw new ArgumentNullException(@"Cannot delete null entity");
             }
 
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(deleteEntity.TableName);
             var deleteOperation = TableOperation.Delete(deleteEntity);
@@ -284,7 +222,7 @@
                 throw new ArgumentNullException(@"Cannot delete null entity");
             }
 
-            var account = GetStorageAccount();
+            var account = MvcApplication.TableStore;
             var tableClient = account.CreateCloudTableClient();
             var tableClientRef = tableClient.GetTableReference(deleteEntity.TableName);
             var deleteOperation = TableOperation.Delete(deleteEntity);

@@ -1,4 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------
+﻿#if false
+// --------------------------------------------------------------------------------------------------
 //  <copyright file="KodingController.cs" company="QCAT Pty Ltd.">
 //    Copyright (c) 2015 QCAT Pty Ltd. All rights reserved.
 //  </copyright>
@@ -21,7 +22,7 @@ namespace ClickBox.Web.Controllers
     using Product = ClickBox.Web.Models.Product;
 
     [RequireHttps(Order = 1)]
-    public class old_KodingController : RavenDbApiController
+    public class old_KodingController
     {
         #region Constructors and Destructors
 
@@ -75,19 +76,20 @@ namespace ClickBox.Web.Controllers
                 else
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
-                        
-                        // change this to forbidden when we want to stop clients from connecting
+
+                    // change this to forbidden when we want to stop clients from connecting
                 }
             }
             catch (Exception ex)
             {
                 return this.Request.CreateErrorResponse(
-                    HttpStatusCode.InternalServerError, 
-                    "Some bad shit happened", 
+                    HttpStatusCode.InternalServerError,
+                    "Some bad shit happened",
                     ex);
             }
         }
 
         #endregion
     }
-}
+} 
+#endif

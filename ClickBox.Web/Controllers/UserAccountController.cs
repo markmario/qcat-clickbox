@@ -15,6 +15,7 @@ namespace ClickBox.Web.Controllers
     using Kendo.Mvc.UI;
 
     using Raven.Client;
+    using System.Threading.Tasks;
 
     [RequireHttps(Order = 1)]
     [RequireLocalHostActionFilter()]
@@ -38,27 +39,24 @@ namespace ClickBox.Web.Controllers
         #region Public Methods and Operators
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create([DataSourceRequest] DataSourceRequest request, UserAccount account)
+        public async Task<ActionResult> Create([DataSourceRequest] DataSourceRequest request, UserAccount account)
         {
             if (account != null && this.ModelState.IsValid)
             {
-                //this._session.Store(account);
-                //this._session.SaveChanges();
-                
                 account.InitModelBinderVersion(account);
-                TableStorageUtil.InsertStorageEntity(account);
+                await TableStorageUtil.InsertStorageEntityAsync(account);
             }
 
             return this.Json(new[] { account }.ToDataSourceResult(request, this.ModelState));
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Get([DataSourceRequest] DataSourceRequest request)
+        public async Task<ActionResult> Get([DataSourceRequest] DataSourceRequest request)
         {
             // var toRet = _ctx.Applications.OrderBy(o => o.Id).ToDataSourceResult(request);
             //var toRet = this._session.Query<UserAccount>().ToDataSourceResult(request);
-            var toRet = TableStorageUtil.GetEntities<UserAccount>().ToDataSourceResult(request);
-            return this.Json(toRet, JsonRequestBehavior.AllowGet);
+            var toRet = await TableStorageUtil.GetEntitiesAsync<UserAccount>();
+            return Json(toRet.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Index()

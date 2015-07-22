@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------
 namespace ClickBox.Web
 {
+    using System;
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
@@ -12,6 +13,12 @@ namespace ClickBox.Web
 
     using Raven.Client;
     using Raven.Client.Document;
+    using Microsoft.WindowsAzure.Storage;
+    using System.Diagnostics;
+    using Microsoft.WindowsAzure;
+
+
+
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -53,9 +60,8 @@ namespace ClickBox.Web
         #endregion
 
         #region Public Properties
-
-        public static IDocumentStore DocumentStore { get; set; }
-
+        
+        public static CloudStorageAccount TableStore { get; private set; }
         #endregion
 
         #region Methods
@@ -68,11 +74,41 @@ namespace ClickBox.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            var ds = new DocumentStore() { ConnectionStringName = "RavenDB" };
-            DocumentStore = ds.Initialize();
-
+            TableStore = GetStorageAccount();
+        }
+        
+        private static CloudStorageAccount GetStorageAccount()
+        {
+            var debug = CloudConfigurationManager.GetSetting("Runtime");
+            if (debug == "debug")
+            {
+                return CloudStorageAccount.DevelopmentStorageAccount;
+            }
+            return CreateStorageAccountFromConnectionString(CloudConfigurationManager.GetSetting("StorageConnectionString"));
         }
 
+
+        private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
+        {
+            CloudStorageAccount storageAccount;
+            try
+            {
+                storageAccount = CloudStorageAccount.Parse(storageConnectionString);
+            }
+            catch (FormatException)
+            {
+                Trace.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the application.");
+                throw;
+            }
+            catch (ArgumentException)
+            {
+                Trace.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the sample.");
+                throw;
+
+            }
+
+            return storageAccount;
+        }
         #endregion
     }
 }

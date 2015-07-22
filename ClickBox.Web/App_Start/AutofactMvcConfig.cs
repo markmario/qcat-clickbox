@@ -22,6 +22,7 @@ namespace ClickBox.Web
     using ClickBox.Web.Controllers;
 
     using Raven.Client;
+    using Microsoft.WindowsAzure.Storage;
 
     public static class AutofactMvcConfig
     {
@@ -60,11 +61,11 @@ namespace ClickBox.Web
                     new NamedParameter("injectActionMethodParameters", IsControllerActionParameterInjectionEnabled()))
                 .InstancePerRequest();
 
-            builder.Register(c => MvcApplication.DocumentStore.OpenSession())
-                .As<IDocumentSession>()
-                .InstancePerRequest();
+            //builder.Register(c => MvcApplication.DocumentStore.OpenSession())
+            //    .As<IDocumentSession>()
+            //    .InstancePerRequest();
 
-            builder.Register(c => MvcApplication.DocumentStore).As<IDocumentStore>().SingleInstance();
+            builder.Register(c => MvcApplication.TableStore).As<CloudStorageAccount>().SingleInstance();
 
             // Register the Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly(), typeof(LicenseController).Assembly);
