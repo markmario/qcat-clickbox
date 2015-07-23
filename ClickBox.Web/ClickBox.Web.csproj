@@ -230,7 +230,7 @@
     <Compile Include="Infrastructure\RSAClass.cs" />
     <Compile Include="Infrastructure\TokenValidationAttribute.cs" />
     <Compile Include="Models\IContainTableReference.cs" />
-    <Compile Include="Models\License.cs" />
+    <Compile Include="Models\ClientIssuedLicense.cs" />
     <Compile Include="Models\PersistedUserAccount.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\UserAccount.cs" />

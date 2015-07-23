@@ -6,65 +6,31 @@
 namespace ClickBox.Web
 {
     using System;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
 
-    using Raven.Client;
-    using Raven.Client.Document;
-    using Microsoft.WindowsAzure.Storage;
-    using System.Diagnostics;
+    using AutoMapper;
 
     using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
 
     using Microsoft.WindowsAzure;
+    using Microsoft.WindowsAzure.Storage;
 
-
-
+    using Raven.Client;
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
-        #region Constructors and Destructors
-
-        public MvcApplication()
-        {
-            this.BeginRequest +=
-                (sender, args) =>
-                    {
-                        HttpContext.Current.Items["CurrentRequestRavenSession"] =
-                            DependencyResolver.Current.GetService<IDocumentSession>();
-                    };
-            this.EndRequest += (sender, args) =>
-                {
-                    using (var session = (IDocumentSession)HttpContext.Current.Items["CurrentRequestRavenSession"])
-                    {
-                        if (session == null)
-                        {
-                            return;
-                        }
-
-                        if (this.Server.GetLastError() != null)
-                        {
-                            return;
-                        }
-
-                        session.SaveChanges();
-                    }
-
-                    // TaskExecutor.StartExecuting();
-
-                    // MiniProfiler.Stop();
-                };
-        }
-
-        #endregion
-
         #region Public Properties
         
         public static CloudStorageAccount TableStore { get; private set; }
+
         #endregion
 
         #region Methods
@@ -79,12 +45,21 @@ namespace ClickBox.Web
 
             TableStore = GetStorageAccount();
             this.SetAutoMappings();
+            PrimeTableStorage();
+        }
+
+        private static void PrimeTableStorage()
+        {
+            TableStorageUtil.PrimeTable<PersistedUserAccount>();
+            TableStorageUtil.PrimeTable<Product>();
+            TableStorageUtil.PrimeTable<ClientIssuedLicense>();
+            TableStorageUtil.PrimeTable<WebLicenseRequest>();
         }
 
         private void SetAutoMappings()
         {
-            AutoMapper.Mapper.CreateMap<PersistedUserAccount, UserAccount>();
-            AutoMapper.Mapper.CreateMap<UserAccount, PersistedUserAccount>();
+            Mapper.CreateMap<PersistedUserAccount, UserAccount>();
+            Mapper.CreateMap<UserAccount, PersistedUserAccount>();
         }
 
         private static CloudStorageAccount GetStorageAccount()
