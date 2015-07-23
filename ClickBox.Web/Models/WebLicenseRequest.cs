@@ -1,9 +1,12 @@
 ﻿namespace ClickBox.Web.Models
 {
     using System;
+    using System.Web.Mvc;
+
     using Microsoft.WindowsAzure.Storage.Table;
     using Odes.Licence.Model;
 
+    [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
     public class WebLicenseRequest : TableEntity, ILicenseRequest, IContainTableReference
     {
         public LicenceTypes LicenceType { get; set; }

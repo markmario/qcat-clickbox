@@ -5,10 +5,13 @@
 // --------------------------------------------------------------------------------------------------
 namespace ClickBox.Web.Models
 {
+    using System.Web.Mvc;
+
     using ClickBox.Web.TableStorage;
 
     using Microsoft.WindowsAzure.Storage.Table;
 
+    [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
     public class Product : TableEntity, IContainTableReference
     {
         private string name;

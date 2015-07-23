@@ -14,19 +14,23 @@ namespace ClickBox.Web.Controllers
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Mvc;
+
     using ClickBox.Web.Models;
     using ClickBox.Web.TableStorage;
+
     using Microsoft.WindowsAzure.Storage.Table;
+
     using Odes.Licence.Model;
-    using Raven.Client;
+
     using Rhino.Licensing;
+
     using Product = ClickBox.Web.Models.Product;
 
     /// <summary>
     /// The license controller.
     /// </summary>
     [RequireHttps(Order = 1)]
-    public class LicenseController : RavenDbApiController
+    public class LicenseController : ApiController
     {
         #region Fields
 
@@ -38,17 +42,6 @@ namespace ClickBox.Web.Controllers
         #endregion
 
         #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClickBox.Web.Controllers.LicenseController"/> class.
-        /// </summary>
-        /// <param name="store">
-        /// The store.
-        /// </param>
-        public LicenseController(IDocumentStore store)
-        {
-            this.Store = store;
-        }
 
         public LicenseController() { }
 
@@ -90,7 +83,7 @@ namespace ClickBox.Web.Controllers
                 var data = await TableStorageUtil.GetEntityByPropertyFilterAsync<Product>("Id", licx.ProductId.ToString());
 
                 var filters = (TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new Product().PartitionKey),
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new UserAccount().PartitionKey),
                         TableOperators.And,
                         TableQuery.CombineFilters(
                     TableQuery.GenerateFilterCondition("UserName", QueryComparisons.Equal, licx.Email),

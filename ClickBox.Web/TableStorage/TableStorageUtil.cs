@@ -228,5 +228,33 @@
             var deleteOperation = TableOperation.Delete(deleteEntity);
             await tableClientRef.ExecuteAsync(deleteOperation);
         }
+
+        public static void UpdateEntity<T>(T updateEntity) where T : TableEntity, IContainTableReference, new()
+        {
+            if (updateEntity == null)
+            {
+                throw new ArgumentNullException(@"Cannot update null entity");
+            }
+
+            var mergeOperation = TableOperation.InsertOrMerge(updateEntity);
+            var account = MvcApplication.TableStore;
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(updateEntity.TableName);
+            tableClientRef.Execute(mergeOperation);
+        }
+
+        public static async Task UpdateEntityAsync<T>(T updateEntity) where T : TableEntity, IContainTableReference, new()
+        {
+            if (updateEntity == null)
+            {
+                throw new ArgumentNullException(@"Cannot update null entity");
+            }
+
+            var mergeOperation = TableOperation.InsertOrMerge(updateEntity);
+            var account = MvcApplication.TableStore;
+            var tableClient = account.CreateCloudTableClient();
+            var tableClientRef = tableClient.GetTableReference(updateEntity.TableName);
+            await tableClientRef.ExecuteAsync(mergeOperation);
+        }
     }
 }

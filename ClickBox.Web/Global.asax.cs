@@ -15,6 +15,9 @@ namespace ClickBox.Web
     using Raven.Client.Document;
     using Microsoft.WindowsAzure.Storage;
     using System.Diagnostics;
+
+    using ClickBox.Web.Models;
+
     using Microsoft.WindowsAzure;
 
 
@@ -75,8 +78,15 @@ namespace ClickBox.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             TableStore = GetStorageAccount();
+            this.SetAutoMappings();
         }
-        
+
+        private void SetAutoMappings()
+        {
+            AutoMapper.Mapper.CreateMap<PersistedUserAccount, UserAccount>();
+            AutoMapper.Mapper.CreateMap<UserAccount, PersistedUserAccount>();
+        }
+
         private static CloudStorageAccount GetStorageAccount()
         {
             var debug = CloudConfigurationManager.GetSetting("Runtime");

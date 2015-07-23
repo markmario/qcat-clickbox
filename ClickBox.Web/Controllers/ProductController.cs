@@ -1,27 +1,18 @@
 ﻿namespace ClickBox.Web.Controllers
 {
     using System;
-    using System.Linq;
     using System.Security.Cryptography;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+
     using ClickBox.Web.Models;
     using ClickBox.Web.TableStorage;
 
-    using Microsoft.WindowsAzure.Storage.Table;
-
-    using Raven.Client;
-
     public class ProductController : Controller
     {
-        private readonly IDocumentSession session;
-
         #region Constructors and Destructors
 
-        public ProductController(IDocumentSession session)
-        {
-            this.session = session;
-        }
+        public ProductController() { }
 
         #endregion
 
@@ -75,10 +66,6 @@
                                              RowKey = newProduct.Name
                                          };
 
-                //this.session.Store(newQCatProduct);
-                //this.session.SaveChanges();
-                //var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
-
                 await TableStorageUtil.InsertStorageEntityAsync(newQCatProduct);
                 var toRet = await TableStorageUtil.GetEntitiesAsync<Product>();
                 var model = new { Products = toRet };
@@ -92,17 +79,16 @@
 
         // POST: /Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(Product editProduct)
+        public async Task<ActionResult> Edit(Product editProduct)
         {
             try
             {
-                // TODO: Add update logic here
-                var edited = this.session.Load<Product>(editProduct.Id);
+                var edited = await TableStorageUtil.GetEntityByPropertyFilterAsync<Product>("Id",editProduct.Id);
                 edited.Name = editProduct.Name;
                 edited.PrivateKey = editProduct.PrivateKey;
                 edited.PublicKey = editProduct.PublicKey;
-                this.session.SaveChanges();
-                var toRet = this.session.Query<Product>().Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToList();
+                await TableStorageUtil.UpdateEntityAsync(editProduct);
+                var toRet = await TableStorageUtil.GetEntityByPartitionAndRowKeyAsync<Product>(editProduct.Name);
                 var model = new { Products = toRet };
                 return this.Json(model);
             }

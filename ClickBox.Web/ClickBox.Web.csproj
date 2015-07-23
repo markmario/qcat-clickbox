@@ -67,6 +67,12 @@
       <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Kendo.Mvc, Version=2014.1.318.440, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\KENDOUIMVC\2014.1.318.440\Kendo.Mvc.dll</HintPath>
@@ -225,6 +231,7 @@
     <Compile Include="Infrastructure\TokenValidationAttribute.cs" />
     <Compile Include="Models\IContainTableReference.cs" />
     <Compile Include="Models\License.cs" />
+    <Compile Include="Models\PersistedUserAccount.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\WebLicenseRequest.cs" />
@@ -1097,6 +1104,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

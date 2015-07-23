@@ -7,6 +7,8 @@ namespace ClickBox.Web.Models
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.ModelBinding;
+    using System.Web.Mvc;
 
     using ClickBox.Web.TableStorage;
 
@@ -14,6 +16,7 @@ namespace ClickBox.Web.Models
 
     using Rhino.Licensing;
 
+    [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
     public class UserAccount : TableEntity, IContainTableReference
     {
         private string id;
@@ -121,6 +124,7 @@ namespace ClickBox.Web.Models
             }
         }
 
+        [BindNever]
         [ScaffoldColumn(false)]
         public new DateTimeOffset Timestamp
         {
