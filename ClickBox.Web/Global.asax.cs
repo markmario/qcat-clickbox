@@ -15,13 +15,11 @@ namespace ClickBox.Web
 
     using AutoMapper;
 
-    using ClickBox.Web.Models;
-    using ClickBox.Web.TableStorage;
+    using Models;
+    using TableStorage;
 
     using Microsoft.WindowsAzure;
     using Microsoft.WindowsAzure.Storage;
-
-    using Raven.Client;
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -35,7 +33,7 @@ namespace ClickBox.Web
 
         #region Methods
 
-        protected void Application_Start()
+        protected async void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
 
@@ -44,16 +42,19 @@ namespace ClickBox.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             TableStore = GetStorageAccount();
+
             this.SetAutoMappings();
-            PrimeTableStorage();
+            await this.PrimeTableStorage();
+           // Task.Run;
         }
 
-        private static void PrimeTableStorage()
+        private async Task PrimeTableStorage()
         {
-            TableStorageUtil.PrimeTable<PersistedUserAccount>();
-            TableStorageUtil.PrimeTable<Product>();
-            TableStorageUtil.PrimeTable<ClientIssuedLicense>();
-            TableStorageUtil.PrimeTable<WebLicenseRequest>();
+            var client = TableStore.CreateCloudTableClient();
+            await client.PrimeTable<PersistedUserAccount>();
+            await client.PrimeTable<Product>();
+            await client.PrimeTable<ClientIssuedLicense>();
+            await client.PrimeTable<WebLicenseRequest>();
         }
 
         private void SetAutoMappings()

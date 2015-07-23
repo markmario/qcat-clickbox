@@ -6,31 +6,30 @@
 namespace ClickBox.Web.Controllers
 {
     using System;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Mvc;
 
-    using ClickBox.Web.Models;
-    using ClickBox.Web.TableStorage;
+    using Models;
+    using TableStorage;
 
     using Odes.Licence.Model;
 
-    using Raven.Client;
-
-    using Product = ClickBox.Web.Models.Product;
+    using Product = Models.Product;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     [RequireHttps(Order = 1)]
-    public class KodingController : RavenDbApiController
+    public class KodingController : ClickBoxApiController
     {
         #region Constructors and Destructors
 
         public KodingController() { }
 
-        public KodingController(IDocumentStore store)
+        public KodingController(CloudTableClient client)
         {
-            this.Store = store;
+
+            this.Client = client;
         }
 
         #endregion
@@ -48,10 +47,10 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
-                var data = TableStorageUtil.GetEntityByPartitionAndRowKey<Product>("QCAT-Odes");
+                var data = this.Client.GetEntityByPartitionAndRowKey<Product>("QCAT-Odes");
 
                 codedDoc = new DocumentCoded(){UserName = "simon@qcat.com.au"};
-                var accounts = TableStorageUtil.GetEntityByPropertyFilter<UserAccount>("UserName", codedDoc.UserName);
+                var accounts = this.Client.GetEntityByPropertyFilter<UserAccount>("UserName", codedDoc.UserName);
 
                 return null;
 

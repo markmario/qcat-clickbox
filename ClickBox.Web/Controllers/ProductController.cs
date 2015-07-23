@@ -7,19 +7,23 @@
 
     using ClickBox.Web.Models;
     using ClickBox.Web.TableStorage;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     public class ProductController : Controller
     {
+        private readonly CloudTableClient client;
         #region Constructors and Destructors
 
-        public ProductController() { }
+        public ProductController(CloudTableClient client) {
+            this.client = client;
+        }
 
         #endregion
 
         public async Task<ActionResult> Index()
         {
             //var toRet = this.session.Query<Product>().ToList();
-            var toRet = await TableStorageUtil.GetEntitiesAsync<Product>();
+            var toRet = await client.GetEntitiesAsync<Product>();
             var model = new { Products = toRet };
             return this.View(model);
         }
@@ -66,8 +70,8 @@
                                              RowKey = newProduct.Name
                                          };
 
-                await TableStorageUtil.InsertStorageEntityAsync(newQCatProduct);
-                var toRet = await TableStorageUtil.GetEntitiesAsync<Product>();
+                await client.InsertStorageEntityAsync(newQCatProduct);
+                var toRet = await client.GetEntitiesAsync<Product>();
                 var model = new { Products = toRet };
                 return this.Json(model);
             }
@@ -83,12 +87,12 @@
         {
             try
             {
-                var edited = await TableStorageUtil.GetEntityByPropertyFilterAsync<Product>("Id",editProduct.Id);
+                var edited = await client.GetEntityByPropertyFilterAsync<Product>("Id",editProduct.Id);
                 edited.Name = editProduct.Name;
                 edited.PrivateKey = editProduct.PrivateKey;
                 edited.PublicKey = editProduct.PublicKey;
-                await TableStorageUtil.UpdateEntityAsync(editProduct);
-                var toRet = await TableStorageUtil.GetEntityByPartitionAndRowKeyAsync<Product>(editProduct.Name);
+                await client.UpdateEntityAsync(editProduct);
+                var toRet = await client.GetEntityByPartitionAndRowKeyAsync<Product>(editProduct.Name);
                 var model = new { Products = toRet };
                 return this.Json(model);
             }

@@ -13,16 +13,15 @@ namespace ClickBox.Web.Controllers
 
     using AutoMapper;
 
-    using ClickBox.Web.Infrastructure;
-    using ClickBox.Web.Models;
-    using ClickBox.Web.TableStorage;
+    using Infrastructure;
+    using Models;
+    using TableStorage;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
-    using Raven.Client;
-
     using Rhino.Licensing;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     [RequireHttps(Order = 1)]
     [RequireLocalHostActionFilter()]
@@ -30,13 +29,17 @@ namespace ClickBox.Web.Controllers
     {
         #region Fields
 
-        private readonly IDocumentSession _session;
+        private readonly CloudTableClient client;
+
 
         #endregion
 
         #region Constructors and Destructors
 
-        public UserAccountController(){}
+        public UserAccountController(CloudTableClient client)
+        {
+            this.client = client;
+        }
 
         #endregion
 
@@ -51,7 +54,7 @@ namespace ClickBox.Web.Controllers
                 var licType = Enum.GetName(typeof(LicenseType), account.AccountType);
                 var persisted = Mapper.Map<PersistedUserAccount>(account);
                 persisted.AccountType = licType;
-                await TableStorageUtil.InsertStorageEntityAsync(persisted);
+                await client.InsertStorageEntityAsync(persisted);
             }
 
             return this.Json(new[] { account }.ToDataSourceResult(request, this.ModelState));
@@ -60,7 +63,7 @@ namespace ClickBox.Web.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public async Task<ActionResult> Get([DataSourceRequest] DataSourceRequest request)
         {
-            var toRet = await TableStorageUtil.GetEntitiesAsync<PersistedUserAccount>();
+            var toRet = await client.GetEntitiesAsync<PersistedUserAccount>();
             var persistedUserAccounts = toRet as PersistedUserAccount[] ?? toRet.ToArray();
             var viewModels = new List<UserAccount>();
             foreach (var pers in persistedUserAccounts)
@@ -84,7 +87,7 @@ namespace ClickBox.Web.Controllers
         {
             if (account != null && this.ModelState.IsValid)
             {
-                var target = await TableStorageUtil.GetEntityByPartitionAndRowKeyAsync<PersistedUserAccount>(account.Id);
+                var target = await client.GetEntityByPartitionAndRowKeyAsync<PersistedUserAccount>(account.Id);
                 if (target != null)
                 {
                     var licType = Enum.GetName(typeof(LicenseType), account.AccountType);
@@ -99,7 +102,7 @@ namespace ClickBox.Web.Controllers
                     target.SupportEndDate = account.SupportEndDate;
                     target.UserName = account.UserName;
                     target.MaxVersionNumber = account.MaxVersionNumber;
-                    await TableStorageUtil.UpdateEntityAsync(target);
+                    await client.UpdateEntityAsync(target);
                 }
             }
 

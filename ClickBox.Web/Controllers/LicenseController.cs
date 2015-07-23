@@ -39,11 +39,15 @@ namespace ClickBox.Web.Controllers
         /// </summary>
         private Dictionary<string, string> attributes;
 
+        private readonly CloudTableClient client;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public LicenseController() { }
+        public LicenseController(CloudTableClient client) {
+            this.client = client;
+        }
 
         #endregion
 
@@ -51,7 +55,7 @@ namespace ClickBox.Web.Controllers
         [System.Web.Http.HttpGet]
         public async Task<HttpResponseMessage> GetProductDetail(string productName)
         {
-            var prod = await TableStorageUtil.GetEntityByPartitionAndRowKeyAsync<Product>(productName);
+            var prod = await client.GetEntityByPartitionAndRowKeyAsync<Product>(productName);
             if (prod != null)
             {
                 return this.Request.CreateResponse(
@@ -80,7 +84,7 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new HttpError("Invalid Request. No license request provided."));
                 }
 
-                var data = await TableStorageUtil.GetEntityByPropertyFilterAsync<Product>("Id", licx.ProductId.ToString());
+                var data = await client.GetEntityByPropertyFilterAsync<Product>("Id", licx.ProductId.ToString());
 
                 var filters = (TableQuery.CombineFilters(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new UserAccount().PartitionKey),
@@ -90,7 +94,7 @@ namespace ClickBox.Web.Controllers
                     TableOperators.And,
                     TableQuery.GenerateFilterCondition("Password", QueryComparisons.Equal, licx.Password))));
 
-                var accounts = await TableStorageUtil.GetEntityListByPropertyFilterListAsync<UserAccount>(filters);
+                var accounts = await client.GetEntityListByPropertyFilterListAsync<UserAccount>(filters);
 
                 UserAccount account;
                 var enumerable = accounts as UserAccount[] ?? accounts.ToArray();
@@ -111,7 +115,7 @@ namespace ClickBox.Web.Controllers
                     TableOperators.And,
                     TableQuery.GenerateFilterCondition("UserAccountId", QueryComparisons.Equal, account.Id))));
 
-                var oldRequests = await TableStorageUtil.GetEntityListByPropertyFilterListAsync<ClientIssuedLicense>(filters);
+                var oldRequests = await client.GetEntityListByPropertyFilterListAsync<ClientIssuedLicense>(filters);
 
                 var clientIssuedLicenses = oldRequests as ClientIssuedLicense[] ?? oldRequests.ToArray();
                 if (clientIssuedLicenses.Any())
@@ -119,7 +123,7 @@ namespace ClickBox.Web.Controllers
                     if (account.SupportEndDate != clientIssuedLicenses[0].ExpiryDate)
                     {
                         account.IssuedLicenses--;
-                        await TableStorageUtil.DeleteEntityAsync(clientIssuedLicenses[0]);
+                        await client.DeleteEntityAsync(clientIssuedLicenses[0]);
                     }
                     else
                     {
@@ -159,8 +163,8 @@ namespace ClickBox.Web.Controllers
 
                 account.IssuedLicenses = account.IssuedLicenses + 1;
 
-                await TableStorageUtil.InsertStorageEntityAsync(lic);
-                await TableStorageUtil.InsertStorageEntityAsync(licx);
+                await client.InsertStorageEntityAsync(lic);
+                await client.InsertStorageEntityAsync(licx);
                 return this.Request.CreateResponse(HttpStatusCode.Created, key);
             }
             catch (Exception ex)
