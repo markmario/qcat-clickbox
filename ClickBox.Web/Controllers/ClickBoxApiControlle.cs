@@ -13,32 +13,31 @@ namespace ClickBox.Web.Controllers
     using System.Web.Mvc;
 
     using Raven.Client;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     [RequireHttps(Order = 1)]
-    public abstract class RavenDbApiController : ApiController
+    public abstract class ClickBoxApiController : ApiController
     {
         #region Public Properties
 
-        public IAsyncDocumentSession Session { get; set; }
-
-        public IDocumentStore Store { get; set; }
-
+        protected CloudTableClient Client { get; set; }
+        
         #endregion
 
         #region Public Methods and Operators
 
-        public override async Task<HttpResponseMessage> ExecuteAsync(
-            HttpControllerContext controllerContext, 
-            CancellationToken cancellationToken)
-        {
-            using (this.Session = this.Store.OpenAsyncSession())
-            {
-                var result = await base.ExecuteAsync(controllerContext, cancellationToken);
-                await this.Session.SaveChangesAsync();
+        //public override async Task<HttpResponseMessage> ExecuteAsync(
+        //    HttpControllerContext controllerContext, 
+        //    CancellationToken cancellationToken)
+        //{
+        //    using (this.Session = this.Store.OpenAsyncSession())
+        //    {
+        //        var result = await base.ExecuteAsync(controllerContext, cancellationToken);
+        //        await this.Session.SaveChangesAsync();
 
-                return result;
-            }
-        }
+        //        return result;
+        //    }
+        //}
 
         #endregion
     }

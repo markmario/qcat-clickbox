@@ -219,7 +219,7 @@
     <Compile Include="Controllers\old_KodingController.cs" />
     <Compile Include="Controllers\old_LicenseController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
-    <Compile Include="Controllers\RavenDbApiController.cs" />
+    <Compile Include="Controllers\ClickBoxApiControlle.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

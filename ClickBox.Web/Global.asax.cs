@@ -7,6 +7,7 @@ namespace ClickBox.Web
 {
     using System;
     using System.Diagnostics;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
@@ -14,8 +15,8 @@ namespace ClickBox.Web
 
     using AutoMapper;
 
-    using ClickBox.Web.Models;
-    using ClickBox.Web.TableStorage;
+    using Models;
+    using TableStorage;
 
     using Microsoft.WindowsAzure;
     using Microsoft.WindowsAzure.Storage;
@@ -32,7 +33,7 @@ namespace ClickBox.Web
 
         #region Methods
 
-        protected void Application_Start()
+        protected async void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
 
@@ -41,16 +42,19 @@ namespace ClickBox.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             TableStore = GetStorageAccount();
-            SetAutoMappings();
-            PrimeTableStorage();
+
+            this.SetAutoMappings();
+            await this.PrimeTableStorage();
+           // Task.Run;
         }
 
-        private async static void PrimeTableStorage()
+        private async Task PrimeTableStorage()
         {
-            await TableStorageUtil.PrimeTable<PersistedUserAccount>();
-            await TableStorageUtil.PrimeTable<Product>();
-            await TableStorageUtil.PrimeTable<ClientIssuedLicense>();
-            await TableStorageUtil.PrimeTable<WebLicenseRequest>();
+            var client = TableStore.CreateCloudTableClient();
+            await client.PrimeTable<PersistedUserAccount>();
+            await client.PrimeTable<Product>();
+            await client.PrimeTable<ClientIssuedLicense>();
+            await client.PrimeTable<WebLicenseRequest>();
         }
 
         private static void SetAutoMappings()

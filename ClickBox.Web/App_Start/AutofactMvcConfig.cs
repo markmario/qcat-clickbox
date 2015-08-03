@@ -23,6 +23,7 @@ namespace ClickBox.Web
 
     using Raven.Client;
     using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     public static class AutofactMvcConfig
     {
@@ -66,6 +67,8 @@ namespace ClickBox.Web
             //    .InstancePerRequest();
 
             builder.Register(c => MvcApplication.TableStore).As<CloudStorageAccount>().SingleInstance();
+
+            builder.Register(c => MvcApplication.TableStore.CreateCloudTableClient()).As<CloudTableClient>().InstancePerRequest();
 
             // Register the Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly(), typeof(LicenseController).Assembly);

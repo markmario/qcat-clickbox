@@ -8,7 +8,7 @@ namespace ClickBox.Web
     using System.Linq;
     using System.Web.Http;
 
-    using ClickBox.Web.Infrastructure;
+    using Infrastructure;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
