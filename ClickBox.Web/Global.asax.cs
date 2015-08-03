@@ -7,7 +7,6 @@ namespace ClickBox.Web
 {
     using System;
     using System.Diagnostics;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
@@ -20,8 +19,6 @@ namespace ClickBox.Web
 
     using Microsoft.WindowsAzure;
     using Microsoft.WindowsAzure.Storage;
-
-    using Raven.Client;
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -44,19 +41,19 @@ namespace ClickBox.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             TableStore = GetStorageAccount();
-            this.SetAutoMappings();
+            SetAutoMappings();
             PrimeTableStorage();
         }
 
-        private static void PrimeTableStorage()
+        private async static void PrimeTableStorage()
         {
-            TableStorageUtil.PrimeTable<PersistedUserAccount>();
-            TableStorageUtil.PrimeTable<Product>();
-            TableStorageUtil.PrimeTable<ClientIssuedLicense>();
-            TableStorageUtil.PrimeTable<WebLicenseRequest>();
+            await TableStorageUtil.PrimeTable<PersistedUserAccount>();
+            await TableStorageUtil.PrimeTable<Product>();
+            await TableStorageUtil.PrimeTable<ClientIssuedLicense>();
+            await TableStorageUtil.PrimeTable<WebLicenseRequest>();
         }
 
-        private void SetAutoMappings()
+        private static void SetAutoMappings()
         {
             Mapper.CreateMap<PersistedUserAccount, UserAccount>();
             Mapper.CreateMap<UserAccount, PersistedUserAccount>();
