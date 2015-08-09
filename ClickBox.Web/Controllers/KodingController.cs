@@ -11,11 +11,11 @@ namespace ClickBox.Web.Controllers
     using System.Threading.Tasks;
     using System.Web.Mvc;
 
+    using AutoMapper;
+
     using Models;
     using TableStorage;
-
     using Odes.Licence.Model;
-
     using Product = Models.Product;
     using Microsoft.WindowsAzure.Storage.Table;
 
@@ -28,7 +28,6 @@ namespace ClickBox.Web.Controllers
 
         public KodingController(CloudTableClient client)
         {
-
             this.Client = client;
         }
 
@@ -48,41 +47,36 @@ namespace ClickBox.Web.Controllers
                 }
 
                 var data = this.Client.GetEntityByPartitionAndRowKey<Product>("QCAT-Odes");
+                var account = this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", codedDoc.UserName).Result;
 
-                codedDoc = new DocumentCoded(){UserName = "simon@qcat.com.au"};
-                var accounts = this.Client.GetEntityByPropertyFilter<UserAccount>("UserName", codedDoc.UserName);
+                var persistedDoc = Mapper.Map<PersistendDocumentCoded>(codedDoc);
+                if (account != null)
+                {
+                     persistedDoc.Id = account.Id + "/" + persistedDoc.ProjectId + "/" + persistedDoc.DocumentId;
+                    accountFound = true;
+                }
+                else
+                {
+                    persistedDoc.Id = persistedDoc.UserName + "/" + persistedDoc.ProjectId + "/" + persistedDoc.DocumentId;
+                }
 
-                return null;
+                var doc =
+                    await this.Client.GetEntityByPropertyFilterAsync<PersistendDocumentCoded>("Id", persistedDoc.Id);
 
-                //// var licx = await Session.Query<ClientIssuedLicense>().Where(u => u.RequestId == codedDoc.RequestId).ToListAsync();
-                //UserAccount account;
-                //if (accounts.Count == 1)
-                //{
-                //    account = accounts[0];
-                //    codedDoc.Id = account.Id + "/" + codedDoc.ProjectId + "/" + codedDoc.DocumentId;
-                //    accountFound = true;
-                //}
-                //else
-                //{
-                //    codedDoc.Id = codedDoc.UserName + "/" + codedDoc.ProjectId + "/" + codedDoc.DocumentId;
-                //}
+                if (doc == null)
+                {
+                    await this.Client.InsertStorageEntityAsync(persistedDoc);
+                }
 
-                //var doc = await this.Session.LoadAsync<DocumentCoded>(codedDoc.Id);
-                //if (doc == null)
-                //{
-                //    await this.Session.StoreAsync(codedDoc);
-                //}
-
-                //if (accountFound)
-                //{
-                //    return this.Request.CreateResponse(HttpStatusCode.Created);
-                //}
-                //else
-                //{
-                //    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
-
-                //    // change this to forbidden when we want to stop clients from connecting
-                //}
+                if (accountFound)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.Created);
+                }
+                else
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
+                    // change this to forbidden when we want to stop clients from connecting
+                }
             }
             catch (Exception ex)
             {

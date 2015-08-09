@@ -7,20 +7,19 @@ namespace ClickBox.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-
+    using AutoMapper;
     using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
+    using Microsoft.WindowsAzure.Storage.Table;
+
+    using Newtonsoft.Json;
 
     using Odes.Licence.Model;
-
-    using Raven.Client;
-
     using Product = ClickBox.Web.Models.Product;
-    using Microsoft.WindowsAzure.Storage.Table;
 
     [RequireHttps(Order = 1)]
     public class IsolationController : ClickBoxApiController
@@ -39,80 +38,85 @@ namespace ClickBox.Web.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> PostIsoaltionBatch(BatchIsolated isolatedBatch)
         {
-            return  this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,  "Incomplete");
-            //var accountFound = false;
-            //try
-            //{
-            //    if (isolatedBatch == null)
-            //    {
-            //        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
-            //    }
+            //return  this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,  "Incomplete");
+            var accountFound = false;
+            try
+            {
+                if (isolatedBatch == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
+                }
 
-            //    var data = await this.Session.LoadAsync<Product>("6068d2a8-9685-4cdc-a6b0-9fb17004469b");
-            //    var accounts =
-            //        await
-            //        this.Session.Query<UserAccount>().Where(u => u.UserName == isolatedBatch.UserName).ToListAsync();
+                var data = await this.Client.GetEntityByPartitionAndRowKeyAsync<Product>("QCAT-Odes");
+                var account = this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", isolatedBatch.UserName).Result;
 
-            //    // var licx = await Session.Query<ClientIssuedLicense>().Where(u => u.RequestId == codedDoc.RequestId).ToListAsync();
-            //    UserAccount account;
-            //    if (accounts.Count == 1)
-            //    {
-            //        account = accounts[0];
-            //        isolatedBatch.Id = account.Id + "/" + isolatedBatch.ProjectId + "/" + isolatedBatch.BatchId;
-            //        accountFound = true;
-            //    }
-            //    else
-            //    {
-            //        // change this to forbidden when we want to stop clients from connecting
-            //        isolatedBatch.Id = isolatedBatch.UserName + "/" + isolatedBatch.ProjectId + "/"
-            //                           + isolatedBatch.BatchId;
-            //    }
+                var persistedIsolatedBatch = Mapper.Map<PersistedIsolatedBatch>(isolatedBatch);
+                if (account != null)
+                {
+                    //account = accounts[0];
+                    persistedIsolatedBatch.Id = account.Id + ":" + persistedIsolatedBatch.ProjectId + ":" + persistedIsolatedBatch.BatchId;
+                    accountFound = true;
+                }
+                else
+                {
+                    // change this to forbidden when we want to stop clients from connecting
+                    persistedIsolatedBatch.Id = persistedIsolatedBatch.UserName + ":" + persistedIsolatedBatch.ProjectId + ":"
+                                       + persistedIsolatedBatch.BatchId;
+                }
 
-            //    var doc = await this.Session.LoadAsync<BatchIsolated>(isolatedBatch.Id);
+                //var doc = await this.Session.LoadAsync<BatchIsolated>(isolatedBatch.Id);
+                var doc =
+                    await
+                    this.Client.GetEntityByPartitionAndRowKeyAsync<PersistedIsolatedBatch>(
+                        persistedIsolatedBatch.Id,
+                        persistedIsolatedBatch.ProjectId.ToString(), true);
 
-            //    if (doc == null)
-            //    {
-            //        await this.Session.StoreAsync(isolatedBatch);
-            //    }
-            //    else
-            //    {
-            //        if (doc.OldBatchValues == null)
-            //        {
-            //            doc.OldBatchValues = new List<OldDocmentCount>();
-            //        }
+                if (doc == null)
+                {
+                    await this.Client.InsertStorageEntityAsync(persistedIsolatedBatch);
+                }
+                else
+                {
+                    var oldbatchValues = new List<OldDocmentCount>();;
 
-            //        if (doc.DocumentsCreated > isolatedBatch.DocumentsCreated)
-            //        {
-            //            // Notify that this happened.
-            //        }
+                    if (doc.OldBatchValues == null)
+                    {
+                        oldbatchValues =  new List<OldDocmentCount>();
+                    }
 
-            //        if (doc.OldBatchValues.Count >= 3)
-            //        {
-            //            // Notify that this happened.
-            //        }
+                    if (doc.DocumentsCreated > isolatedBatch.DocumentsCreated)
+                    {
+                        // Notify that this happened.
+                    }
 
-            //        doc.OldBatchValues.Add(new OldDocmentCount(doc.DocumentsCreated, doc.DateCreated));
-            //        doc.DocumentsCreated = isolatedBatch.DocumentsCreated;
-            //        doc.DateCreated = isolatedBatch.DateCreated;
-            //    }
+                    //if (doc.OldBatchValues.Count >= 3)
+                    //{
+                    //    // Notify that this happened.
+                    //}
 
-            //    await this.Session.SaveChangesAsync();
-            //    if (accountFound)
-            //    {
-            //        return this.Request.CreateResponse(HttpStatusCode.Created);
-            //    }
-            //    else
-            //    {
-            //        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    return this.Request.CreateErrorResponse(
-            //        HttpStatusCode.InternalServerError, 
-            //        "Some bad shit happened", 
-            //        ex);
-            //}
+                    if (doc.OldBatchValues != null)
+                    {
+                        oldbatchValues = JsonConvert.DeserializeObject<List<OldDocmentCount>>(doc.OldBatchValues);
+                    }
+                    
+                    oldbatchValues.Add(new OldDocmentCount(doc.DocumentsCreated, doc.DateCreated));
+                    doc.OldBatchValues = JsonConvert.SerializeObject(oldbatchValues);
+                    doc.DocumentsCreated = isolatedBatch.DocumentsCreated;
+                    doc.DateCreated = isolatedBatch.DateCreated;
+                }
+
+                //await this.Session.SaveChangesAsync();
+                await this.Client.UpdateEntityAsync(doc);
+                return accountFound ? this.Request.CreateResponse(HttpStatusCode.Created) : 
+                                      this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(
+                    HttpStatusCode.InternalServerError,
+                    "Some bad shit happened",
+                    ex);
+            }
         }
 
         #endregion

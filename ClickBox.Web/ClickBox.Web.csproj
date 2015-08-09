@@ -229,6 +229,8 @@
     <Compile Include="Infrastructure\Extensions.cs" />
     <Compile Include="Infrastructure\RSAClass.cs" />
     <Compile Include="Infrastructure\TokenValidationAttribute.cs" />
+    <Compile Include="Models\PersistedIsolatedBatch.cs" />
+    <Compile Include="Models\PersistendDocumentCoded.cs" />
     <Compile Include="Models\IContainTableReference.cs" />
     <Compile Include="Models\ClientIssuedLicense.cs" />
     <Compile Include="Models\PersistedUserAccount.cs" />

@@ -65,7 +65,7 @@
             return toRet.Results;
         }
 
-        public static T GetEntityByPartitionAndRowKey<T>(this CloudTableClient client, string rowKey, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        public static T GetEntityByPartitionAndRowKey<T>(this CloudTableClient client, string rowKey, string partitionKey = null, bool withPrefix = false) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
 
@@ -76,6 +76,11 @@
                 partition = tableOfT.PartitionKey;
             }
 
+            if (partitionKey != null && withPrefix)
+            {
+                partition = GetPartitionPrefix() + partitionKey;
+            }
+
             var retrieveOperation = TableOperation.Retrieve<T>(partition, rowKey);
             var tableClientRef = client.GetTableReferene(tableOfT);
             var result =  tableClientRef.Execute(retrieveOperation);
@@ -83,7 +88,7 @@
             return entity;
         }
 
-        public static async Task<T> GetEntityByPartitionAndRowKeyAsync<T>(this CloudTableClient client, string rowKey, string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        public static async Task<T> GetEntityByPartitionAndRowKeyAsync<T>(this CloudTableClient client, string rowKey, string partitionKey = null, bool withPrefix = false) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
 
@@ -92,6 +97,11 @@
             if (partitionKey == null)
             {
                 partition = tableOfT.PartitionKey;
+            }
+
+            if (partitionKey != null && withPrefix)
+            {
+                partition = GetPartitionPrefix() + partitionKey;
             }
 
             var retrieveOperation = TableOperation.Retrieve<T>(partition, rowKey);

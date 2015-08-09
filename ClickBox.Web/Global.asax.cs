@@ -21,6 +21,10 @@ namespace ClickBox.Web
     using Microsoft.WindowsAzure;
     using Microsoft.WindowsAzure.Storage;
 
+    using Odes.Licence.Model;
+
+    using Product = ClickBox.Web.Models.Product;
+
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
     public class MvcApplication : HttpApplication
@@ -43,9 +47,8 @@ namespace ClickBox.Web
 
             TableStore = GetStorageAccount();
 
-            this.SetAutoMappings();
+            SetAutoMappings();
             await this.PrimeTableStorage();
-           // Task.Run;
         }
 
         private async Task PrimeTableStorage()
@@ -55,12 +58,17 @@ namespace ClickBox.Web
             await client.PrimeTable<Product>();
             await client.PrimeTable<ClientIssuedLicense>();
             await client.PrimeTable<WebLicenseRequest>();
+            await client.PrimeTable<PersistedIsolatedBatch>();
         }
 
         private static void SetAutoMappings()
         {
             Mapper.CreateMap<PersistedUserAccount, UserAccount>();
             Mapper.CreateMap<UserAccount, PersistedUserAccount>();
+            Mapper.CreateMap<DocumentCoded, PersistendDocumentCoded>();
+            Mapper.CreateMap<PersistendDocumentCoded, DocumentCoded>();
+            Mapper.CreateMap<BatchIsolated, PersistedIsolatedBatch>();
+            Mapper.CreateMap<PersistedIsolatedBatch, BatchIsolated>();
         }
 
         private static CloudStorageAccount GetStorageAccount()

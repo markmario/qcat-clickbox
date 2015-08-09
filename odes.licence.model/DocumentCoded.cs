@@ -2,7 +2,7 @@
 
 namespace Odes.Licence.Model
 {
-    public class DocumentCoded
+    public class DocumentCoded : IDocumentCoded
     {
         public string Id { get; set; }
         public Guid ProjectId { get; set; }
