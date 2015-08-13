@@ -216,6 +216,8 @@
     <Compile Include="Controllers\IsolationController.cs" />
     <Compile Include="Controllers\KodingController.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
+    <Compile Include="Models\MonthlyCodedDocument.cs" />
+    <Compile Include="Models\MonthlyIsolatedBatch.cs" />
     <Compile Include="Controllers\old_KodingController.cs" />
     <Compile Include="Controllers\old_LicenseController.cs" />
     <Compile Include="Controllers\ProductController.cs" />

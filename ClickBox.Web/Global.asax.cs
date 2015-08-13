@@ -59,6 +59,8 @@ namespace ClickBox.Web
             await client.PrimeTable<ClientIssuedLicense>();
             await client.PrimeTable<WebLicenseRequest>();
             await client.PrimeTable<PersistedIsolatedBatch>();
+            await client.PrimeTable<MonthlyCodedDocument>();
+            await client.PrimeTable<MonthlyIsolatedBatch>();
         }
 
         private static void SetAutoMappings()

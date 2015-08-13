@@ -14,13 +14,27 @@ namespace ClickBox.Web.Models
     [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
     public class PersistendDocumentCoded : TableEntity, IDocumentCoded, IContainTableReference
     {
-        public PersistendDocumentCoded()
+        private string id;
+
+        private Guid projectId;
+
+        //public PersistendDocumentCoded()
+        //{
+        //    var monthAndYear = DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString();
+        //    this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + monthAndYear;
+        //}
+        public Guid ProjectId
         {
-            var monthAndYear = DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString();
-            this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + monthAndYear;
+            get
+            {
+                return this.projectId;
+            }
+            set
+            {
+                this.projectId = value;
+                this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + value;
+            }
         }
-        public string Id { get; set; }
-        public Guid ProjectId { get; set; }
         public Guid DocumentId { get; set; }
         public Guid RequestId { get; set; }
         public string MachineName { get; set; }
@@ -28,5 +42,22 @@ namespace ClickBox.Web.Models
         public string SId { get; set; }
         public DateTimeOffset DateCreated { get; set; }
         public string TableName { get { return "DocumentsCoded"; } }
+        public override string ToString()
+        {
+            return this.RowKey + "\t\t" + this.Id + "]";
+        }
+
+        public string Id
+        {
+            get
+            {
+                return this.id;
+            }
+            set
+            {
+                this.id = value;
+                this.RowKey = value;
+            }
+        }
     }
 }

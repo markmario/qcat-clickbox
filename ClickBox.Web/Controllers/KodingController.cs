@@ -52,20 +52,26 @@ namespace ClickBox.Web.Controllers
                 var persistedDoc = Mapper.Map<PersistendDocumentCoded>(codedDoc);
                 if (account != null)
                 {
-                     persistedDoc.Id = account.Id + "/" + persistedDoc.ProjectId + "/" + persistedDoc.DocumentId;
+                    persistedDoc.Id = account.Id + ":" + persistedDoc.ProjectId + ":" + persistedDoc.DocumentId;
                     accountFound = true;
                 }
                 else
                 {
-                    persistedDoc.Id = persistedDoc.UserName + "/" + persistedDoc.ProjectId + "/" + persistedDoc.DocumentId;
+                    persistedDoc.Id = persistedDoc.UserName + ":" + persistedDoc.ProjectId + ":" + persistedDoc.DocumentId;
                 }
 
-                var doc =
-                    await this.Client.GetEntityByPropertyFilterAsync<PersistendDocumentCoded>("Id", persistedDoc.Id);
+                //var doc =
+                //    await this.Client.GetEntityByPropertyFilterAsync<PersistendDocumentCoded>("Id", persistedDoc.Id);
+                var doc = await
+                    this.Client.GetEntityByPartitionAndRowKeyAsync<PersistendDocumentCoded>(
+                        persistedDoc.Id,
+                        persistedDoc.ProjectId.ToString(), true);
 
                 if (doc == null)
                 {
                     await this.Client.InsertStorageEntityAsync(persistedDoc);
+                    var monthlyDoc = new MonthlyCodedDocument(){RowKey = persistedDoc.DocumentId.ToString(), ProjectId = persistedDoc.ProjectId};
+                    await this.Client.InsertStorageEntityAsync(monthlyDoc);
                 }
 
                 if (accountFound)
