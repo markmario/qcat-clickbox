@@ -13,18 +13,23 @@ namespace ClickBox.Web.Controllers
 
     using AutoMapper;
 
-    using Models;
-    using TableStorage;
-    using Odes.Licence.Model;
-    using Product = Models.Product;
+    using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
+
     using Microsoft.WindowsAzure.Storage.Table;
+
+    using Odes.Licence.Model;
+
+    using Product = ClickBox.Web.Models.Product;
 
     [RequireHttps(Order = 1)]
     public class KodingController : ClickBoxApiController
     {
         #region Constructors and Destructors
 
-        public KodingController() { }
+        public KodingController()
+        {
+        }
 
         public KodingController(CloudTableClient client)
         {
@@ -47,7 +52,8 @@ namespace ClickBox.Web.Controllers
                 }
 
                 var data = this.Client.GetEntityByPartitionAndRowKey<Product>("QCAT-Odes");
-                var account = this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", codedDoc.UserName).Result;
+                var account =
+                    this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", codedDoc.UserName).Result;
 
                 var persistedDoc = Mapper.Map<PersistendDocumentCoded>(codedDoc);
                 if (account != null)
@@ -57,20 +63,27 @@ namespace ClickBox.Web.Controllers
                 }
                 else
                 {
-                    persistedDoc.Id = persistedDoc.UserName + ":" + persistedDoc.ProjectId + ":" + persistedDoc.DocumentId;
+                    persistedDoc.Id = persistedDoc.UserName + ":" + persistedDoc.ProjectId + ":"
+                                      + persistedDoc.DocumentId;
                 }
 
-                //var doc =
-                //    await this.Client.GetEntityByPropertyFilterAsync<PersistendDocumentCoded>("Id", persistedDoc.Id);
-                var doc = await
+                // var doc =
+                // await this.Client.GetEntityByPropertyFilterAsync<PersistendDocumentCoded>("Id", persistedDoc.Id);
+                var doc =
+                    await
                     this.Client.GetEntityByPartitionAndRowKeyAsync<PersistendDocumentCoded>(
-                        persistedDoc.Id,
-                        persistedDoc.ProjectId.ToString(), true);
+                        persistedDoc.Id, 
+                        persistedDoc.ProjectId.ToString(), 
+                        true);
 
                 if (doc == null)
                 {
                     await this.Client.InsertStorageEntityAsync(persistedDoc);
-                    var monthlyDoc = new MonthlyCodedDocument(){RowKey = persistedDoc.DocumentId.ToString(), ProjectId = persistedDoc.ProjectId};
+                    var monthlyDoc = new MonthlyCodedDocument()
+                                         {
+                                             RowKey = persistedDoc.DocumentId.ToString(), 
+                                             ProjectId = persistedDoc.ProjectId
+                                         };
                     await this.Client.InsertStorageEntityAsync(monthlyDoc);
                 }
 
@@ -81,14 +94,15 @@ namespace ClickBox.Web.Controllers
                 else
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
+
                     // change this to forbidden when we want to stop clients from connecting
                 }
             }
             catch (Exception ex)
             {
                 return this.Request.CreateErrorResponse(
-                    HttpStatusCode.InternalServerError,
-                    "Some bad shit happened",
+                    HttpStatusCode.InternalServerError, 
+                    "Some bad shit happened", 
                     ex);
             }
         }

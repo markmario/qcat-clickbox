@@ -2,6 +2,10 @@
 {
     public interface IContainTableReference
     {
-        string TableName { get;}
+        #region Public Properties
+
+        string TableName { get; }
+
+        #endregion
     }
 }

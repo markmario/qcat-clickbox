@@ -5,10 +5,14 @@
     using System.Threading.Tasks;
     using System.Web.Mvc;
 
+    using ClickBox.Web.Infrastructure;
     using ClickBox.Web.Models;
     using ClickBox.Web.TableStorage;
     using Microsoft.WindowsAzure.Storage.Table;
 
+
+    [RequireHttps(Order = 1)]
+    [RequireLocalHostActionFilter]
     public class ProductController : Controller
     {
         private readonly CloudTableClient client;

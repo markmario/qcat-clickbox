@@ -21,7 +21,6 @@ namespace ClickBox.Web
 
     using ClickBox.Web.Controllers;
 
-    using Raven.Client;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
 
@@ -31,9 +30,9 @@ namespace ClickBox.Web
 
         public static bool IsControllerActionParameterInjectionEnabled()
         {
-            bool injectParameters = false;
+            bool injectParameters;
             bool.TryParse(
-                WebConfigurationManager.AppSettings["EnableControllerActionParameterInjection"],
+                WebConfigurationManager.AppSettings["EnableControllerActionParameterInjection"], 
                 out injectParameters);
             return injectParameters;
         }
@@ -43,7 +42,6 @@ namespace ClickBox.Web
             var builder = new ContainerBuilder();
             builder.RegisterControllers(Assembly.GetExecutingAssembly(), typeof(LicenseController).Assembly);
 
-          
             builder.RegisterModelBinders(Assembly.GetExecutingAssembly());
             builder.RegisterModelBinderProvider();
 
@@ -62,13 +60,14 @@ namespace ClickBox.Web
                     new NamedParameter("injectActionMethodParameters", IsControllerActionParameterInjectionEnabled()))
                 .InstancePerRequest();
 
-            //builder.Register(c => MvcApplication.DocumentStore.OpenSession())
-            //    .As<IDocumentSession>()
-            //    .InstancePerRequest();
-
+            // builder.Register(c => MvcApplication.DocumentStore.OpenSession())
+            // .As<IDocumentSession>()
+            // .InstancePerRequest();
             builder.Register(c => MvcApplication.TableStore).As<CloudStorageAccount>().SingleInstance();
 
-            builder.Register(c => MvcApplication.TableStore.CreateCloudTableClient()).As<CloudTableClient>().InstancePerRequest();
+            builder.Register(c => MvcApplication.TableStore.CreateCloudTableClient())
+                .As<CloudTableClient>()
+                .InstancePerRequest();
 
             // Register the Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly(), typeof(LicenseController).Assembly);

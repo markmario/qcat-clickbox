@@ -13,24 +13,24 @@ namespace ClickBox.Web.Controllers
 
     using AutoMapper;
 
-    using Infrastructure;
-    using Models;
-    using TableStorage;
+    using ClickBox.Web.Infrastructure;
+    using ClickBox.Web.Models;
+    using ClickBox.Web.TableStorage;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
-    using Rhino.Licensing;
     using Microsoft.WindowsAzure.Storage.Table;
 
+    using Rhino.Licensing;
+
     [RequireHttps(Order = 1)]
-    [RequireLocalHostActionFilter()]
+    [RequireLocalHostActionFilter]
     public class UserAccountController : Controller
     {
         #region Fields
 
         private readonly CloudTableClient client;
-
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace ClickBox.Web.Controllers
                 viewModel.AccountType = licType;
                 viewModels.Add(viewModel);
             }
-            
+
             return this.Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 

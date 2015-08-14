@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------
-//  <copyright file="RavenDbApiController.cs" company="QCAT Pty Ltd.">
+//  <copyright file="ClickBoxApiController.cs" company="QCAT Pty Ltd.">
 //    Copyright (c) 2015 QCAT Pty Ltd. All rights reserved.
 //  </copyright>
 // --------------------------------------------------------------------------------------------------
@@ -13,10 +13,10 @@ namespace ClickBox.Web.Controllers
     [RequireHttps(Order = 1)]
     public abstract class ClickBoxApiController : ApiController
     {
-        #region Public Properties
+        #region Properties
 
         protected CloudTableClient Client { get; set; }
-        
+
         #endregion
     }
 }

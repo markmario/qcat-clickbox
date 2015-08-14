@@ -10,15 +10,14 @@ namespace ClickBox.Web.Controllers
     using ClickBox.Web.Infrastructure;
 
     [RequireHttps(Order = 1)]
-    [RequireLocalHostActionFilter()]
+    [RequireLocalHostActionFilter]
     public class HomeController : Controller
     {
-        // GET: /Home/
         #region Public Methods and Operators
 
         public ActionResult Index()
         {
-            //return this.View();
+            // return this.View();
             return this.RedirectToAction("Index", "UserAccount");
         }
 

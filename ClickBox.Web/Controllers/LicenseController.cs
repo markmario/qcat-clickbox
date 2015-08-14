@@ -34,36 +34,38 @@ namespace ClickBox.Web.Controllers
     {
         #region Fields
 
+        private readonly CloudTableClient client;
+
         /// <summary>
         /// The _attributes.
         /// </summary>
         private Dictionary<string, string> attributes;
 
-        private readonly CloudTableClient client;
-
         #endregion
 
         #region Constructors and Destructors
 
-        public LicenseController(CloudTableClient client) {
+        public LicenseController(CloudTableClient client)
+        {
             this.client = client;
         }
 
         #endregion
 
         #region Public Methods and Operators
+
         [System.Web.Http.HttpGet]
         public async Task<HttpResponseMessage> GetProductDetail(string productName)
         {
-            var prod = await client.GetEntityByPartitionAndRowKeyAsync<Product>(productName);
+            var prod = await this.client.GetEntityByPartitionAndRowKeyAsync<Product>(productName);
             if (prod != null)
             {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.OK,
-                    new Odes.Licence.Model.Product { Id = prod.Id });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new Odes.Licence.Model.Product { Id = prod.Id });
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, new HttpError("No Product found by name " + productName));
+            return this.Request.CreateErrorResponse(
+                HttpStatusCode.NotFound, 
+                new HttpError("No Product found by name " + productName));
         }
 
         /// <summary>
@@ -81,20 +83,26 @@ namespace ClickBox.Web.Controllers
             {
                 if (licx == null)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new HttpError("Invalid Request. No license request provided."));
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest, 
+                        new HttpError("Invalid Request. No license request provided."));
                 }
 
-                var data = await client.GetEntityByPropertyFilterAsync<Product>("Id", licx.ProductId.ToString());
+                var data = await this.client.GetEntityByPropertyFilterAsync<Product>("Id", licx.ProductId.ToString());
 
-                var filters = (TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new UserAccount().PartitionKey),
-                        TableOperators.And,
+                var filters =
+                    TableQuery.CombineFilters(
+                        TableQuery.GenerateFilterCondition(
+                            "PartitionKey", 
+                            QueryComparisons.Equal, 
+                            new UserAccount().PartitionKey), 
+                        TableOperators.And, 
                         TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("UserName", QueryComparisons.Equal, licx.Email),
-                    TableOperators.And,
-                    TableQuery.GenerateFilterCondition("Password", QueryComparisons.Equal, licx.Password))));
+                            TableQuery.GenerateFilterCondition("UserName", QueryComparisons.Equal, licx.Email), 
+                            TableOperators.And, 
+                            TableQuery.GenerateFilterCondition("Password", QueryComparisons.Equal, licx.Password)));
 
-                var accounts = await client.GetEntityListByPropertyFilterListAsync<UserAccount>(filters);
+                var accounts = await this.client.GetEntityListByPropertyFilterListAsync<UserAccount>(filters);
 
                 UserAccount account;
                 var enumerable = accounts as UserAccount[] ?? accounts.ToArray();
@@ -104,18 +112,27 @@ namespace ClickBox.Web.Controllers
                 }
                 else
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.Forbidden, new HttpError("Invaid Account Details"));
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.Forbidden, 
+                        new HttpError("Invaid Account Details"));
                 }
 
-                filters = (TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new ClientIssuedLicense().PartitionKey),
-                        TableOperators.And,
+                filters =
+                    TableQuery.CombineFilters(
+                        TableQuery.GenerateFilterCondition(
+                            "PartitionKey", 
+                            QueryComparisons.Equal, 
+                            new ClientIssuedLicense().PartitionKey), 
+                        TableOperators.And, 
                         TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("MachineName", QueryComparisons.Equal, licx.SystemMachineName),
-                    TableOperators.And,
-                    TableQuery.GenerateFilterCondition("UserAccountId", QueryComparisons.Equal, account.Id))));
+                            TableQuery.GenerateFilterCondition(
+                                "MachineName", 
+                                QueryComparisons.Equal, 
+                                licx.SystemMachineName), 
+                            TableOperators.And, 
+                            TableQuery.GenerateFilterCondition("UserAccountId", QueryComparisons.Equal, account.Id)));
 
-                var oldRequests = await client.GetEntityListByPropertyFilterListAsync<ClientIssuedLicense>(filters);
+                var oldRequests = await this.client.GetEntityListByPropertyFilterListAsync<ClientIssuedLicense>(filters);
 
                 var clientIssuedLicenses = oldRequests as ClientIssuedLicense[] ?? oldRequests.ToArray();
                 if (clientIssuedLicenses.Any())
@@ -123,7 +140,7 @@ namespace ClickBox.Web.Controllers
                     if (account.SupportEndDate != clientIssuedLicenses[0].ExpiryDate)
                     {
                         account.IssuedLicenses--;
-                        await client.DeleteEntityAsync(clientIssuedLicenses[0]);
+                        await this.client.DeleteEntityAsync(clientIssuedLicenses[0]);
                     }
                     else
                     {
@@ -134,7 +151,7 @@ namespace ClickBox.Web.Controllers
                 if (account.IssuedLicenses >= account.AllocatedSeats)
                 {
                     return this.Request.CreateErrorResponse(
-                        HttpStatusCode.BadRequest,
+                        HttpStatusCode.BadRequest, 
                         new HttpError("Too many activations please contact QCAT"));
                 }
 
@@ -143,53 +160,65 @@ namespace ClickBox.Web.Controllers
                 this.attributes = GetAttributesForLicense(licx, account, data);
 
                 var key = generator.Generate(
-                    account.ContactName,
-                    licx.RequestId,
-                    account.SupportEndDate,
-                    this.attributes,
+                    account.ContactName, 
+                    licx.RequestId, 
+                    account.SupportEndDate, 
+                    this.attributes, 
                     LicenseType.Subscription);
 
                 var lic = new ClientIssuedLicense
-                {
-                    ClickCount = licx.ClicksReqeusted,
-                    DateCreated = DateTimeOffset.UtcNow,
-                    ExpiryDate = account.SupportEndDate,
-                    LicenseText = key,
-                    ProductId = data.Id,
-                    RequestId = licx.RequestId,
-                    MachineName = licx.SystemMachineName,
-                    UserAccountId = account.Id
-                };
+                              {
+                                  ClickCount = licx.ClicksReqeusted, 
+                                  DateCreated = DateTimeOffset.UtcNow, 
+                                  ExpiryDate = account.SupportEndDate, 
+                                  LicenseText = key, 
+                                  ProductId = data.Id, 
+                                  RequestId = licx.RequestId, 
+                                  MachineName = licx.SystemMachineName, 
+                                  UserAccountId = account.Id
+                              };
 
                 account.IssuedLicenses = account.IssuedLicenses + 1;
 
-                await client.InsertStorageEntityAsync(lic);
-                await client.InsertStorageEntityAsync(licx);
+                await this.client.InsertStorageEntityAsync(lic);
+                await this.client.InsertStorageEntityAsync(licx);
                 return this.Request.CreateResponse(HttpStatusCode.Created, key);
             }
             catch (Exception ex)
             {
                 return this.Request.CreateErrorResponse(
-                    HttpStatusCode.InternalServerError,
-                    "There was a problem licensing your product. Please contant QCAT.",
+                    HttpStatusCode.InternalServerError, 
+                    "There was a problem licensing your product. Please contant QCAT.", 
                     ex);
             }
         }
 
-        private static Dictionary<string, string> GetAttributesForLicense(ILicenseRequest licx, UserAccount account, Product product)
+        #endregion
+
+        #region Methods
+
+        private static Dictionary<string, string> GetAttributesForLicense(
+            ILicenseRequest licx, 
+            UserAccount account, 
+            Product product)
         {
             if (account.PageMakerEnabled)
             {
                 return new Dictionary<string, string>
                            {
-                               { "SID", licx.SystemId },
-                               { "MachineName", licx.SystemMachineName },
-                               { "RequestId", licx.RequestId.ToString() },
-                               { "AccountName", licx.Email },
-                               { "RequestIp", string.IsNullOrEmpty(licx.PublicIp) ? "Unknown"  : licx.PublicIp },
-                               { "CompanyName", account.CompanyName },
-                               { "ContactName", account.ContactName },
-                               { "ProductName", product.Name },
+                               { "SID", licx.SystemId }, 
+                               { "MachineName", licx.SystemMachineName }, 
+                               { "RequestId", licx.RequestId.ToString() }, 
+                               { "AccountName", licx.Email }, 
+                               {
+                                   "RequestIp", 
+                                   string.IsNullOrEmpty(licx.PublicIp)
+                                       ? "Unknown"
+                                       : licx.PublicIp
+                               }, 
+                               { "CompanyName", account.CompanyName }, 
+                               { "ContactName", account.ContactName }, 
+                               { "ProductName", product.Name }, 
                                { "ProductId", product.Id }
                            };
             }
@@ -197,16 +226,29 @@ namespace ClickBox.Web.Controllers
             {
                 return new Dictionary<string, string>
                            {
-                               { "SID", licx.SystemId },
-                               { "MachineName", licx.SystemMachineName },
-                               { "RequestId", licx.RequestId.ToString() },
-                               { "ServiceQueue",  string.IsNullOrEmpty(licx.ServiceQueue)  ? "Undefined" : licx.ServiceQueue },
-                               { "ClicksRequested", licx.ClicksReqeusted.ToString(CultureInfo.InvariantCulture) },
-                               { "AccountEmail", licx.Email },
-                               { "RequestIp", string.IsNullOrEmpty(licx.PublicIp) ? "Unknown" : licx.PublicIp },
-                               { "CompanyName", account.CompanyName },
-                               { "ContactName", account.ContactName },
-                               { "MaxVersion", account.MaxVersionNumber },
+                               { "SID", licx.SystemId }, 
+                               { "MachineName", licx.SystemMachineName }, 
+                               { "RequestId", licx.RequestId.ToString() }, 
+                               {
+                                   "ServiceQueue", 
+                                   string.IsNullOrEmpty(licx.ServiceQueue)
+                                       ? "Undefined"
+                                       : licx.ServiceQueue
+                               }, 
+                               {
+                                   "ClicksRequested", 
+                                   licx.ClicksReqeusted.ToString(CultureInfo.InvariantCulture)
+                               }, 
+                               { "AccountEmail", licx.Email }, 
+                               {
+                                   "RequestIp", 
+                                   string.IsNullOrEmpty(licx.PublicIp)
+                                       ? "Unknown"
+                                       : licx.PublicIp
+                               }, 
+                               { "CompanyName", account.CompanyName }, 
+                               { "ContactName", account.ContactName }, 
+                               { "MaxVersion", account.MaxVersionNumber }, 
                                { "IsEnterprise", account.IsEnterprise.ToString() }
                            };
             }

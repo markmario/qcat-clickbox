@@ -20,10 +20,7 @@ namespace ClickBox.Web.Infrastructure
             {
                 actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest)
                                              {
-                                                 Content =
-                                                     new StringContent
-                                                     (
-                                                     "HTTPS Required")
+                                                 Content = new StringContent("HTTPS Required")
                                              };
                 return;
             }

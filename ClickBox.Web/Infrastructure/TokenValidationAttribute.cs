@@ -27,10 +27,7 @@ namespace ClickBox.Web.Infrastructure
             {
                 actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest)
                                              {
-                                                 Content =
-                                                     new StringContent
-                                                     (
-                                                     "Missing Authorization-Token")
+                                                 Content = new StringContent("Missing Authorization-Token")
                                              };
                 return;
             }
@@ -44,10 +41,7 @@ namespace ClickBox.Web.Infrastructure
                 {
                     actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden)
                                                  {
-                                                     Content =
-                                                         new StringContent
-                                                         (
-                                                         "Unauthorized User Account")
+                                                     Content = new StringContent("Unauthorized User Account")
                                                  };
                 }
 
@@ -57,10 +51,7 @@ namespace ClickBox.Web.Infrastructure
             {
                 actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden)
                                              {
-                                                 Content =
-                                                     new StringContent
-                                                     (
-                                                     "Unauthorized User")
+                                                 Content = new StringContent("Unauthorized User")
                                              };
                 return;
             }

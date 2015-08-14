@@ -218,10 +218,8 @@
     <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="Models\MonthlyCodedDocument.cs" />
     <Compile Include="Models\MonthlyIsolatedBatch.cs" />
-    <Compile Include="Controllers\old_KodingController.cs" />
-    <Compile Include="Controllers\old_LicenseController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
-    <Compile Include="Controllers\ClickBoxApiControlle.cs" />
+    <Compile Include="Controllers\ClickBoxApiController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
