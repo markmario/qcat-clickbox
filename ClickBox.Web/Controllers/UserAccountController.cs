@@ -54,7 +54,7 @@ namespace ClickBox.Web.Controllers
                 var licType = Enum.GetName(typeof(LicenseType), account.AccountType);
                 var persisted = Mapper.Map<PersistedUserAccount>(account);
                 persisted.AccountType = licType;
-                await client.InsertStorageEntityAsync(persisted);
+                await this.client.InsertStorageEntityAsync(persisted);
             }
 
             return this.Json(new[] { account }.ToDataSourceResult(request, this.ModelState));
@@ -63,7 +63,7 @@ namespace ClickBox.Web.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public async Task<ActionResult> Get([DataSourceRequest] DataSourceRequest request)
         {
-            var toRet = await client.GetEntitiesAsync<PersistedUserAccount>();
+            var toRet = await this.client.GetEntitiesAsync<PersistedUserAccount>();
             var persistedUserAccounts = toRet as PersistedUserAccount[] ?? toRet.ToArray();
             var viewModels = new List<UserAccount>();
             foreach (var pers in persistedUserAccounts)
@@ -87,7 +87,7 @@ namespace ClickBox.Web.Controllers
         {
             if (account != null && this.ModelState.IsValid)
             {
-                var target = await client.GetEntityByPartitionAndRowKeyAsync<PersistedUserAccount>(account.Id);
+                var target = await this.client.GetEntityByPartitionAndRowKeyAsync<PersistedUserAccount>(account.Id);
                 if (target != null)
                 {
                     var licType = Enum.GetName(typeof(LicenseType), account.AccountType);
@@ -102,7 +102,7 @@ namespace ClickBox.Web.Controllers
                     target.SupportEndDate = account.SupportEndDate;
                     target.UserName = account.UserName;
                     target.MaxVersionNumber = account.MaxVersionNumber;
-                    await client.UpdateEntityAsync(target);
+                    await this.client.UpdateEntityAsync(target);
                 }
             }
 

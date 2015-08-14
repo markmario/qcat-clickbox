@@ -5,14 +5,9 @@
 // --------------------------------------------------------------------------------------------------
 namespace ClickBox.Web.Controllers
 {
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.Controllers;
     using System.Web.Mvc;
 
-    using Raven.Client;
     using Microsoft.WindowsAzure.Storage.Table;
 
     [RequireHttps(Order = 1)]
@@ -22,23 +17,6 @@ namespace ClickBox.Web.Controllers
 
         protected CloudTableClient Client { get; set; }
         
-        #endregion
-
-        #region Public Methods and Operators
-
-        //public override async Task<HttpResponseMessage> ExecuteAsync(
-        //    HttpControllerContext controllerContext, 
-        //    CancellationToken cancellationToken)
-        //{
-        //    using (this.Session = this.Store.OpenAsyncSession())
-        //    {
-        //        var result = await base.ExecuteAsync(controllerContext, cancellationToken);
-        //        await this.Session.SaveChangesAsync();
-
-        //        return result;
-        //    }
-        //}
-
         #endregion
     }
 }
