@@ -15,6 +15,8 @@ namespace ClickBox.Web
 
     using AutoMapper;
 
+    using Microsoft.Azure;
+
     using Models;
     using TableStorage;
 
