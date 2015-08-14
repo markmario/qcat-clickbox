@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------
-//  <copyright file="License.cs" company="QCAT Pty Ltd.">
+//  <copyright file="ClientIssuedLicense.cs" company="QCAT Pty Ltd.">
 //    Copyright (c) 2015 QCAT Pty Ltd. All rights reserved.
 //  </copyright>
 // --------------------------------------------------------------------------------------------------
@@ -15,13 +15,21 @@ namespace ClickBox.Web.Models
     [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
     public class ClientIssuedLicense : TableEntity, IContainTableReference
     {
+        #region Fields
+
         private string id;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public ClientIssuedLicense()
         {
             this.Id = Guid.NewGuid().ToString();
             this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 3;
         }
+
+        #endregion
 
         #region Public Properties
 
@@ -37,6 +45,7 @@ namespace ClickBox.Web.Models
             {
                 return this.id;
             }
+
             set
             {
                 this.id = value;
@@ -52,15 +61,18 @@ namespace ClickBox.Web.Models
 
         public Guid RequestId { get; set; }
 
+        public string TableName
+        {
+            get
+            {
+                return "ClientIssuedLicenses";
+            }
+        }
+
         public string Type { get; set; }
 
         public string UserAccountId { get; set; }
 
         #endregion
-
-        public string TableName
-        {
-            get { return "ClientIssuedLicenses"; }
-        }
     }
 }
