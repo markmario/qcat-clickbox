@@ -1,13 +1,14 @@
 ﻿namespace ClickBox.Web.Models
 {
     using ElCamino.AspNet.Identity.AzureTable;
+    using ElCamino.AspNet.Identity.AzureTable.Model;
 
     public class ApplicationDbContext : IdentityCloudContext<ApplicationUser>
     {
         #region Constructors and Destructors
 
         public ApplicationDbContext()
-            : base()
+            : base(new IdentityConfiguration() { StorageConnectionString = MvcApplication.TableStoreConnectionString })
         {
         }
 

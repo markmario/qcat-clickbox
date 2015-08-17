@@ -7,10 +7,12 @@ namespace ClickBox.Web
 {
     using System;
     using System.Diagnostics;
+    using System.IO;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
+    using System.Web.Profile;
     using System.Web.Routing;
 
     using AutoMapper;
@@ -23,6 +25,8 @@ namespace ClickBox.Web
     using Microsoft.WindowsAzure;
     using Microsoft.WindowsAzure.Storage;
 
+    using Newtonsoft.Json.Linq;
+
     using Odes.Licence.Model;
 
     using Product = ClickBox.Web.Models.Product;
@@ -34,6 +38,7 @@ namespace ClickBox.Web
         #region Public Properties
         
         public static CloudStorageAccount TableStore { get; private set; }
+        public static string TableStoreConnectionString { get; private set; }
 
         #endregion
 
@@ -80,7 +85,17 @@ namespace ClickBox.Web
             var debug = CloudConfigurationManager.GetSetting("Runtime");
             if (debug == "debug")
             {
-                return CloudStorageAccount.DevelopmentStorageAccount;
+                //return CloudStorageAccount.DevelopmentStorageAccount;
+                var appDataPath = Environment.GetFolderPath(
+                                   Environment.SpecialFolder.ApplicationData);
+                var dbPath = Path.Combine(appDataPath,  CloudConfigurationManager.GetSetting("DropBoxDb"));
+                var lines = File.ReadAllLines(dbPath);
+                var dbBase64Text = Convert.FromBase64String(lines[1]);
+                var filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text) + CloudConfigurationManager.GetSetting("AzureDevConnection");
+                var conJson = JObject.Parse(File.ReadAllText(filepath));
+                var constring = conJson["azure"].ToString();
+                TableStoreConnectionString = constring;
+                return CreateStorageAccountFromConnectionString(constring);
             }
             return CreateStorageAccountFromConnectionString(CloudConfigurationManager.GetSetting("StorageConnectionString"));
         }
