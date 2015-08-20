@@ -264,6 +264,8 @@
     <Compile Include="App_Start\AutofactMvcConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DO-NOT-TOUCH.cs" />
+    <Compile Include="Controllers\_AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IsolationController.cs" />
     <Compile Include="Controllers\KodingController.cs" />
@@ -288,7 +290,7 @@
     <Compile Include="Infrastructure\RSAClass.cs" />
     <Compile Include="Infrastructure\TokenValidationAttribute.cs" />
     <Compile Include="Models\PersistedIsolatedBatch.cs" />
-    <Compile Include="Models\PersistendDocumentCoded.cs" />
+    <Compile Include="Models\PersistedDocumentCoded.cs" />
     <Compile Include="Models\IContainTableReference.cs" />
     <Compile Include="Models\ClientIssuedLicense.cs" />
     <Compile Include="Models\PersistedUserAccount.cs" />
@@ -1097,6 +1099,9 @@
     <Content Include="Scripts\kendo\2014.1.318\kendo.web.min.js.map" />
     <Content Include="Scripts\kendo\2014.1.318\kendo.window.min.js.map" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="angularModules\templates\" />

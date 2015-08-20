@@ -28,5 +28,7 @@ namespace ClickBox.Web.Models
                 return "MonthlyBatches";
             }
         }
+
+        public Guid ProjectId { get; set; }
     }
 }

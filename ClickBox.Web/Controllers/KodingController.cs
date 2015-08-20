@@ -55,7 +55,7 @@ namespace ClickBox.Web.Controllers
                 var account =
                     this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", codedDoc.UserName).Result;
 
-                var persistedDoc = Mapper.Map<PersistendDocumentCoded>(codedDoc);
+                var persistedDoc = Mapper.Map<PersistedDocumentCoded>(codedDoc);
                 if (account != null)
                 {
                     persistedDoc.Id = account.Id + ":" + persistedDoc.ProjectId + ":" + persistedDoc.DocumentId;
@@ -71,13 +71,15 @@ namespace ClickBox.Web.Controllers
                 // await this.Client.GetEntityByPropertyFilterAsync<PersistendDocumentCoded>("Id", persistedDoc.Id);
                 var doc =
                     await
-                    this.Client.GetEntityByPartitionAndRowKeyAsync<PersistendDocumentCoded>(
+                    this.Client.GetEntityByPartitionAndRowKeyAsync<PersistedDocumentCoded>(
                         persistedDoc.Id, 
                         persistedDoc.ProjectId.ToString(), 
                         true);
 
                 if (doc == null)
                 {
+                    //this is the weird line of code
+                    codedDoc.DateCreated = new DateTimeOffset(DateTime.Now); 
                     await this.Client.InsertStorageEntityAsync(persistedDoc);
                     var monthlyDoc = new MonthlyCodedDocument()
                                          {

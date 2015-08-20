@@ -12,17 +12,12 @@ namespace ClickBox.Web.Models
     using Odes.Licence.Model;
 
     [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
-    public class PersistendDocumentCoded : TableEntity, IDocumentCoded, IContainTableReference
+    public class PersistedDocumentCoded : TableEntity, IDocumentCoded, IContainTableReference
     {
         private string id;
 
         private Guid projectId;
 
-        //public PersistendDocumentCoded()
-        //{
-        //    var monthAndYear = DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString();
-        //    this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + monthAndYear;
-        //}
         public Guid ProjectId
         {
             get

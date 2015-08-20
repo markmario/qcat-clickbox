@@ -10,7 +10,7 @@
     using ClickBox.Web.TableStorage;
     using Microsoft.WindowsAzure.Storage.Table;
 
-
+    [Authorize]
     [RequireHttps(Order = 1)]
     [RequireLocalHostActionFilter]
     public class ProductController : Controller

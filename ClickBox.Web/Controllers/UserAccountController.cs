@@ -24,6 +24,7 @@ namespace ClickBox.Web.Controllers
 
     using Rhino.Licensing;
 
+    [RoutePrefix("api/UserAccount")]
     [RequireHttps(Order = 1)]
     [RequireLocalHostActionFilter]
     public class UserAccountController : Controller
@@ -60,6 +61,8 @@ namespace ClickBox.Web.Controllers
             return this.Json(new[] { account }.ToDataSourceResult(request, this.ModelState));
         }
 
+        
+        [Authorize]
         [AcceptVerbs(HttpVerbs.Get)]
         public async Task<ActionResult> Get([DataSourceRequest] DataSourceRequest request)
         {
@@ -77,6 +80,7 @@ namespace ClickBox.Web.Controllers
             return this.Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         public ActionResult Index()
         {
             return this.View();

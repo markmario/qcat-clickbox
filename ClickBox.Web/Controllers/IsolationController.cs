@@ -73,7 +73,14 @@ namespace ClickBox.Web.Controllers
 
                 if (doc == null)
                 {
+                    persistedIsolatedBatch.DateCreated = new DateTimeOffset(DateTime.Now);
                     await this.Client.InsertStorageEntityAsync(persistedIsolatedBatch);
+                    var monthlyIsolatedBatch = new MonthlyIsolatedBatch()
+                    {
+                        RowKey = persistedIsolatedBatch.BatchId.ToString(),
+                        ProjectId = persistedIsolatedBatch.ProjectId
+                    };
+                    await this.Client.InsertStorageEntityAsync(monthlyIsolatedBatch);
                 }
                 else
                 {
@@ -103,10 +110,9 @@ namespace ClickBox.Web.Controllers
                     doc.OldBatchValues = JsonConvert.SerializeObject(oldbatchValues);
                     doc.DocumentsCreated = isolatedBatch.DocumentsCreated;
                     doc.DateCreated = isolatedBatch.DateCreated;
+                    await this.Client.UpdateEntityAsync(doc);
                 }
-
-                //await this.Session.SaveChangesAsync();
-                await this.Client.UpdateEntityAsync(doc);
+                
                 return accountFound ? this.Request.CreateResponse(HttpStatusCode.Created) : 
                                       this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
             }

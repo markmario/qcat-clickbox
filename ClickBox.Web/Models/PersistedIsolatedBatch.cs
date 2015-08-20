@@ -22,12 +22,6 @@ namespace ClickBox.Web.Models
 
         private Guid projectId;
 
-        //public PersistedIsolatedBatch()
-        //{
-        //    var monthAndYear = DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString();
-        //    this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + monthAndYear;
-        //}
-
         public Guid ProjectId
         {
             get

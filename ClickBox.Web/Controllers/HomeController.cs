@@ -9,12 +9,13 @@ namespace ClickBox.Web.Controllers
 
     using ClickBox.Web.Infrastructure;
 
+    
     [RequireHttps(Order = 1)]
     [RequireLocalHostActionFilter]
     public class HomeController : Controller
     {
         #region Public Methods and Operators
-
+        [Authorize]
         public ActionResult Index()
         {
             // return this.View();

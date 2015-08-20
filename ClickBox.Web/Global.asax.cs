@@ -46,6 +46,8 @@ namespace ClickBox.Web
 
         protected async void Application_Start()
         {
+            SetStorageAccountConnectionString();
+            ApplicationUserManager.StartupAsync();
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -66,6 +68,7 @@ namespace ClickBox.Web
             await client.PrimeTable<ClientIssuedLicense>();
             await client.PrimeTable<WebLicenseRequest>();
             await client.PrimeTable<PersistedIsolatedBatch>();
+            await client.PrimeTable<PersistedDocumentCoded>();
             await client.PrimeTable<MonthlyCodedDocument>();
             await client.PrimeTable<MonthlyIsolatedBatch>();
         }
@@ -74,8 +77,8 @@ namespace ClickBox.Web
         {
             Mapper.CreateMap<PersistedUserAccount, UserAccount>();
             Mapper.CreateMap<UserAccount, PersistedUserAccount>();
-            Mapper.CreateMap<DocumentCoded, PersistendDocumentCoded>();
-            Mapper.CreateMap<PersistendDocumentCoded, DocumentCoded>();
+            Mapper.CreateMap<DocumentCoded, PersistedDocumentCoded>();
+            Mapper.CreateMap<PersistedDocumentCoded, DocumentCoded>();
             Mapper.CreateMap<BatchIsolated, PersistedIsolatedBatch>();
             Mapper.CreateMap<PersistedIsolatedBatch, BatchIsolated>();
         }
@@ -86,20 +89,33 @@ namespace ClickBox.Web
             if (debug == "debug")
             {
                 //return CloudStorageAccount.DevelopmentStorageAccount;
-                var appDataPath = Environment.GetFolderPath(
-                                   Environment.SpecialFolder.ApplicationData);
-                var dbPath = Path.Combine(appDataPath,  CloudConfigurationManager.GetSetting("DropBoxDb"));
-                var lines = File.ReadAllLines(dbPath);
-                var dbBase64Text = Convert.FromBase64String(lines[1]);
-                var filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text) + CloudConfigurationManager.GetSetting("AzureDevConnection");
-                var conJson = JObject.Parse(File.ReadAllText(filepath));
-                var constring = conJson["azure"].ToString();
-                TableStoreConnectionString = constring;
-                return CreateStorageAccountFromConnectionString(constring);
+                //var appDataPath = Environment.GetFolderPath(
+                //                   Environment.SpecialFolder.ApplicationData);
+                //var dbPath = Path.Combine(appDataPath,  CloudConfigurationManager.GetSetting("DropBoxDb"));
+                //var lines = File.ReadAllLines(dbPath);
+                //var dbBase64Text = Convert.FromBase64String(lines[1]);
+                //var filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text) + CloudConfigurationManager.GetSetting("AzureDevConnection");
+                //var conJson = JObject.Parse(File.ReadAllText(filepath));
+                //var constring = conJson["azure"].ToString();
+                //TableStoreConnectionString = constring;
+                return CreateStorageAccountFromConnectionString(SetStorageAccountConnectionString());
             }
             return CreateStorageAccountFromConnectionString(CloudConfigurationManager.GetSetting("StorageConnectionString"));
         }
 
+        private static string SetStorageAccountConnectionString()
+        {
+            var appDataPath = Environment.GetFolderPath(
+                                   Environment.SpecialFolder.ApplicationData);
+            var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
+            var lines = File.ReadAllLines(dbPath);
+            var dbBase64Text = Convert.FromBase64String(lines[1]);
+            var filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text) + CloudConfigurationManager.GetSetting("AzureDevConnection");
+            var conJson = JObject.Parse(File.ReadAllText(filepath));
+            var constring = conJson["azure"].ToString();
+            TableStoreConnectionString = constring;
+            return constring;
+        }
 
         private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
         {
