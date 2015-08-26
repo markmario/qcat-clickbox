@@ -51,25 +51,30 @@ namespace ClickBox.Web.Controllers
                 var account = this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", isolatedBatch.UserName).Result;
 
                 var persistedIsolatedBatch = Mapper.Map<PersistedIsolatedBatch>(isolatedBatch);
+
+                string rowKey;
+                string partitionKey;
+
                 if (account != null)
                 {
-                    //account = accounts[0];
-                    persistedIsolatedBatch.Id = account.Id + ":" + persistedIsolatedBatch.ProjectId + ":" + persistedIsolatedBatch.BatchId;
+                    rowKey = persistedIsolatedBatch.BatchId.ToString();
+                    partitionKey = account.CompanyName + ":" + persistedIsolatedBatch.ProjectId;
+                    persistedIsolatedBatch.RowKey = rowKey;
+                    persistedIsolatedBatch.PartitionKey = partitionKey;
                     accountFound = true;
                 }
                 else
                 {
                     // change this to forbidden when we want to stop clients from connecting
-                    persistedIsolatedBatch.Id = persistedIsolatedBatch.UserName + ":" + persistedIsolatedBatch.ProjectId + ":"
-                                       + persistedIsolatedBatch.BatchId;
+                    rowKey = persistedIsolatedBatch.BatchId.ToString();
+                    partitionKey = persistedIsolatedBatch.UserName + ":" + persistedIsolatedBatch.ProjectId;
                 }
 
-                //var doc = await this.Session.LoadAsync<BatchIsolated>(isolatedBatch.Id);
                 var doc =
                     await
                     this.Client.GetEntityByPartitionAndRowKeyAsync<PersistedIsolatedBatch>(
-                        persistedIsolatedBatch.Id,
-                        persistedIsolatedBatch.ProjectId.ToString(), true);
+                        partitionKey,
+                        rowKey, true);
 
                 if (doc == null)
                 {

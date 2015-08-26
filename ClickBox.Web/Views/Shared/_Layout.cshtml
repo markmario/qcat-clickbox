@@ -36,11 +36,10 @@
                 @Html.ActionLink("QCAT CLICKBOX", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                @*<ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>*@
+                <ul class="nav navbar-nav">
+                    <li style="margin-right: 20px; margin-left: 10px;">@Html.ActionLink("Client Accounts", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Products", "Index", "Product")</li>
+                </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

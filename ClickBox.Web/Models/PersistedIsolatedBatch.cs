@@ -20,20 +20,8 @@ namespace ClickBox.Web.Models
     {
         private string id;
 
-        private Guid projectId;
+        public Guid ProjectId { get; set; }
 
-        public Guid ProjectId
-        {
-            get
-            {
-                return this.projectId;
-            }
-            set
-            {
-                this.projectId = value;
-                this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + value;
-            }
-        }
         public Guid BatchId { get; set; }
         public Guid RequestId { get; set; }
         public int DocumentsCreated { get; set; }
@@ -44,7 +32,7 @@ namespace ClickBox.Web.Models
 
         public override string ToString()
         {
-            return this.RowKey + "\t\t" + this.Id + "]";
+            return this.PartitionKey + "\t\t" + this.RowKey;
         }
 
         public string Id
