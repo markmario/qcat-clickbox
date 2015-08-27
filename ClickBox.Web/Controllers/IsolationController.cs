@@ -68,6 +68,8 @@ namespace ClickBox.Web.Controllers
                     // change this to forbidden when we want to stop clients from connecting
                     rowKey = persistedIsolatedBatch.BatchId.ToString();
                     partitionKey = persistedIsolatedBatch.UserName + ":" + persistedIsolatedBatch.ProjectId;
+                    persistedIsolatedBatch.RowKey = rowKey;
+                    persistedIsolatedBatch.PartitionKey = partitionKey;
                 }
 
                 var doc =
