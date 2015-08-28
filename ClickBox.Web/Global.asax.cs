@@ -90,28 +90,36 @@ namespace ClickBox.Web
 
         private static string SetStorageAccountConnectionString()
         {
-            var appDataPath = Environment.GetFolderPath(
-                                   Environment.SpecialFolder.ApplicationData);
-            var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
-            var lines = File.ReadAllLines(dbPath);
-            var dbBase64Text = Convert.FromBase64String(lines[1]);
             var runtime = CloudConfigurationManager.GetSetting("Runtime");
-            string filepath;
             if (runtime == "debug")
             {
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
+                var lines = File.ReadAllLines(dbPath);
+                var dbBase64Text = Convert.FromBase64String(lines[1]);
+
+                string filepath;
                 filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
                            + CloudConfigurationManager.GetSetting("AzureDevConnection");
+
+                //if (runtime == "debug")
+                //{
+                //    filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
+                //               + CloudConfigurationManager.GetSetting("AzureDevConnection");
+                //}
+                //else
+                //{
+                //    filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
+                //               + CloudConfigurationManager.GetSetting("AzureProdConnection");
+                //}
+
+                var conJson = JObject.Parse(File.ReadAllText(filepath));
+                var constring = conJson["azure"].ToString();
+                TableStoreConnectionString = constring;
+                return constring;
             }
-            else
-            {
-                filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
-                           + CloudConfigurationManager.GetSetting("AzureProdConnection");
-            }
-            
-            var conJson = JObject.Parse(File.ReadAllText(filepath));
-            var constring = conJson["azure"].ToString();
-            TableStoreConnectionString = constring;
-            return constring;
+            TableStoreConnectionString = CloudConfigurationManager.GetSetting("AzureProdConnection");
+            return TableStoreConnectionString;
         }
 
         private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
