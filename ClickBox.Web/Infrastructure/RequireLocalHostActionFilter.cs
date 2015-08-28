@@ -14,7 +14,7 @@ namespace ClickBox.Web.Infrastructure
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            return httpContext.Request.IsLocal; // I need to test on the local host, so I reverse the logic.
+            return httpContext.Request.IsSecureConnection; // I need to test on the local host, so I reverse the logic.
         }
 
         #endregion
