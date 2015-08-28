@@ -31,16 +31,19 @@
             return licence;
         }
 
-        public ProductLicenseResponse GeneratedLisense(LicenseRequest licenseRequest, string requestingAppToken)
+        public ProductLicenseResponse GeneratedLisense(LicenseRequest licenseRequest, string requestingAppToken, string baseUrl=null)
         {
             licenseRequest.GetPublicIp();
+            var actualUrl = baseUrl;
 
             try
             {
 #if ! DEBUG
-                var client = new HttpClient { BaseAddress = new Uri("https://clickbox.qcat.com.au/") };
+                if(baseUrl == null){ actualUrl = "https://clickbox.qcat.com.au/";}
+                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
 #else
-                var client = new HttpClient { BaseAddress = new Uri("https://localhost:44302/") };
+                if (baseUrl == null) { actualUrl = "https://localhost:44302/"; }
+                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
 #endif
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
