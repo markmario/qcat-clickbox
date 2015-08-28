@@ -84,7 +84,7 @@ namespace ClickBox.Web.Models
         public void InitModelBinderVersion(UserAccount binderAccount)
         {
             binderAccount.Id = Guid.NewGuid().ToString();
-            binderAccount.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 2;
+            binderAccount.PartitionKey = 2.ToString();
         }
 
         public override string ToString()

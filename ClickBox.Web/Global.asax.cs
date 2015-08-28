@@ -102,17 +102,6 @@ namespace ClickBox.Web
                 filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
                            + CloudConfigurationManager.GetSetting("AzureDevConnection");
 
-                //if (runtime == "debug")
-                //{
-                //    filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
-                //               + CloudConfigurationManager.GetSetting("AzureDevConnection");
-                //}
-                //else
-                //{
-                //    filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
-                //               + CloudConfigurationManager.GetSetting("AzureProdConnection");
-                //}
-
                 var conJson = JObject.Parse(File.ReadAllText(filepath));
                 var constring = conJson["azure"].ToString();
                 TableStoreConnectionString = constring;

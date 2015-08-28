@@ -18,7 +18,7 @@ namespace ClickBox.Web.Models
 
         public Product()
         {
-            this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 1;
+            this.PartitionKey = 1.ToString();
         }
 
         public Product(string rowKeyName)
