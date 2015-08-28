@@ -90,7 +90,7 @@ namespace ClickBox.Web
 
         private static string SetStorageAccountConnectionString()
         {
-            var runtime = CloudConfigurationManager.GetSetting("Runtime");
+            var runtime = System.Configuration.ConfigurationManager.AppSettings["Runtime"];
             if (runtime == "debug")
             {
                 var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -118,7 +118,8 @@ namespace ClickBox.Web
                 TableStoreConnectionString = constring;
                 return constring;
             }
-            TableStoreConnectionString = CloudConfigurationManager.GetSetting("AzureProdConnection");
+            TableStoreConnectionString =
+                System.Configuration.ConfigurationManager.ConnectionStrings["AzureProdConnection"].ToString();
             return TableStoreConnectionString;
         }
 
