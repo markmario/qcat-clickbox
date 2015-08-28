@@ -29,7 +29,7 @@ namespace ClickBox.Web.Controllers
     /// <summary>
     /// The license controller.
     /// </summary>
-    [RequireHttps(Order = 1)]
+    //[RequireHttps(Order = 1)]
     public class LicenseController : ApiController
     {
         #region Fields
