@@ -25,7 +25,7 @@ namespace ClickBox.Web.Models
         {
             this.RowKey = rowKeyName;
             this.name = rowKeyName;
-            this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 1;
+            this.PartitionKey = 1.ToString();
         }
 
         #region Public Properties
