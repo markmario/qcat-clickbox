@@ -7,6 +7,7 @@ namespace ClickBox.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Net;
@@ -29,7 +30,7 @@ namespace ClickBox.Web.Controllers
     /// <summary>
     /// The license controller.
     /// </summary>
-    //[RequireHttps(Order = 1)]
+    [RequireHttps(Order = 1)]
     public class LicenseController : ApiController
     {
         #region Fields
@@ -186,6 +187,7 @@ namespace ClickBox.Web.Controllers
             }
             catch (Exception ex)
             {
+                Trace.TraceError("My error statement", ex.StackTrace, ex.Message);
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError, 
                     "There was a problem licensing your product. Please contant QCAT.", 

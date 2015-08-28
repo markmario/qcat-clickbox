@@ -16,7 +16,7 @@
         public WebLicenseRequest()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 4;
+            this.PartitionKey = 4.ToString();
         }
 
         public LicenceTypes LicenceType { get; set; }
