@@ -31,19 +31,16 @@
             return licence;
         }
 
-        public ProductLicenseResponse GeneratedLisense(LicenseRequest licenseRequest, string requestingAppToken, string baseUrl=null)
+        public ProductLicenseResponse GeneratedLisense(LicenseRequest licenseRequest, string requestingAppToken)
         {
             licenseRequest.GetPublicIp();
-            var actualUrl = baseUrl;
 
             try
             {
 #if ! DEBUG
-                if(baseUrl == null){ actualUrl = "https://clickbox.qcat.com.au/";}
-                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
+                var client = new HttpClient { BaseAddress = new Uri("https://clickbox.qcat.com.au/") };
 #else
-                if (baseUrl == null) { actualUrl = "https://localhost:44302/"; }
-                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
+                var client = new HttpClient { BaseAddress = new Uri("https://localhost:44302/") };
 #endif
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -94,6 +91,91 @@
                                             Reason = response.Content.ReadAsAsync<MessageDeserial>().Result.Message,
                                             StatusCode = (int)response.StatusCode
                                         },
+                    LicenseText = response.ToString()
+                };
+            }
+            catch (Exception ex)
+            {
+                //var exFile = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                //     + @"\qlic.error.log";
+                //File.WriteAllText(exFile, ex.ToString(), Encoding.UTF8);
+
+                return new ProductLicenseResponse
+                {
+                    RespondingWithSuccess = false,
+                    FailureDetails = new FailedResponseDetails()
+                    {
+                        Reason = "There was a problem licensing your product. Please contant QCAT.",
+                        StatusCode = (int)HttpStatusCode.InternalServerError
+                    },
+                    ContainsException = new Tuple<bool, string>(true, ex.Message + Environment.NewLine + ex.StackTrace)
+                };
+            }
+        }
+
+        public ProductLicenseResponse GeneratedLisenseV2(LicenseRequest licenseRequest, string requestingAppToken, string baseUrl = null)
+        {
+            licenseRequest.GetPublicIp();
+            var actualUrl = baseUrl;
+
+            try
+            {
+#if ! DEBUG
+                if(baseUrl == null){ actualUrl = "https://clickboxweb.azurewebsites.net/";}
+                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
+#else
+                if (baseUrl == null) { actualUrl = "https://localhost:44302/"; }
+                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
+#endif
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                client.DefaultRequestHeaders.Add("Authorization-Token", requestingAppToken);
+
+                var result = client.GetAsync(string.Format("api/License/GetProductDetail?productName={0}", licenseRequest.ProductName)).Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var re = result.Content.ReadAsAsync<Product>().Result;
+                    licenseRequest.ProductId = new Guid(re.Id);
+                }
+                else
+                {
+                    return new ProductLicenseResponse
+                    {
+                        RespondingWithSuccess = false,
+                        FailureDetails = new FailedResponseDetails()
+                        {
+                            Reason = result.Content.ReadAsAsync<MessageDeserial>().Result.Message,
+                            StatusCode = (int)result.StatusCode
+                        }
+                    };
+                }
+
+                var response = client.PostAsJsonAsync("api/License/", licenseRequest).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var rep = response.Content.ReadAsAsync<string>().Result;
+
+                    return new ProductLicenseResponse
+                    {
+                        RespondingWithSuccess = true,
+                        LicenseText = rep
+                    };
+                }
+
+                //File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) 
+                //    + @"\error_licx.log", response.ToString(), Encoding.UTF8);
+
+                return new ProductLicenseResponse
+                {
+                    RespondingWithSuccess = false,
+                    FailureDetails = new FailedResponseDetails()
+                    {
+                        Reason = response.Content.ReadAsAsync<MessageDeserial>().Result.Message,
+                        StatusCode = (int)response.StatusCode
+                    },
                     LicenseText = response.ToString()
                 };
             }

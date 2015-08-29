@@ -26,7 +26,7 @@ namespace ClickBox.Web.Models
         public ClientIssuedLicense()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + 3;
+            this.PartitionKey = 3.ToString();
         }
 
         #endregion
