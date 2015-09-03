@@ -41,7 +41,7 @@ namespace TrialRequestsWebJob
                 var constring = conJson["azure"].ToString();
                 return constring;
             }
-            return System.Configuration.ConfigurationSettings.AppSettings["AzureProdConnection"];
+            return System.Configuration.ConfigurationManager.ConnectionStrings["AzureProdConnection"].ToString();
         }
     }
 }
