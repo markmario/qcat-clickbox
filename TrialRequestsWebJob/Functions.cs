@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.WindowsAzure.Storage.Core;
-
-namespace TrialRequestsWebJob
+﻿namespace TrialRequestsWebJob
 {
-    using Newtonsoft.Json.Linq;
+    using System.IO;
+
+    using Microsoft.Azure.WebJobs;
 
     public class Functions
     {
+        #region Public Methods and Operators
+
         // This function will get triggered/executed when a new message is written 
         // on an Azure Queue called queue.
-        public static void ProcessQueueMessage([QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage blobInfo, TextWriter log)
+        public static void ProcessQueueMessage(
+            [QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage blobInfo, 
+            TextWriter log)
         {
             log.WriteLine(blobInfo.AccountEmail);
         }
 
-        
+        #endregion
     }
 }

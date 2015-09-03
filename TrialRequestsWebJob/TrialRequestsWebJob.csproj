@@ -84,6 +84,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base32Encoding.cs" />
+    <Compile Include="GuidExtensions.cs" />
     <Compile Include="PageMergerTrialMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Functions.cs" />
