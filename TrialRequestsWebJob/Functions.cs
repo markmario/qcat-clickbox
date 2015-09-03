@@ -3,14 +3,13 @@
     using ClickBox.Web.Models;
     using Microsoft.WindowsAzure.Storage.Table;
     using Microsoft.Azure.WebJobs;
+    using System.IO;
+    using System;
 
     public class Functions
     {
         public static void ProcessQueueMessage([QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage msg,
-            [Table("UserAccounts")] CloudTable tableBinding, TextWriter log)
-            [QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage blobInfo, 
-            TextWriter log)
-        {
+            [Table("UserAccounts")] CloudTable tableBinding, TextWriter log)        {
             log.WriteLine(msg);
             var account = new PersistedUserAccount()
             {

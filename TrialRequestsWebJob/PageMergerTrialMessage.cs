@@ -9,8 +9,6 @@ namespace TrialRequestsWebJob
 
     public class PageMergerTrialMessage
     {
-        #region Public Properties
-
         public Guid Id
         {
             get
