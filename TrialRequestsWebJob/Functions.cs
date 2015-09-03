@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.WindowsAzure.Storage.Core;
-
-namespace TrialRequestsWebJob
+﻿namespace TrialRequestsWebJob
 {
     using ClickBox.Web.Models;
     using Microsoft.WindowsAzure.Storage.Table;
-    using Newtonsoft.Json.Linq;
+    using Microsoft.Azure.WebJobs;
 
     public class Functions
     {
         public static void ProcessQueueMessage([QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage msg,
             [Table("UserAccounts")] CloudTable tableBinding, TextWriter log)
+            [QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage blobInfo, 
+            TextWriter log)
         {
             log.WriteLine(msg);
             var account = new PersistedUserAccount()
