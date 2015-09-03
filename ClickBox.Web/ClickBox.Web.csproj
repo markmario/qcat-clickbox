@@ -883,6 +883,7 @@
     <Content Include="Scripts\kendo\2014.1.318\cultures\kendo.culture.zu-ZA.min.js" />
     <Content Include="Scripts\kendo\2014.1.318\cultures\kendo.culture.zu.min.js" />
     <Content Include="Scripts\kendo\2014.1.318\jquery.min.js" />
+    <Content Include="Properties\webjobs-list.json" />
     <None Include="Scripts\kendo\2014.1.318\kendo.all-vsdoc.js" />
     <None Include="Scripts\kendo\2014.1.318\kendo.all.min.intellisense.js" />
     <Content Include="Scripts\kendo\2014.1.318\kendo.all.min.js" />
@@ -1170,6 +1171,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.3\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.3\tools\webjobs.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

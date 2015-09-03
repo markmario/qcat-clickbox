@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odes.Licence.Model", "Odes.Licence.Model\Odes.Licence.Model.csproj", "{0C438FDE-D5DE-4AF2-B4FC-57CD0ACD4C8D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Web", "ClickBox.Web\ClickBox.Web.csproj", "{AD7FCFD5-3FD8-4FC4-A382-3838040F44FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odes.License.Updater", "Odes.License.Updater\Odes.License.Updater.csproj", "{1EE69ADE-B190-4822-B648-ECB29C838B2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrialRequestsWebJob", "TrialRequestsWebJob\TrialRequestsWebJob.csproj", "{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
