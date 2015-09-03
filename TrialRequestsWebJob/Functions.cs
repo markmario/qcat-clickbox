@@ -9,17 +9,35 @@ using Microsoft.WindowsAzure.Storage.Core;
 
 namespace TrialRequestsWebJob
 {
+    using ClickBox.Web.Models;
+    using Microsoft.WindowsAzure.Storage.Table;
     using Newtonsoft.Json.Linq;
 
     public class Functions
     {
-        // This function will get triggered/executed when a new message is written 
-        // on an Azure Queue called queue.
-        public static void ProcessQueueMessage([QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage blobInfo, TextWriter log)
+        public static void ProcessQueueMessage([QueueTrigger("create-pagemaker-account")] PageMergerTrialMessage msg,
+            [Table("UserAccounts")] CloudTable tableBinding, TextWriter log)
         {
-            log.WriteLine(blobInfo.AccountEmail);
+            log.WriteLine(msg);
+            var account = new PersistedUserAccount()
+            {
+                ContactName = msg.AccountName,
+                UserName = msg.AccountEmail,
+                AccountType = "Trial",
+                Active = true,
+                AllocatedSeats = 1,
+                CompanyName = msg.AccountOrganisation,
+                IsEnterprise = false,
+                IsolationEnabled = false,
+                IssuedLicenses = 0,
+                KoderEnabled = false,
+                MaxVersionNumber = null,
+                PageMakerEnabled = false,
+                Password = msg.AccountPassword,
+                SupportEndDate = DateTime.Now.AddDays(1)
+            };
+            TableOperation insertOperation = TableOperation.Insert(account);
+            tableBinding.Execute(insertOperation);
         }
-
-        
     }
 }

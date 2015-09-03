@@ -7,13 +7,16 @@ namespace TrialRequestsWebJob
 {
     public class PageMergerTrialMessage
     {
-        //{"AccountName":"Simon Dude","AccountEmail":"utzbach@gmail.com",
-        //"AccountOrganisation":"NodeEngine","AccountPassword":"2981e9e3-687f-461d-840a-a2e703d8b3ba",
-        //"AccountRequestMessage":"test from live site"} 
         public string AccountName { get; set; }
         public string AccountEmail { get; set; }
         public string AccountOrganisation { get; set; }
         public string AccountPassword { get; set; }
         public string AccountRequestMessage { get; set; }
+        public override string ToString()
+        {
+            return "{AccountName:"+ AccountName + ", AccountEmail:" + AccountEmail +","+
+                    "AccountOrganisation:" + AccountOrganisation + ", AccountPassword:"+ AccountPassword +", "+
+                    "AccountRequestMessage:" + AccountRequestMessage + "}";
+        }
     }
 }
