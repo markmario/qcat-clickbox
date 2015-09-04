@@ -25,7 +25,7 @@
                 KoderEnabled = false,
                 MaxVersionNumber = null,
                 PageMakerEnabled = false,
-                Password = msg.AccountPassword,
+                Password = msg.Password,
                 SupportEndDate = DateTime.Now.AddDays(1)
             };
             TableOperation insertOperation = TableOperation.Insert(account);
