@@ -26,7 +26,7 @@
                 MaxVersionNumber = null,
                 PageMakerEnabled = false,
                 Password = msg.Password,
-                SupportEndDate = DateTime.Now.AddDays(1)
+                SupportEndDate = DateTime.Now.AddDays(35)
             };
             TableOperation insertOperation = TableOperation.Insert(account);
             tableBinding.Execute(insertOperation);
