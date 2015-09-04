@@ -1103,6 +1103,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\UserAccount\EditorTemplates\ProductTypeEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="angularModules\templates\" />
@@ -1114,6 +1115,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClickBox.Util\ClickBox.Util.csproj">
+      <Project>{ba7587e1-b6d8-4c24-a985-44df1154b2ff}</Project>
+      <Name>ClickBox.Util</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Odes.Licence.Model\Odes.Licence.Model.csproj">
       <Project>{0c438fde-d5de-4af2-b4fc-57cd0acd4c8d}</Project>
       <Name>Odes.Licence.Model</Name>

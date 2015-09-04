@@ -1,12 +1,12 @@
 ﻿@using ClickBox.Web.Models
+@using ClickBox.Util
 @{
     ViewBag.Title = "User Accounts";
 }
 
-<h2>Client Accounts</h2>
-@(Html.Kendo().Grid<UserAccount>().Name("grid").Columns(columns =>
+    <h2>Client Accounts</h2>
+    @(Html.Kendo().Grid<UserAccount>().Name("grid").Columns(columns =>
       {
-          // columns.Bound(p => p.Id);
           columns.Bound(p => p.ContactName);
           columns.Bound(p => p.CompanyName);
           columns.Bound(p => p.UserName);
@@ -15,8 +15,9 @@
           columns.Bound(p => p.AllocatedSeats);
           columns.Bound(p => p.IsolationEnabled);
           columns.Bound(p => p.KoderEnabled);
-          columns.Bound(p => p.PageMakerEnabled);
+          //columns.Bound(p => p.PageMakerEnabled);
           columns.Bound(p => p.AccountType);
+          columns.Bound(p => p.Product);
           columns.Bound(p => p.MaxVersionNumber);
           columns.Command(c =>
               {
@@ -24,7 +25,6 @@
                   c.Destroy();
               });
 
-          // columns.ForeignKey(p => p.AccountType, (System.Collections.IEnumerable) ViewData["accountTypes"], "AccountTypeId", "Name");
       })
       .Pageable()
       .Scrollable()
@@ -35,7 +35,9 @@
           {
               model.Id(p => p.Id);
               model.Field(p => p.Id).Editable(false);
+              //model.Field(p => p.Password).Editable(false);
               model.Field(p => p.Salt).Editable(false);
+              model.Field(p => p.Product).DefaultValue("Pagemaker");
           }).Read(read => read.Action("Get", "UserAccount").Type(HttpVerbs.Get))
           .Create(create => create.Action("Create", "UserAccount").Type(HttpVerbs.Post))
           .Destroy(destroy => destroy.Action("Delete", "UserAccount").Type(HttpVerbs.Post))

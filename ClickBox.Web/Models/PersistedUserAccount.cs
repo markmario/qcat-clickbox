@@ -1,3 +1,5 @@
+using System;
+
 namespace ClickBox.Web.Models
 {
     public class PersistedUserAccount : UserAccount

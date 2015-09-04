@@ -85,8 +85,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base32Encoding.cs" />
-    <Compile Include="GuidExtensions.cs" />
     <Compile Include="PageMergerTrialMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Functions.cs" />
@@ -100,6 +98,10 @@
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClickBox.Util\ClickBox.Util.csproj">
+      <Project>{ba7587e1-b6d8-4c24-a985-44df1154b2ff}</Project>
+      <Name>ClickBox.Util</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ClickBox.Web\ClickBox.Web.csproj">
       <Project>{ad7fcfd5-3fd8-4fc4-a382-3838040f44fd}</Project>
       <Name>ClickBox.Web</Name>

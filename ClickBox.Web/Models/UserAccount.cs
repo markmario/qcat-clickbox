@@ -10,11 +10,14 @@ namespace ClickBox.Web.Models
     using System.Web.ModelBinding;
     using System.Web.Mvc;
 
+
     using ClickBox.Web.TableStorage;
 
     using Microsoft.WindowsAzure.Storage.Table;
 
     using Rhino.Licensing;
+    using System.Collections.Generic;
+    using Util;
 
     [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
     public class UserAccount : TableEntity, IContainTableReference
@@ -22,6 +25,9 @@ namespace ClickBox.Web.Models
         private string id;
 
         #region Public Properties
+
+        [UIHint("ProductTypeEditor")]
+        public string Product { get; set; }
 
         [UIHint("LicenseTypeEditor")]
         public LicenseType AccountType { get; set; }

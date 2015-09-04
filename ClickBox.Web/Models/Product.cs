@@ -10,6 +10,8 @@ namespace ClickBox.Web.Models
     using ClickBox.Web.TableStorage;
 
     using Microsoft.WindowsAzure.Storage.Table;
+    using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
 
     [Bind(Exclude = "Timestamp, TableName, RowKey, PartitionKey, ETag")]
     public class Product : TableEntity, IContainTableReference

@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------
 namespace TrialRequestsWebJob
 {
+    using ClickBox.Util;
     using System;
 
     public class PageMergerTrialMessage

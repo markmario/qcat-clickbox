@@ -23,6 +23,7 @@ namespace ClickBox.Web.Controllers
     using Microsoft.WindowsAzure.Storage.Table;
 
     using Rhino.Licensing;
+    using Util;
 
     [RoutePrefix("api/UserAccount")]
     [RequireHttps(Order = 1)]
@@ -53,7 +54,9 @@ namespace ClickBox.Web.Controllers
             {
                 account.InitModelBinderVersion(account);
                 var licType = Enum.GetName(typeof(LicenseType), account.AccountType);
+                account.Password = Guid.NewGuid().ToShortString();
                 var persisted = Mapper.Map<PersistedUserAccount>(account);
+                persisted.Product = account.Product;
                 persisted.AccountType = licType;
                 await this.client.InsertStorageEntityAsync(persisted);
             }
@@ -66,6 +69,7 @@ namespace ClickBox.Web.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public async Task<ActionResult> Get([DataSourceRequest] DataSourceRequest request)
         {
+            var products = await client.GetEntitiesAsync<Product>();
             var toRet = await this.client.GetEntitiesAsync<PersistedUserAccount>();
             var persistedUserAccounts = toRet as PersistedUserAccount[] ?? toRet.ToArray();
             var viewModels = new List<UserAccount>();
@@ -74,9 +78,10 @@ namespace ClickBox.Web.Controllers
                 var licType = (LicenseType)Enum.Parse(typeof(LicenseType), pers.AccountType);
                 var viewModel = Mapper.Map<UserAccount>(pers);
                 viewModel.AccountType = licType;
+                //viewModel.Product = products.First(f => f.Name == pers.Product).Name;
                 viewModels.Add(viewModel);
             }
-
+            
             return this.Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
@@ -102,10 +107,11 @@ namespace ClickBox.Web.Controllers
                     target.ContactName = account.ContactName;
                     target.IsolationEnabled = account.IsolationEnabled;
                     target.KoderEnabled = account.KoderEnabled;
-                    target.Password = account.Password;
+                    //target.Password = account.Password;
                     target.SupportEndDate = account.SupportEndDate;
                     target.UserName = account.UserName;
                     target.MaxVersionNumber = account.MaxVersionNumber;
+                    target.Product = account.Product;
                     await this.client.UpdateEntityAsync(target);
                 }
             }

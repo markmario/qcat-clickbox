@@ -61,6 +61,27 @@
             return toRet.Results;
         }
 
+        public static IEnumerable<T> GetEntities<T>(
+            this CloudTableClient client,
+            string partitionKey = null) where T : TableEntity, IContainTableReference, new()
+        {
+            var tableOfT = new T();
+
+            string partition = partitionKey;
+
+            if (partitionKey == null)
+            {
+                partition = tableOfT.PartitionKey;
+            }
+
+            var partitionScanQuery =
+                new TableQuery<T>().Where(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition));
+            var tableClientRef = client.GetTableReferene(tableOfT);
+            var toRet = tableClientRef.ExecuteQuerySegmented(partitionScanQuery, null);
+            return toRet.Results;
+        }
+
         public static T GetEntityByPartitionAndRowKey<T>(
             this CloudTableClient client, 
             string rowKey, 
