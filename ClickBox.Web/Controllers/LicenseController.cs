@@ -181,7 +181,7 @@ namespace ClickBox.Web.Controllers
 
                 account.IssuedLicenses = account.IssuedLicenses + 1;
 
-                await this.client.InsertStorageEntityAsync(lic);
+                await client.InsertStorageEntityAsync(lic);
                 await this.client.InsertStorageEntityAsync(licx);
                 return this.Request.CreateResponse(HttpStatusCode.Created, key);
             }
@@ -204,7 +204,7 @@ namespace ClickBox.Web.Controllers
             UserAccount account, 
             Product product)
         {
-            if (account.PageMakerEnabled)
+            if (!account.IsolationEnabled && !account.KoderEnabled)
             {
                 return new Dictionary<string, string>
                            {
