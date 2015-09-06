@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Web", "ClickBox.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odes.License.Updater", "Odes.License.Updater\Odes.License.Updater.csproj", "{1EE69ADE-B190-4822-B648-ECB29C838B2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.CreateAccountsWebJob", "TrialRequestsWebJob\ClickBox.CreateAccountsWebJob.csproj", "{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Util", "ClickBox.Util\ClickBox.Util.csproj", "{BA7587E1-B6D8-4C24-A985-44DF1154B2FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.CreateAccountsWebJob", "ClickBox.CreateAccountsWebJob\ClickBox.CreateAccountsWebJob.csproj", "{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +31,14 @@ Global
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE69ADE-B190-4822-B648-ECB29C838B2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA7587E1-B6D8-4C24-A985-44DF1154B2FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA7587E1-B6D8-4C24-A985-44DF1154B2FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA7587E1-B6D8-4C24-A985-44DF1154B2FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA7587E1-B6D8-4C24-A985-44DF1154B2FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
