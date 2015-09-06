@@ -46,7 +46,6 @@
 
             return System.Configuration.ConfigurationManager.ConnectionStrings["AzureProdConnection"].ToString();
         }
-
         #endregion
     }
 }
