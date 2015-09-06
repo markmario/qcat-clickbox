@@ -9,7 +9,7 @@
     public class Functions
     {
         public static void ProcessQueueMessage([QueueTrigger("create-account")] AccountCreationMessage msg,
-            [Table("UserAccounts")] CloudTable tableBinding, TextWriter log)        {
+            [Table("UserAccounts")] CloudTable tableBinding, TextWriter log){
             log.WriteLine(msg);
             var account = new PersistedUserAccount()
             {
