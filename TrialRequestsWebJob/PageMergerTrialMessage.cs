@@ -3,12 +3,12 @@
 //    Copyright (c) 2015 QCAT Pty Ltd. All rights reserved.
 //  </copyright>
 // --------------------------------------------------------------------------------------------------
-namespace TrialRequestsWebJob
+namespace ClickBox.CreateAccounts
 {
     using ClickBox.Util;
     using System;
 
-    public class PageMergerTrialMessage
+    public class AccountCreationMessage
     {
         public Guid Id
         {
@@ -17,6 +17,8 @@ namespace TrialRequestsWebJob
                 return new Guid(this.AccountPassword);
             }
         }
+
+        public string AccountProductName { get; set; }
 
         public string AccountEmail { get; set; }
 
@@ -35,11 +37,14 @@ namespace TrialRequestsWebJob
         }
 
         public string AccountRequestMessage { get; set; }
+
+        public string AccountLicenseType { get; set; }
+
         public override string ToString()
         {
             return "{AccountName:"+ AccountName + ", AccountEmail:" + AccountEmail +","+
                     "AccountOrganisation:" + AccountOrganisation + ", AccountPassword:"+ AccountPassword +", "+
-                    "AccountRequestMessage:" + AccountRequestMessage + "}";
+                    "AccountRequestMessage:" + AccountRequestMessage + ", AccountProductName:" + AccountProductName +"}";
         }
     }
 }

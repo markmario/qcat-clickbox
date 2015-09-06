@@ -1,4 +1,4 @@
-﻿namespace TrialRequestsWebJob
+﻿namespace ClickBox.CreateAccounts
 {
     using System;
     using System.IO;

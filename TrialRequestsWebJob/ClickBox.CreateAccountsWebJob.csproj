@@ -7,8 +7,8 @@
     <ProjectGuid>{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TrialRequestsWebJob</RootNamespace>
-    <AssemblyName>TrialRequestsWebJob</AssemblyName>
+    <RootNamespace>ClickBox.CreateAccounts</RootNamespace>
+    <AssemblyName>ClickBox.CreateAccounts</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
