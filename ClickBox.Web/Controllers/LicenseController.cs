@@ -133,6 +133,9 @@ namespace ClickBox.Web.Controllers
                             TableOperators.And, 
                             TableQuery.GenerateFilterCondition("UserAccountId", QueryComparisons.Equal, account.Id)));
 
+                //next block of code is for when the account has been renewed and paid
+                //another term and so its account.supportDate will no longer be the same
+                //as the previously issued license.
                 var oldRequests = await this.client.GetEntityListByPropertyFilterListAsync<ClientIssuedLicense>(filters);
 
                 var clientIssuedLicenses = oldRequests as ClientIssuedLicense[] ?? oldRequests.ToArray();
@@ -183,6 +186,7 @@ namespace ClickBox.Web.Controllers
 
                 await client.InsertStorageEntityAsync(lic);
                 await this.client.InsertStorageEntityAsync(licx);
+                await client.UpdateEntityAsync(account);
                 return this.Request.CreateResponse(HttpStatusCode.Created, key);
             }
             catch (Exception ex)
