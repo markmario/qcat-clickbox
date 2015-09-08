@@ -10,6 +10,7 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
+    using System;
 
     [Authorize]
     public class AccountController : Controller
@@ -51,6 +52,8 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            Console.WriteLine("+++++==================================================");
+            Console.WriteLine(model.Email, returnUrl);
             if (this.ModelState.IsValid)
             {
                 var user = await this.UserManager.FindAsync(model.Email, model.Password);
@@ -61,6 +64,8 @@
                 }
                 else
                 {
+                    Console.WriteLine("+++++==================================================");
+                    Console.WriteLine("========NO NO NO NO NO USER NO NO NO NO");
                     this.ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
