@@ -48,6 +48,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mandrill, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mandrill.2.2.1.0\lib\net45\Mandrill.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
     </Reference>
@@ -100,10 +104,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountCreationMessage.cs" />
+    <Compile Include="Mail\IHaveDataForMail.cs" />
+    <Compile Include="Mail\Mailer.cs" />
+    <Compile Include="Messages\AccountCreationMessage.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Messages\SendAccountAndDownloadInstructionsMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

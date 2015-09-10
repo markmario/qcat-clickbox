@@ -3,7 +3,7 @@
 //    Copyright (c) 2015 QCAT Pty Ltd. All rights reserved.
 //  </copyright>
 // --------------------------------------------------------------------------------------------------
-namespace ClickBox.CreateAccounts
+namespace ClickBox.CreateAccounts.Messages
 {
     using ClickBox.Util;
     using System;
