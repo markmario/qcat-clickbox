@@ -117,17 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HtmlFooter" xml:space="preserve">
-    <value>&lt;div style="float:left;"&gt;&lt;img src="cid:qcatlogo" style="height:200px;" /&gt;&lt;/div&gt;
-&lt;div style="border-left:thick solid #8B4513; width:20px; float:left; height:200px;"&gt;&lt;/div&gt;
-&lt;div&gt;
-&lt;div&gt;&lt;strong&gt;Phone: &lt;/strong&gt;&lt;span&gt;(+613) 9018 5492&lt;/span&gt;&lt;/div&gt;
-&lt;div&gt;&lt;strong&gt;Email: &lt;/strong&gt;&lt;a href="mailto:licensing@qcat.com.au"&gt;licensing@qcat.com.au&lt;/a&gt;&lt;/div&gt;
-&lt;div&gt;&lt;strong&gt;Web: &lt;/strong&gt;&lt;a href="www.qcat.com.au"&gt;www.qcat.com.au&lt;/a&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;hr&gt;
-&lt;div style="font-size:10pt;"&gt;
+  <data name="TrialSuccessHtml" xml:space="preserve">
+    <value>&lt;div style="float:left;"&gt;&lt;img src="cid:qcatlogo" style="height:100px;" /&gt;&lt;/div&gt;
+&lt;div style="border-left:thick solid #8B4513; width:20px; float:left; height:220px;"&gt;&lt;/div&gt;
+&lt;p  style="float:left;"&gt;
+	&lt;div style="margin-top:10px;"&gt;{{welcome}}&lt;/div&gt;
+	&lt;div style="margin-top:10px;"&gt;{{instructions}}&lt;/div&gt;
+	&lt;div style="margin-top:10px;"&gt;
+		&lt;a href="{{downloadlink}}"&gt;{{downloadlink}}&lt;/a&gt;
+	&lt;/div&gt;
+	&lt;div style="margin-top:30px;"&gt;&lt;strong&gt;License Name: &lt;/strong&gt;&lt;span&gt;{{licenseName}}&lt;/span&gt;&lt;/div&gt;
+	&lt;div&gt;&lt;strong&gt;Password: &lt;/strong&gt;&lt;span&gt;{{password}}&lt;/span&gt;&lt;/div&gt;
+	&lt;div style="margin-top:20px;"&gt;&lt;strong&gt;Phone: &lt;/strong&gt;&lt;span&gt;(+613) 9018 5492&lt;/span&gt;&lt;/div&gt;
+	&lt;div&gt;&lt;strong&gt;Email: &lt;/strong&gt;&lt;a href="mailto:licensing@qcat.com.au"&gt;licensing@qcat.com.au&lt;/a&gt;&lt;/div&gt;
+	&lt;div&gt;&lt;strong&gt;Web: &lt;/strong&gt;&lt;a href="www.qcat.com.au"&gt;www.qcat.com.au&lt;/a&gt;&lt;/div&gt;
+&lt;/p&gt;
+&lt;hr style="margin-top:40px;"&gt;
+&lt;p style="font-size:10pt; margin-top:10px;"&gt;
 	Privileged/Confidential Information may be contained in this message. If you are not the addressee indicated in this message (or responsible for delivery of the message to such person) you may not copy or deliver this message to anyone. In such case, you should destroy this message and kindly notify the sender by reply email	
-&lt;/div&gt;</value>
+&lt;/p&gt;</value>
   </data>
 </root>

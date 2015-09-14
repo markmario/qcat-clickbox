@@ -9,5 +9,8 @@
         string Instructions { get; set; }
         string ContactName { get; set; }
         string FromName { get; set; }
+        string LicenseName { get; set; }
+        string Password { get; set; }
+
     }
 }

@@ -52,10 +52,13 @@
                     From = "licensing@qcat.com.au",
                     To = msg.AccountEmail,
                     DowloadLink = "http://qcatinstalls.blob.core.windows.net/pagemaker/QcatPagemaker.application",
-                    Instructions = "Click the link to download  your copy of" + msg.AccountProductName,
+                    Instructions = "Click the link to download your copy of " + msg.AccountProductName + 
+                                    " and use your License Name and Password to obtain your "  + msg.AccountLicenseType,
                     MessageBody = "Welcome to your " + msg.AccountProductName + " " + msg.AccountLicenseType,
                     ContactName = msg.AccountName,
-                    FromName = "QCAT Licensing Team"
+                    FromName = "QCAT Licensing Team",
+                    Password = msg.Password,
+                    LicenseName = msg.AccountName
                 };
                 outputQueue.AddMessage(new CloudQueueMessage(JsonConvert.SerializeObject(accountVerify)));
             }

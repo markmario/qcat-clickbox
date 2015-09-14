@@ -29,10 +29,14 @@ namespace ClickBox.CreateAccounts.Messages
             get; set;
         }
 
+        public string LicenseName { get; set; }
+
         public string MessageBody
         {
             get; set;
         }
+
+        public string Password { get; set; }
 
         public string To
         {

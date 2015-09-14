@@ -61,20 +61,20 @@ namespace ClickBox.CreateAccounts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;div style=&quot;float:left;&quot;&gt;&lt;img src=&quot;cid:qcatlogo&quot; style=&quot;height:200px;&quot; /&gt;&lt;/div&gt;
-        ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:200px;&quot;&gt;&lt;/div&gt;
-        ///&lt;div&gt;
-        ///&lt;div&gt;&lt;strong&gt;Phone: &lt;/strong&gt;&lt;span&gt;(+613) 9018 5492&lt;/span&gt;&lt;/div&gt;
-        ///&lt;div&gt;&lt;strong&gt;Email: &lt;/strong&gt;&lt;a href=&quot;mailto:licensing@qcat.com.au&quot;&gt;licensing@qcat.com.au&lt;/a&gt;&lt;/div&gt;
-        ///&lt;div&gt;&lt;strong&gt;Web: &lt;/strong&gt;&lt;a href=&quot;www.qcat.com.au&quot;&gt;www.qcat.com.au&lt;/a&gt;&lt;/div&gt;
-        ///&lt;/div&gt;
-        ///&lt;hr&gt;
-        ///&lt;div style=&quot;font-size:10pt;&quot;&gt;
-        ///	Privileged/Confidential Information may [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;div style=&quot;float:left;&quot;&gt;&lt;img src=&quot;cid:qcatlogo&quot; style=&quot;height:100px;&quot; /&gt;&lt;/div&gt;
+        ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:220px;&quot;&gt;&lt;/div&gt;
+        ///&lt;p  style=&quot;float:left;&quot;&gt;
+        ///	&lt;div style=&quot;margin-top:10px;&quot;&gt;{{welcome}}&lt;/div&gt;
+        ///	&lt;div style=&quot;margin-top:10px;&quot;&gt;{{instructions}}&lt;/div&gt;
+        ///	&lt;div style=&quot;margin-top:10px;&quot;&gt;
+        ///		&lt;a href=&quot;{{downloadlink}}&quot;&gt;{{downloadlink}}&lt;/a&gt;
+        ///	&lt;/div&gt;
+        ///	&lt;div style=&quot;margin-top:30px;&quot;&gt;&lt;strong&gt;License Name: &lt;/strong&gt;&lt;span&gt;{{licenseName}}&lt;/span&gt;&lt;/div&gt;
+        ///	&lt;div&gt;&lt;strong&gt;Pas [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string HtmlFooter {
+        internal static string TrialSuccessHtml {
             get {
-                return ResourceManager.GetString("HtmlFooter", resourceCulture);
+                return ResourceManager.GetString("TrialSuccessHtml", resourceCulture);
             }
         }
     }
