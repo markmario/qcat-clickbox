@@ -8,41 +8,33 @@ namespace ClickBox.CreateAccounts.Messages
         {
             get; set;
         }
-
         public string DowloadLink
         {
             get; set;
         }
-
         public string From
         {
             get; set;
         }
-
         public string FromName
         {
             get; set;
         }
-
         public string Instructions
         {
             get; set;
         }
-
         public string LicenseName { get; set; }
-
         public string MessageBody
         {
             get; set;
         }
-
         public string Password { get; set; }
-
+        public string ProductName { get; set; }
         public string To
         {
             get; set;
         }
-
         public override string ToString()
         {
             return "{From:" + From + ", FromName:" + FromName + "," +

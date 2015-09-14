@@ -18,6 +18,8 @@
 
             log.WriteLine(msg);
 
+            //TODO: will have to sort out payment here if its not a Trial
+
             var account = new PersistedUserAccount()
             {
                 ContactName = msg.AccountName,
@@ -38,6 +40,7 @@
             };
             //check to see if the account exists?
             TableOperation insertOperation = TableOperation.Insert(account);
+            //put the message on the queue only if table insert succeeds
             var result = tableBinding.Execute(insertOperation);
 
             //what to do if this has a different code?
@@ -58,7 +61,8 @@
                     ContactName = msg.AccountName,
                     FromName = "QCAT Licensing Team",
                     Password = msg.Password,
-                    LicenseName = msg.AccountName
+                    LicenseName = msg.AccountName,
+                    ProductName = msg.AccountProductName
                 };
                 outputQueue.AddMessage(new CloudQueueMessage(JsonConvert.SerializeObject(accountVerify)));
             }

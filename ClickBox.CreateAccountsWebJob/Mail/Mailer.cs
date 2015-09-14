@@ -2,10 +2,7 @@
 using Mandrill.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Resources;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClickBox.CreateAccounts.Mail
@@ -40,10 +37,13 @@ namespace ClickBox.CreateAccounts.Mail
                 To = new List<EmailAddress>(new[] { to }),
                 FromEmail = msg.From,
                 FromName = msg.FromName,
-                Text = msg.MessageBody + "</br> " + msg.DowloadLink,
+                Text = msg.MessageBody + Environment.NewLine + 
+                       msg.Instructions + Environment.NewLine + 
+                       msg.DowloadLink + Environment.NewLine + Environment.NewLine +
+                       "License Name: " + msg.LicenseName + Environment.NewLine +
+                       "Password: " + msg.Password + Environment.NewLine,
                 Html = html,
-                Subject = "QCAT PageMaker Trial!",
-                
+                Subject = "QCAT " + msg.ProductName + " " + msg.LicenseName + "!"
             };
 
             email.Images = images;
@@ -53,7 +53,9 @@ namespace ClickBox.CreateAccounts.Mail
             email.AddGlobalVariable("downloadlink", msg.DowloadLink);
             email.AddGlobalVariable("password", msg.Password);
             email.AddGlobalVariable("licenseName", msg.LicenseName);
+
             var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
+
             if (response[0].Status == EmailResultStatus.Sent)
             {
                 return true;

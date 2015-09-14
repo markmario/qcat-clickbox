@@ -11,6 +11,6 @@
         string FromName { get; set; }
         string LicenseName { get; set; }
         string Password { get; set; }
-
+        string ProductName { get; set; }
     }
 }
