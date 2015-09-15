@@ -52,7 +52,7 @@ namespace ClickBox.CreateAccounts.Mail
             email.AddGlobalVariable("instructions", msg.Instructions);
             email.AddGlobalVariable("downloadlink", msg.DowloadLink);
             email.AddGlobalVariable("password", msg.Password);
-            email.AddGlobalVariable("licenseName", msg.LicenseName);
+            email.AddGlobalVariable("licenseName", msg.To);
 
             var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
 

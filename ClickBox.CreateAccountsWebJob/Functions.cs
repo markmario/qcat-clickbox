@@ -9,6 +9,7 @@
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
     using Mail;
+    using Util;
 
     public class Functions
     {
@@ -50,13 +51,16 @@
                 string outputQueueName = "account-created";
                 QueueAttribute queueAttribute = new QueueAttribute(outputQueueName);
                 CloudQueue outputQueue = binder.Bind<CloudQueue>(queueAttribute);
+                var downloadDetail = ProductDownloadLinkResolver
+                                    .ResolveDownloadLinkFromProductName(msg.AccountProductName);
                 var accountVerify = new SendAccountAndDownloadInstructionsMessage()
                 {
                     From = "licensing@qcat.com.au",
                     To = msg.AccountEmail,
-                    DowloadLink = "http://qcatinstalls.blob.core.windows.net/pagemaker/QcatPagemaker.application",
+                    DowloadLink = downloadDetail.DownloadLink, 
                     Instructions = "Click the link to download your copy of " + msg.AccountProductName + 
-                                    " and use your License Name and Password to obtain your "  + msg.AccountLicenseType,
+                                    " and use your License Name and Password to obtain your "  + msg.AccountLicenseType +
+                                    downloadDetail.ExtraInstructions,
                     MessageBody = "Welcome to your " + msg.AccountProductName + " " + msg.AccountLicenseType,
                     ContactName = msg.AccountName,
                     FromName = "QCAT Licensing Team",

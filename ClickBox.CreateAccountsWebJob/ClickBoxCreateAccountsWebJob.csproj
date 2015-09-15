@@ -116,6 +116,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Util\IDownloadDetail.cs" />
+    <Compile Include="Util\PageMakerDownloadDetail.cs" />
+    <Compile Include="Util\ProductDownloadLinkResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
