@@ -93,7 +93,7 @@ namespace ClickBox.Web
             var runtime = System.Configuration.ConfigurationManager.AppSettings["Runtime"];
             if (runtime == "debug")
             {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
                 var lines = File.ReadAllLines(dbPath);
                 var dbBase64Text = Convert.FromBase64String(lines[1]);
