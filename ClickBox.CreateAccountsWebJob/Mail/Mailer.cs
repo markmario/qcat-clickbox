@@ -22,7 +22,7 @@ namespace ClickBox.CreateAccounts.Mail
             imageStream.Read(imgBytes, 0, (int)imageStream.Length);
             var base64 = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
 
-            var html = Resource.TrialSuccessHtml.ToString();
+            var html = Resource.TrialSuccessHtml;
 
             var images = new[]{
                         new Image
@@ -33,21 +33,22 @@ namespace ClickBox.CreateAccounts.Mail
                             }};
 
             var email = new EmailMessage
-            {
-                To = new List<EmailAddress>(new[] { to }),
-                FromEmail = msg.From,
-                FromName = msg.FromName,
-                Text = msg.MessageBody + Environment.NewLine + 
-                       msg.Instructions + Environment.NewLine + 
-                       msg.DowloadLink + Environment.NewLine + Environment.NewLine +
-                       "License Name: " + msg.LicenseName + Environment.NewLine +
-                       "Password: " + msg.Password + Environment.NewLine,
-                Html = html,
-                Subject = "QCAT " + msg.ProductName + " " + msg.LicenseName + "!"
-            };
+                            {
+                                To = new List<EmailAddress>(new[] { to }),
+                                BccAddress = msg.From,
+                                FromEmail = msg.From,
+                                FromName = msg.FromName,
+                                Text =
+                                    msg.MessageBody + Environment.NewLine + msg.Instructions
+                                    + Environment.NewLine + msg.DowloadLink + Environment.NewLine
+                                    + Environment.NewLine + "License Name: " + msg.LicenseName
+                                    + Environment.NewLine + "Password: " + msg.Password + Environment.NewLine,
+                                Html = html,
+                                Subject = "QCAT " + msg.ProductName + " " + msg.LicenseName + "!",
+                                Images = images,
+                                MergeLanguage = "handlebars"
+                            };
 
-            email.Images = images;
-            email.MergeLanguage = "handlebars";
             email.AddGlobalVariable("welcome", msg.MessageBody);
             email.AddGlobalVariable("instructions", msg.Instructions);
             email.AddGlobalVariable("downloadlink", msg.DowloadLink);
@@ -56,14 +57,7 @@ namespace ClickBox.CreateAccounts.Mail
 
             var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
 
-            if (response[0].Status == EmailResultStatus.Sent)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return response[0].Status == EmailResultStatus.Sent;
         }
     }
 }

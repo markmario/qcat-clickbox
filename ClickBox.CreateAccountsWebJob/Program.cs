@@ -32,7 +32,7 @@
             var runtime = _config["Runtime"];
             if (runtime == "debug")
             {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 var dbPath = Path.Combine(
                     appDataPath,
                     _config["DropBoxDb"]);

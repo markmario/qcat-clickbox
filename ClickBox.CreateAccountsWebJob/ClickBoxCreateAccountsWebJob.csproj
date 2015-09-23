@@ -104,6 +104,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExistingAccount.cs" />
     <Compile Include="Mail\IHaveDataForMail.cs" />
     <Compile Include="Mail\Mailer.cs" />
     <Compile Include="Messages\AccountCreationMessage.cs" />

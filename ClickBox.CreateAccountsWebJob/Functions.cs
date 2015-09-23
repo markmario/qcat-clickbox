@@ -5,6 +5,8 @@
     using Microsoft.Azure.WebJobs;
     using System.IO;
     using System;
+    using System.Linq;
+
     using Messages;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
@@ -16,11 +18,16 @@
         public static void ProcessAccountCreationMessage([QueueTrigger("create-account")] AccountCreationMessage msg,
             [Table("UserAccounts")] CloudTable tableBinding, IBinder binder, TextWriter log)
         {
+            var existingAccount = new ExistingAccount();
+            var exists = existingAccount.DoesAccountForThisGivenProductExist(msg, tableBinding, binder);
+            if (exists)
+            {
+                log.WriteLine($"Account {msg} exists and will no resend email with existing License details");
+                return;
+            }
 
             log.WriteLine(msg);
-
             //TODO: will have to sort out payment here if its not a Trial
-
             var account = new PersistedUserAccount()
             {
                 ContactName = msg.AccountName,
@@ -40,7 +47,7 @@
                 Product = msg.AccountProductName
             };
             //check to see if the account exists?
-            TableOperation insertOperation = TableOperation.Insert(account);
+            var insertOperation = TableOperation.Insert(account);
             //put the message on the queue only if table insert succeeds
             var result = tableBinding.Execute(insertOperation);
 
@@ -48,9 +55,9 @@
             if (result.HttpStatusCode == 204)
             {
                 //place send email message on the queue
-                string outputQueueName = "account-created";
-                QueueAttribute queueAttribute = new QueueAttribute(outputQueueName);
-                CloudQueue outputQueue = binder.Bind<CloudQueue>(queueAttribute);
+                var outputQueueName = "account-created";
+                var queueAttribute = new QueueAttribute(outputQueueName);
+                var outputQueue = binder.Bind<CloudQueue>(queueAttribute);
                 var downloadDetail = ProductDownloadLinkResolver
                                     .ResolveDownloadLinkFromProductName(msg.AccountProductName);
                 var accountVerify = new SendAccountAndDownloadInstructionsMessage()
