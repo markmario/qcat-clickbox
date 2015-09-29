@@ -322,6 +322,7 @@
     <Compile Include="Models\IContainTableReference.cs" />
     <Compile Include="Models\ClientIssuedLicense.cs" />
     <Compile Include="Models\PersistedUserAccount.cs" />
+    <Compile Include="Models\PostLicenseRequestFailure.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\WebLicenseRequest.cs" />

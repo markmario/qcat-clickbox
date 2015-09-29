@@ -7,6 +7,7 @@ namespace ClickBox.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
@@ -82,6 +83,7 @@ namespace ClickBox.Web.Controllers
         {
             try
             {
+                //throw new Exception("Some great big dirty exception shite", new DBConcurrencyException());
                 if (licx == null)
                 {
                     return this.Request.CreateErrorResponse(
@@ -192,10 +194,18 @@ namespace ClickBox.Web.Controllers
             catch (Exception ex)
             {
                 Trace.TraceError("My error statement", ex.StackTrace, ex.Message);
+                await
+                    client.InsertStorageEntityAsync(
+                        new PostLicenseRequestFailure()
+                            {
+                                RowKey = licx.RequestId.ToString(),
+                                Exception = ex.Message,
+                                StackTrace = ex.StackTrace,
+                                Request = Newtonsoft.Json.JsonConvert.SerializeObject(licx)
+                            });
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError, 
-                    "There was a problem licensing your product. Please contant QCAT.", 
-                    ex);
+                    new HttpError("License error: "+ licx.RequestId));
             }
         }
 
