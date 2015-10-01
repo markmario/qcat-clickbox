@@ -8,6 +8,8 @@
             {
                 case "Pagemaker":
                     return new PageMakerDownloadDetail();
+                case "Pagestreamer":
+                    return new PageStreamerDownloadDetail();
                 default:
                     return null;
             }

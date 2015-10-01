@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Util\IDownloadDetail.cs" />
     <Compile Include="Util\PageMakerDownloadDetail.cs" />
+    <Compile Include="Util\PageStreamerDownloadDetail.cs" />
     <Compile Include="Util\ProductDownloadLinkResolver.cs" />
   </ItemGroup>
   <ItemGroup>
