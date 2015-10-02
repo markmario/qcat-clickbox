@@ -4,7 +4,7 @@ namespace ClickBox.CreateAccounts.Util
     {
         public string DownloadLink
         {
-            get { return "http://qcatinstalls.blob.core.windows.net/pagestreamer/PageStreamer.application"; }
+            get { return "http://install.qcat.com.au/pagestreamer/PageStreamer.application"; }
         }
 
         public string ExtraInstructions
