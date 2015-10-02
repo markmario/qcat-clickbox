@@ -4,7 +4,7 @@
     {
         public string DownloadLink
         {
-            get { return "https://qcatinstalls.blob.core.windows.net/pagemaker/QcatPagemaker.application"; }
+            get { return "http://install.qcat.com.au/pagemaker/QcatPagemaker.application"; }
         }
 
         public string ExtraInstructions
