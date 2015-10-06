@@ -4,5 +4,6 @@
     {
         string DownloadLink { get; }
         string ExtraInstructions { get; }
+        int DaysLicensed { get; }
     }
 }

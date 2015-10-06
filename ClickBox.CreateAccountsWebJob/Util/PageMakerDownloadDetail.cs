@@ -1,7 +1,17 @@
-﻿namespace ClickBox.CreateAccounts.Util
+﻿using System;
+
+namespace ClickBox.CreateAccounts.Util
 {
     public class PageMakerDownloadDetail : IDownloadDetail
     {
+        public int DaysLicensed
+        {
+            get
+            {
+                return 50;
+            }
+        }
+
         public string DownloadLink
         {
             get { return "http://install.qcat.com.au/pagemaker/QcatPagemaker.application"; }

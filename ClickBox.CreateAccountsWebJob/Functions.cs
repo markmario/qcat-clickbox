@@ -27,6 +27,9 @@
             }
 
             log.WriteLine(msg);
+            var downloadDetail = ProductDownloadLinkResolver
+                                .ResolveDownloadLinkFromProductName(msg.AccountProductName);
+
             //TODO: will have to sort out payment here if its not a Trial
             var account = new PersistedUserAccount()
             {
@@ -43,7 +46,7 @@
                 MaxVersionNumber = null,
                 PageMakerEnabled = false,
                 Password = msg.Password,
-                SupportEndDate = DateTime.Now.AddDays(35),
+                SupportEndDate = DateTime.Now.AddDays(downloadDetail.DaysLicensed),
                 Product = msg.AccountProductName
             };
             //check to see if the account exists?
@@ -58,8 +61,7 @@
                 var outputQueueName = "account-created";
                 var queueAttribute = new QueueAttribute(outputQueueName);
                 var outputQueue = binder.Bind<CloudQueue>(queueAttribute);
-                var downloadDetail = ProductDownloadLinkResolver
-                                    .ResolveDownloadLinkFromProductName(msg.AccountProductName);
+                
                 var accountVerify = new SendAccountAndDownloadInstructionsMessage()
                 {
                     From = "licensing@qcat.com.au",
