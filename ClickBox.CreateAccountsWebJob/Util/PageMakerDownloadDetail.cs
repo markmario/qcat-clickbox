@@ -14,7 +14,7 @@ namespace ClickBox.CreateAccounts.Util
 
         public string DownloadLink
         {
-            get { return "http://install.qcat.com.au/pagemaker/QcatPagemaker.application"; }
+            get { return "http://install.qcat.com.au/pagemaker/PageMaker.application"; }
         }
 
         public string ExtraInstructions
