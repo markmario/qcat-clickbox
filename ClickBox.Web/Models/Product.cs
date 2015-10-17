@@ -62,5 +62,7 @@ namespace ClickBox.Web.Models
         {
             get{return "Products";}
         }
+
+        public string Description { get; internal set; }
     }
 }

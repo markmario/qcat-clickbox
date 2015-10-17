@@ -1,0 +1,42 @@
+﻿@using ClickBox.Web.Models
+@model dynamic
+
+<div ng-controller="purchaseOrderController"
+     style="clear:both;">
+    <h1 class="product-name">{{viewModel.Product.Name}}</h1>
+    <h2 class="product-description">{{viewModel.Product.Description}}</h2>
+    <hr style="width:50%; float:left;">
+
+    <div class="price-wrapper">
+        <h3 class="price">Price</h3>
+        <h4>$59.95 AUD</h4>
+    </div>
+
+    <div>
+        <form id="userForm" name="userForm">
+            <div>
+                <label class="lblFormItem">Organisation</label>
+                <input type="text"
+                       required
+                       ng-model="order.org">
+            </div>
+            <div>
+                <label class="lblFormItem">Quantity</label>
+                <input type="number"
+                       required
+                       ng-model="order.quantity"
+                       max="10" min="1">
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<script>
+
+        var purchaseOrderModule = angular.module("purchaseOrderModule", []);
+        var data = @Html.Raw(Json.Encode(Model));
+        purchaseOrderModule.value("ViewModel", data);
+
+</script>
+
+<script src="~/AngularModules/modules/purchase-order.module.js" language="javascript"></script>*@

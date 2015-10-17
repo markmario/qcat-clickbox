@@ -1,0 +1,17 @@
+﻿@using ClickBox.Web.Models
+@model dynamic
+
+<img ng-src="{{viewModel.Product.Image}}" 
+     ng-cloak
+     style="width:93%;" 
+     ng-controller="purchaseOrderContentController"/>
+
+@*<script>
+
+        var purchaseOrderModule = angular.module("purchaseOrderModule", []);
+        var data = @Html.Raw(Json.Encode(Model));
+        purchaseOrderModule.value("ViewModel", data);
+
+</script>
+
+<script src="~/AngularModules/modules/purchase-order.module.js" language="javascript"></script>*@

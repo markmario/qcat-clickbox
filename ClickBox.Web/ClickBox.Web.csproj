@@ -293,6 +293,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DO-NOT-TOUCH.cs" />
+    <Compile Include="Controllers\PurchaseController.cs" />
     <Compile Include="Controllers\_AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IsolationController.cs" />
@@ -335,9 +336,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="angularModules\modules\product.module.js" />
+    <Content Include="angularModules\modules\purchase-order.module.js" />
     <Content Include="Content\Custom\div-tables.css" />
     <Content Include="Content\Custom\product-table.css" />
     <Content Include="Content\Custom\site.css" />
+    <Content Include="Content\Custom\store.css" />
+    <Content Include="Content\images\pagemaker.png" />
     <Content Include="Content\kendo\2014.1.318\Black\editor.png" />
     <Content Include="Content\kendo\2014.1.318\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2014.1.318\Black\indeterminate.gif" />
@@ -559,6 +563,24 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Custom\PoiretOne-Regular.ttf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-Bold.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-BoldCn.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-BoldCnIt.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-Cn.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-CnIt.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-Demi.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-DemiCn.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-DemiCnIt.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-DemiIt.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-HeavyCn.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-HeavyCnIt.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-It.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-MediumCn.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-MediumCnIt.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-Regular.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-UltLtCn.otf" />
+    <Content Include="Content\Custom\AvenirNextLTPro-UltLtCnIt.otf" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <Content Include="Scripts\kendo\2014.1.318\cultures\kendo.culture.af-ZA.min.js" />
     <Content Include="Scripts\kendo\2014.1.318\cultures\kendo.culture.af.min.js" />
@@ -1136,6 +1158,9 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\UserAccount\EditorTemplates\ProductTypeEditor.cshtml" />
+    <Content Include="Views\Purchase\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutStore.cshtml" />
+    <Content Include="Views\Purchase\_PurchaseProductPicturePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="angularModules\templates\" />
