@@ -48,7 +48,7 @@
 
     var handler = StripeCheckout.configure({
         key: 'pk_test_YNN22oDTqudLQp5rgaFUJGaU',
-        image: '../../Content/images/q128.png',
+        image: '~/Content/images/q128.png',
         locale: 'auto',
         token: function(token) {
         // Use the token to create the charge with a server-side script.
@@ -73,7 +73,7 @@
             name: 'QCAT',
             description: qty + ' x ' + product,
             currency: "aud",
-            amount: (price * 100)
+            amount: (qty * (price * 100))
         });
         e.preventDefault();
     });
