@@ -342,6 +342,7 @@
     <Content Include="Content\Custom\site.css" />
     <Content Include="Content\Custom\store.css" />
     <Content Include="Content\images\pagemaker.png" />
+    <Content Include="Content\images\stripeqcatlogo.png" />
     <Content Include="Content\kendo\2014.1.318\Black\editor.png" />
     <Content Include="Content\kendo\2014.1.318\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2014.1.318\Black\indeterminate.gif" />
