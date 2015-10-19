@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace ClickBox.Web.Controllers
 {
+    [RequireHttps(Order = 1)]
     public class PurchaseController : Controller
     {
         private CloudTableClient client;
@@ -22,12 +23,7 @@ namespace ClickBox.Web.Controllers
         // GET: Purchase
         public async Task<ActionResult> Index(string productId)
         {
-            //var toRet = await client.GetEntitiesAsync<Product>();
-            var toRet = new Product() {
-                RowKey = productId,
-                Name = "PageMaker",
-                Description = "Splits multi page PDF Files for Load Files"
-            };
+            var toRet = await client.GetEntityByPropertyFilterAsync<Product>("Id", productId);
             var model = new { Product = toRet };
             return View(model);
         }

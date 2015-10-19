@@ -11,7 +11,6 @@ purchaseOrderModule.controller('purchaseOrderContentController', ['$scope', '$ht
     function ($scope, $http, $timeout, viewModel) {
 
         $scope.viewModel = viewModel;
-        $scope.viewModel.Product.Image = "../../Content/images/pagemaker.png";
 
     }
 ]);

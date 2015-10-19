@@ -18,51 +18,73 @@
     src: url(AvenirNextLTPro-HeavyCn.otf);
 }
 
-
 body {
-    padding: 20px!important;
-    background-image: -webkit-gradient( linear, left top, left top, color-stop(0, #DAD0C2), color-stop(0.36, #FCF9EF) );
-    background-image: -o-linear-gradient(top, #DAD0C2 0%, #FCF9EF 36%);
-    background-image: -moz-linear-gradient(top, #DAD0C2 0%, #FCF9EF 36%);
-    background-image: -webkit-linear-gradient(top, #DAD0C2 0%, #FCF9EF 36%);
-    background-image: -ms-linear-gradient(top, #DAD0C2 0%, #FCF9EF 36%);
-    background-image: linear-gradient(to top, #DAD0C2 0%, #FCF9EF 36%);
+    padding: 20px !important;
+    background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.44, #F0E2CF), color-stop(1, #C8BCAC) );
+    background-image: -o-linear-gradient(bottom, #C8BCAC 100%, #F0E2CF 44%);
+    background-image: -moz-linear-gradient(bottom, #C8BCAC 100%, #F0E2CF 44%);
+    background-image: -webkit-linear-gradient(bottom, #C8BCAC 100%, #F0E2CF 44%);
+    background-image: -ms-linear-gradient(bottom, #C8BCAC 100%, #F0E2CF 44%);
+    background-image: linear-gradient(to bottom, #C8BCAC 100%, #F0E2CF 44%);
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif, poiret, avenir-regular, avenir-demi, avenir-proheavy;
 }
 
-h1, h2{
-    font-weight:bolder!important;
-    font-family:poiret;
+h1, h2 {
+    font-weight: bolder !important;
+    font-family: poiret;
 }
 
-h3, h4{
-    font-weight:bold;
+h3, h4 {
+    font-weight: bold;
     font-family: avenir-regular;
 }
 
-.price-wrapper{
-    font-weight: bold!important;
-    clear:both;
+.price-wrapper {
+    font-weight: bold !important;
+    clear: both;
 }
 
-h1.product-name{
-    font-family:avenir-proheavy;
+h1.product-name {
+    font-family: avenir-proheavy;
 }
 
-h2.product-description{
-    font-family:avenir-demi;
-}
-
-h3.price {
-    font-stretch: ultra-expanded!important;
+h2.product-description {
     font-family: avenir-demi;
 }
 
-#userForm input{
+h3.price {
+    font-stretch: ultra-expanded !important;
+    font-family: avenir-demi;
+}
+
+#userForm input {
     margin-bottom: 10px;
 }
 
-.lblFormItem{
-    width:100px !important;
+.lblFormItem {
+    width: 100px !important;
     font-family: avenir-regular;
+}
+
+.qcat-orange{
+    color:#EB5E28;
+}
+
+.rounded-pay-btn{
+    margin-top: 45px;
+    border-radius:25px;
+    background-color:#EB5E28;
+    color:#EEB7A4;
+    border: none;
+    width:180px;
+    height:50px;
+    font-weight: bold;
+    font-family: avenir-regular;
+    font-size:18px;
+    text-transform:capitalize;
+}
+
+.pay-icon{
+    padding-left:15px;
+    color:#EEB7A4;
 }

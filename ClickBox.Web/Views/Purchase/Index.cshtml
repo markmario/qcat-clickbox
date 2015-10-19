@@ -2,14 +2,15 @@
 @model dynamic
 
 <div ng-controller="purchaseOrderController"
-     style="clear:both;">
+     style="clear:both;"
+     id="ctrlElement">
     <h1 class="product-name">{{viewModel.Product.Name}}</h1>
     <h2 class="product-description">{{viewModel.Product.Description}}</h2>
     <hr style="width:50%; float:left;">
 
     <div class="price-wrapper">
         <h3 class="price">Price</h3>
-        <h4>$59.95 AUD</h4>
+        <h4 class="qcat-orange">{{viewModel.Product.Price | currency:"$"}} AUD</h4>
     </div>
 
     <div>
@@ -18,18 +19,71 @@
                 <label class="lblFormItem">Organisation</label>
                 <input type="text"
                        required
+                       name="organisation"
+                       id="organisation"
                        ng-model="order.org">
             </div>
             <div>
                 <label class="lblFormItem">Quantity</label>
                 <input type="number"
+                       name="quantity"
+                       id="quantity"
                        required
                        ng-model="order.quantity"
                        max="10" min="1">
             </div>
+            <button id="customButton" class="rounded-pay-btn">
+                BUY NOW<i class="fa fa-chevron-right pay-icon"></i>
+            </button>
         </form>
     </div>
 </div>
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+    
+    
+    //var purchaseOrderModule = angular.module("purchaseOrderModule");
+    //var vm = purchaseOrderModule.value("ViewModel");
+
+    var handler = StripeCheckout.configure({
+        key: 'pk_test_YNN22oDTqudLQp5rgaFUJGaU',
+        image: '../../Content/images/q128.png',
+        locale: 'auto',
+        token: function(token) {
+        // Use the token to create the charge with a server-side script.
+            // You can access the token ID with `token.id`
+            var scope = angular.element(document.getElementById('ctrlElement')).scope();
+            var qty = scope.order.quantity;
+            var org = scope.order.org;
+            console.log(token, scope);
+            //$("#stripeToken").val(token.id);
+            //$("#stripeEmail").val(token.email);
+            //$("#purchase-pagemaker-form").submit();
+        }
+    });
+
+    $('#customButton').click(function(e) {
+        // Open Checkout with further options
+        var scope = angular.element(document.getElementById('ctrlElement')).scope();
+        var qty = scope.order.quantity;
+        var product = scope.viewModel.Product.Name;
+        var price = scope.viewModel.Product.Price;
+        handler.open({
+            name: 'QCAT',
+            description: qty + ' x ' + product,
+            currency: "aud",
+            amount: (price * 100)
+        });
+        e.preventDefault();
+    });
+
+    // Close Checkout on page navigation
+    $(window).bind('popstate', function() {
+        handler.close();
+    });
+
+</script>
 
 @*<script>
 
