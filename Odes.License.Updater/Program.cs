@@ -48,13 +48,13 @@ namespace Odes.License.Updater
         {
             Licence.LicenceType = LicenceTypes.Client;
 
-            Licence.SystemMachineName = "LINUIX01";// Environment.MachineName;
-            Licence.SystemId = "S-1-5-21-3115597392-398023741-1760809799";// new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            Licence.UserName = Environment.UserName + "@" + Environment.UserDomainName;
+            //Licence.SystemMachineName = "LINUIX01";// Environment.MachineName;
+            //Licence.SystemId = "S-1-5-21-3115597392-398023741-1760809799";// new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            //Licence.UserName = Environment.UserName + "@" + Environment.UserDomainName;
 
             /// *####NULEGAL
             //// Licence.Email = "peter.cryan@nulegal.com.au";
-           //// Licence.Password = "nul3g@l";
+            //// Licence.Password = "nul3g@l";
             // */
 
             /*
@@ -107,12 +107,23 @@ namespace Odes.License.Updater
             /* */
 
             /*KORDA MENTHA*/
-            Licence.Email = "tobymasterson";
-            Licence.Password = "lawimagetest01";
-            Licence.UserName = "tobymasterson";
+            //Licence.Email = "tobymasterson";
+            //Licence.Password = "lawimagetest01";
+            //Licence.UserName = "tobymasterson";
+
+            /*SIMON*/
+            Licence.ServiceQueue = "SNOODLEBUG";
+            Licence.Email = "simon@qcat.com.au";
+            Licence.Password = "jy4agzeipxwuhd4x7xrw3h4h64";
+
+            Licence.SystemMachineName = "SNOODLEBUG"; ;
+            Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            Licence.UserName = @"simon";
+            Licence.SystemNetworkCredential = Licence.UserName;
+            /* */
         }
 
-        private static void GenerateLicenceFile(string productName = "PageMaker")
+        private static void GenerateLicenceFile(string productName = "ODES")
         {
             Console.WriteLine();
             Console.WriteLine(Resources.genlicxfile);

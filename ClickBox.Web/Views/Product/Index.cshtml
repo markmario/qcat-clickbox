@@ -61,11 +61,15 @@
             </div>
             <div class="clearfix detail-row edit-row">
                 <span class="pull-left detail-label">Private Key:</span>
-                <textarea class="pull-left detail-value">{{selectedProduct.PrivateKey}}</textarea>
+                <textarea class="pull-left detail-value"
+                          ng-model="selectedProduct.PrivateKey">
+                </textarea>
             </div>
             <div class="clearfix detail-row edit-row">
                 <span class="pull-left detail-label">Public Key:</span>
-                <textarea class="pull-left detail-value">{{selectedProduct.PublicKey}}</textarea>
+                <textarea class="pull-left detail-value"
+                          ng-model="selectedProduct.PublicKey">
+                </textarea>
             </div>
         </div>
         <h3 ng-if="newProduct"
