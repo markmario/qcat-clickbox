@@ -13,7 +13,7 @@
         <h4 class="qcat-orange">{{viewModel.Product.Price | currency:"$"}} AUD</h4>
     </div>
 
-    <div>
+    <div id="userFormWrapper">
         <form id="userForm" name="userForm">
             <div>
                 <label class="lblFormItem">Contact Name</label>
@@ -58,21 +58,25 @@
             </ul>
         </div>
     </div>
+
+    <divf id="finishedPurchase" style="display:none;">
+        <h2>Thank you for your payment.</h2>
+        <div class="successMessage">
+            We will send your license details to <span style="font-weight:bold">{{successEmail}}</span> shortly.
+        </div>
+    </divf>
+
 </div>
 
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
     
-    
-    //var purchaseOrderModule = angular.module("purchaseOrderModule");
-    //var vm = purchaseOrderModule.value("ViewModel");
-
     var handler = StripeCheckout.configure({
         key: 'pk_test_YNN22oDTqudLQp5rgaFUJGaU',
         image: '../../Content/images/stripeqcatlogo.png',
         locale: 'auto',
         token: function(token) {
-        // Use the token to create the charge with a server-side script.
+            // Use the token to create the charge with a server-side script.
             // You can access the token ID with `token.id`
             var scope = angular.element(document.getElementById('ctrlElement')).scope();
             if (!scope.order.org) {
@@ -81,9 +85,35 @@
             var qty = scope.order.quantity;
             var org = scope.order.org;
             console.log(token, scope);
-            //$("#stripeToken").val(token.id);
-            //$("#stripeEmail").val(token.email);
-            //$("#purchase-pagemaker-form").submit();
+            var charge = {
+                Quantity: qty,
+                Organisation: org,
+                TokenId: token.id,
+                Email: token.email,
+                ProductId: scope.viewModel.Product.Id,
+                Price:scope.viewModel.Product.Price
+            };
+
+            
+
+            console.log("The charge object for the server", charge);
+            $.ajax({
+                type: 'POST',
+                url: '/Purchase/Charge',
+                data: JSON.stringify(charge),
+                contentType: 'application/json',
+                success: function(data){
+                    if (data.State === "Success") {
+                        $("#userFormWrapper").hide();
+                        $("#finishedPurchase").show();
+                        scope.successEmail = data.Email;
+                        scope.$apply();
+                    }
+                },
+                error: function(err) {
+                    alert("error - " + err);
+                }
+            });
         }
     });
 
@@ -92,7 +122,6 @@
         var scope = angular.element(document.getElementById('ctrlElement')).scope();
         var valid = validateForm(scope);
         if (!valid) {
-            alert("not valid");
             console.log("Scope after validation failed", scope);
             return;
         }
@@ -112,8 +141,6 @@
 
         $("#vQuanity").hide();
         $("#vContactName").hide();
-
-        console.log("validating the form", formFields);
 
         if (!formFields) {
             $("#vQuanity").show();

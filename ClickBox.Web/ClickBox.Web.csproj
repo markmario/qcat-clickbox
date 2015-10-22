@@ -305,6 +305,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\ChargeData.cs" />
     <Compile Include="Models\MonthlyCodedDocument.cs" />
     <Compile Include="Models\MonthlyIsolatedBatch.cs" />
     <Compile Include="Controllers\ProductController.cs" />

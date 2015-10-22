@@ -97,6 +97,7 @@ h3.price {
 .validation-error{
     color:red !important;
     font-family: avenir-regular;
+    font-size:16px;
 }
 
 ul.validation-error{
@@ -109,4 +110,9 @@ ul.validation-error{
 
 #vQuanity{
     display:none;
+}
+
+.successMessage{
+    font-family: avenir-regular;
+    font-style:italic;
 }

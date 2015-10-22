@@ -27,5 +27,18 @@ namespace ClickBox.Web.Controllers
             var model = new { Product = toRet };
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> Charge(ChargeData charge)
+        {
+            dynamic data = new
+            {
+                State = "Success",
+                Email = charge.Email
+            };
+            return new JsonResult() { Data = data };
+        }
+
+        
     }
 }
