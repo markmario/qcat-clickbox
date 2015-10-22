@@ -72,6 +72,7 @@ h3.price {
 
 .rounded-pay-btn{
     margin-top: 45px;
+    margin-bottom: 20px;
     border-radius:25px;
     background-color:#EB5E28;
     color:#EEB7A4;
@@ -87,4 +88,25 @@ h3.price {
 .pay-icon{
     padding-left:15px;
     color:#EEB7A4;
+}
+
+.customer-text-detail{
+    width: 60%;
+}
+
+.validation-error{
+    color:red !important;
+    font-family: avenir-regular;
+}
+
+ul.validation-error{
+    padding-left:10px !important;
+}
+
+#vContactName{
+    display:none;
+}
+
+#vQuanity{
+    display:none;
 }
