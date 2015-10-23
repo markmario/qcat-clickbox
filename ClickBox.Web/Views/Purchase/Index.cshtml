@@ -10,7 +10,7 @@
 
     <div class="price-wrapper">
         <h3 class="price">Price</h3>
-        <h4 class="qcat-orange">{{viewModel.Product.Price | currency:"$"}} AUD</h4>
+        <h4 class="qcat-orange">{{viewModel.Product.Price | currency:"$"}} AUD (per seat)</h4>
     </div>
 
     <div id="userFormWrapper">
@@ -59,10 +59,27 @@
         </div>
     </div>
 
+    <div id="waitingForCharge" style="display:none;">
+        <img src="~/Content/images/ajax-loader.gif"/>
+        <h3>Please wait whilst your credit card purchase is being processed...</h3>
+        <h4>Do not click the back in your browser.</h4>
+    </div>
+
+    <div id="oopsProblemWithCharging"  style="display:none;">
+        <h3>Sorry there seems to have been a problem.</h3>
+        <div>We haven't been able to process your credit card.</div>
+        <div>Please check with your credit provider and / or contact our support.</div>
+        <div ng-hide="noServer" style="margin-bottom:15px;">QCAT Support ID: {{supportIdFailedCharge}}</div>
+        <a ng-hide="noServer" ng-href="http://www.qcat.com.au/contact?sid='{{supportIdFailedCharge}}'">Contact us!</a>
+        <a ng-show="noServer" ng-href="http://www.qcat.com.au/contact.html">Contact us!</a>
+    </div>
+
     <divf id="finishedPurchase" style="display:none;">
-        <h2>Thank you for your payment.</h2>
+        <h2>Thank you, we received your payment of: </h2>
+        <h4>{{chargedAmout | currency:"$"}} AUD</h4>
         <div class="successMessage">
-            We will send your license details to <span style="font-weight:bold">{{successEmail}}</span> shortly.
+            We will send your license details to 
+            <span style="font-weight:bold; font-style:italic;">{{successEmail}}</span> shortly.
         </div>
     </divf>
 
@@ -75,13 +92,20 @@
         key: 'pk_test_YNN22oDTqudLQp5rgaFUJGaU',
         image: '../../Content/images/stripeqcatlogo.png',
         locale: 'auto',
-        token: function(token) {
+        token: function (token) {
+
+            $("#userFormWrapper").hide();
+            $("#waitingForCharge").show();
+
             // Use the token to create the charge with a server-side script.
             // You can access the token ID with `token.id`
             var scope = angular.element(document.getElementById('ctrlElement')).scope();
             if (!scope.order.org) {
                 scope.order.org = "None";
             }
+
+            scope.noServer = false;
+
             var qty = scope.order.quantity;
             var org = scope.order.org;
             console.log(token, scope);
@@ -94,9 +118,8 @@
                 Price:scope.viewModel.Product.Price
             };
 
-            
-
             console.log("The charge object for the server", charge);
+
             $.ajax({
                 type: 'POST',
                 url: '/Purchase/Charge',
@@ -104,14 +127,23 @@
                 contentType: 'application/json',
                 success: function(data){
                     if (data.State === "Success") {
-                        $("#userFormWrapper").hide();
+                        $("#waitingForCharge").hide();
                         $("#finishedPurchase").show();
                         scope.successEmail = data.Email;
-                        scope.$apply();
+                        scope.chargedAmout = data.ChargedAmount;
+                    } else {
+                        $("#waitingForCharge").hide();
+                        $("#oopsProblemWithCharging").show();
+                        scope.successEmail = data.Email;
+                        scope.supportIdFailedCharge = data.SupportId;
                     }
+                    scope.$apply();
                 },
-                error: function(err) {
-                    alert("error - " + err);
+                error: function (err) {
+                    $("#waitingForCharge").hide();
+                    $("#oopsProblemWithCharging").show();
+                    scope.noServer = true;
+                    scope.$apply();
                 }
             });
         }

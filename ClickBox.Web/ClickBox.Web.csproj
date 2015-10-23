@@ -192,6 +192,10 @@
       <HintPath>..\packages\Rhino.Licensing.1.3\lib\Net45\Rhino.Licensing.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Stripe.net, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.4.2.1\lib\net40\Stripe.net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -342,6 +346,7 @@
     <Content Include="Content\Custom\product-table.css" />
     <Content Include="Content\Custom\site.css" />
     <Content Include="Content\Custom\store.css" />
+    <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\pagemaker.png" />
     <Content Include="Content\images\stripeqcatlogo.png" />
     <Content Include="Content\kendo\2014.1.318\Black\editor.png" />
