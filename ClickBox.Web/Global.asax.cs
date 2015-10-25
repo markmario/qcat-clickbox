@@ -72,6 +72,9 @@ namespace ClickBox.Web
             await client.PrimeTable<MonthlyCodedDocument>();
             await client.PrimeTable<MonthlyIsolatedBatch>();
             await client.PrimeTable<PostLicenseRequestFailure>();
+            await client.PrimeTable<SuccessfulStripeCharge>();
+            await client.PrimeTable<ChargeRequest>();
+            await client.PrimeTable<FailedStripeCharge<Exception>>();
         }
 
         private static void SetAutoMappings()

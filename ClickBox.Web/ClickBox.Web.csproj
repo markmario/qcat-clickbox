@@ -310,6 +310,8 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ChargeData.cs" />
+    <Compile Include="Models\ChargeRequest.cs" />
+    <Compile Include="Models\FailedStripeCharge.cs" />
     <Compile Include="Models\MonthlyCodedDocument.cs" />
     <Compile Include="Models\MonthlyIsolatedBatch.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -330,6 +332,7 @@
     <Compile Include="Models\PersistedUserAccount.cs" />
     <Compile Include="Models\PostLicenseRequestFailure.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\SuccessfulStripeCharge.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\WebLicenseRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
