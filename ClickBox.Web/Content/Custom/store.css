@@ -112,6 +112,10 @@ ul.validation-error{
     display:none;
 }
 
+#vOrganisation{
+    display:none;
+}
+
 .successMessage{
     font-family: avenir-regular;
 }

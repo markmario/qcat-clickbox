@@ -34,6 +34,8 @@
                        ng-trim="true"
                        name="organisation"
                        id="organisation"
+                       ng-required="true"
+                       required
                        class="customer-text-detail"
                        ng-model="order.org">
             </div>
@@ -54,6 +56,7 @@
         <div id="errors">
             <ul class="validation-error">
                 <li id="vContactName" class="validation-error">Please enter a valid contact name</li>
+                <li id="vOrganisation" class="validation-error">Please enter an organisation name</li>
                 <li id="vQuanity" class="validation-error">Please select a quanity to purchase</li>
             </ul>
         </div>
@@ -100,9 +103,9 @@
             // Use the token to create the charge with a server-side script.
             // You can access the token ID with `token.id`
             var scope = angular.element(document.getElementById('ctrlElement')).scope();
-            if (!scope.order.org) {
-                scope.order.org = "None";
-            }
+            //if (!scope.order.org) {
+            //    scope.order.org = "None";
+            //}
 
             scope.noServer = false;
 
@@ -173,16 +176,19 @@
 
         $("#vQuanity").hide();
         $("#vContactName").hide();
+        $("#vOrganisation").hide();
 
         if (!formFields) {
             $("#vQuanity").show();
             $("#vContactName").show();
+            $("#vOrganisation").show();
             return false;
         }
 
         if (!formFields.order) {
             $("#vQuanity").show();
             $("#vContactName").show();
+            $("#vOrganisation").show();
             return false;
         }
 
@@ -191,6 +197,11 @@
         if (!formFields.order.quantity) {
             orderValid.push(false);
             $("#vQuanity").show();
+        }
+
+        if (!formFields.order.org) {
+            orderValid.push(false);
+            $("#vOrganisation").show();
         }
 
         if (!formFields.order.contact) {
