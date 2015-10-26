@@ -43,20 +43,20 @@ namespace ClickBox.Web.Controllers
 
                     myCharge.Amount = ((charge.Quantity * (int)charge.Price) * 100);
                     myCharge.Currency = "aud";
-
-                    // set this if you want to
-                    //myCharge.Description = charge.;
+                    myCharge.Capture = true;
+                    myCharge.Description = string.Format("ProductID: {0} | SupportID: {1}", 
+                                                        charge.ProductId, supportId);
 
                     myCharge.Source = new StripeSourceOptions()
                     {
                         TokenId = charge.TokenId
                     };
 
-                    var chargeService = new StripeChargeService("sk_test_IHVDwrGtPOznVB0BsyEmqCjC");
-                    //var chargeService = new StripeChargeService("bob");
+                    var chargeService = new StripeChargeService(MvcApplication.StripePurchaseString);
 
                     var chargeRequest = new ChargeRequest(charge.TokenId)
                     {
+                        ProductId = charge.ProductId,
                         Amount = myCharge.Amount,
                         Currency = myCharge.Currency,
                         Quantity = charge.Quantity,

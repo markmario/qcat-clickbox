@@ -115,3 +115,7 @@ ul.validation-error{
 .successMessage{
     font-family: avenir-regular;
 }
+
+.failureMessageText{
+    font-family: avenir-regular;
+}

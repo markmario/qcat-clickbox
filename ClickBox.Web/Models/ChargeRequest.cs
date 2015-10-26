@@ -31,5 +31,6 @@ namespace ClickBox.Web.Models
         }
 
         public DateTimeOffset DateTimeOfRequest { get; set; }
+        public string ProductId { get; internal set; }
     }
 }

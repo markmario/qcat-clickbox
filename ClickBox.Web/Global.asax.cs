@@ -39,6 +39,7 @@ namespace ClickBox.Web
         
         public static CloudStorageAccount TableStore { get; private set; }
         public static string TableStoreConnectionString { get; private set; }
+        public static string StripePurchaseString { get; private set; }
 
         #endregion
 
@@ -55,6 +56,7 @@ namespace ClickBox.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             TableStore = GetStorageAccount();
+            SetStripeKeyForPurchaseRequests();
 
             SetAutoMappings();
             await this.PrimeTableStorage();
@@ -114,6 +116,33 @@ namespace ClickBox.Web
             TableStoreConnectionString =
                 System.Configuration.ConfigurationManager.ConnectionStrings["AzureProdConnection"].ToString();
             return TableStoreConnectionString;
+        }
+
+        private static void SetStripeKeyForPurchaseRequests()
+        {
+            var runtime = System.Configuration.ConfigurationManager.AppSettings["Runtime"];
+            if (runtime == "debug")
+            {
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
+                var lines = File.ReadAllLines(dbPath);
+                var dbBase64Text = Convert.FromBase64String(lines[1]);
+
+                string filepath;
+                filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
+                           + CloudConfigurationManager.GetSetting("AzureStripeKey");
+
+                var conJson = JObject.Parse(File.ReadAllText(filepath));
+                var constring = conJson["AzureStripeKey"].ToString();
+                StripePurchaseString = constring;
+            }
+            else
+            {
+                StripePurchaseString = System.Configuration
+                                             .ConfigurationManager
+                                             .ConnectionStrings["AzureStripeKey"]
+                                             .ToString();
+            }
         }
 
         private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)

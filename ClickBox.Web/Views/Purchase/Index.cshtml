@@ -66,10 +66,10 @@
     </div>
 
     <div id="oopsProblemWithCharging"  style="display:none;">
-        <h3>Sorry there seems to have been a problem.</h3>
-        <div>We haven't been able to process your credit card.</div>
-        <div>Please check with your credit provider and / or contact our support.</div>
-        <div ng-hide="noServer" style="margin-bottom:15px;">QCAT Support ID: {{supportIdFailedCharge}}</div>
+        <h3 class="failureMessageText">Sorry there seems to have been a problem.</h3>
+        <div class="failureMessageText">We haven't been able to process your credit card.</div>
+        <div class="failureMessageText">Please check with your credit provider and / or contact our support.</div>
+        <div class="failureMessageText" ng-hide="noServer" style="margin-bottom:15px;">QCAT Support ID: {{supportIdFailedCharge}}</div>
         <a ng-hide="noServer" ng-href="http://www.qcat.com.au/contact?sid='{{supportIdFailedCharge}}'">Contact us!</a>
         <a ng-show="noServer" ng-href="http://www.qcat.com.au/contact.html">Contact us!</a>
     </div>
