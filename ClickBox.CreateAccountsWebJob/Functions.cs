@@ -22,7 +22,7 @@
             var exists = existingAccount.DoesAccountForThisGivenProductExist(msg, tableBinding, binder);
             if (exists)
             {
-                log.WriteLine($"Account {msg} exists and will no resend email with existing License details");
+                log.WriteLine($"Account {msg} exists and will now resend email with existing License details");
                 return;
             }
 
@@ -88,7 +88,5 @@
             var sent = await Mailer.SendMail(msg);
             //if sent ok then send message that mail was sent
         }
-
-        
     }
 }
