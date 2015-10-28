@@ -10,6 +10,8 @@
                     return new PageMakerDownloadDetail();
                 case "Pagestreamer":
                     return new PageStreamerDownloadDetail();
+                case "Pagemerger":
+                    return new PageMergerDownloadDetail();
                 default:
                     return null;
             }
