@@ -67,5 +67,6 @@ namespace ClickBox.Web.Models
         public string Image { get; set; }
 
         public double Price { get; set; }
+        public bool HasStripePaymentPage { get; set; }
     }
 }

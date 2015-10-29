@@ -333,6 +333,7 @@
     <Compile Include="Models\PostLicenseRequestFailure.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\SuccessfulStripeCharge.cs" />
+    <Compile Include="Models\UnavailableProduct.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\WebLicenseRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -350,6 +351,8 @@
     <Content Include="Content\Custom\site.css" />
     <Content Include="Content\Custom\store.css" />
     <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\Koder.PNG" />
+    <Content Include="Content\images\merger.PNG" />
     <Content Include="Content\images\pagemaker.png" />
     <Content Include="Content\images\pagestreamer.png" />
     <Content Include="Content\images\stripeqcatlogo.png" />
@@ -1172,6 +1175,7 @@
     <Content Include="Views\Purchase\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutStore.cshtml" />
     <Content Include="Views\Purchase\_PurchaseProductPicturePartial.cshtml" />
+    <Content Include="Views\Purchase\InvalidProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="angularModules\templates\" />

@@ -25,6 +25,22 @@ namespace ClickBox.Web.Controllers
         public async Task<ActionResult> Index(string productId)
         {
             var toRet = await client.GetEntityByPropertyFilterAsync<Product>("Id", productId);
+            if (toRet == null)
+            {
+                return View("InvalidProduct", new UnavailableProduct()
+                {
+                    HttpCode = 404,
+                    ErrorMessage = "Product does not exist!",
+                    
+                });
+            }
+            if (!toRet.HasStripePaymentPage)
+            {
+                return View("InvalidProduct", new UnavailableProduct(){
+                    HttpCode = 400,
+                    ErrorMessage = "Invalid Product!",
+                });
+            }
             var model = new { Product = toRet };
             return View(model);
         }

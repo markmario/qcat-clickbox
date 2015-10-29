@@ -1,0 +1,61 @@
+﻿
+@model ClickBox.Web.Models.UnavailableProduct
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    @Styles.Render("~/Content/Custom/site.css")
+    @Styles.Render("~/Content/Custom/store.css")
+    <title>Product not available</title>
+    <style>
+        .container {
+	        width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+	        width: 400px;
+            height: 400px;
+	        position:absolute;
+            left:0; right:0;
+            top:10%; bottom:0;
+	        margin:auto;
+	        max-width:100%;
+	        max-height:100%;
+	        overflow:auto;
+        }
+
+        .error-detail{
+            line-height: 50px;
+            height: 100%;
+            vertical-align: top;
+            font-family:avenir-regular;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>@Model.HeaderMessage</h1>
+            <div>
+                <i class="fa fa-chain-broken" style="font-size:50px; color:black;"></i>
+                <span class="error-detail" style="margin-left: 20px;">Error code: @Model.HttpCode</span>
+                <span class="error-detail">@Model.ErrorMessage</span>
+            </div>
+            <div style="margin-top:20px;">
+                <a href="@Model.ContactUsLink">Contact us</a>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
