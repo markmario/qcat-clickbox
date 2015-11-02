@@ -35,7 +35,7 @@ namespace ClickBox.Web.Infrastructure
 
         public static List<SelectListItem> GetProductList()
         {
-            Client = MvcApplication.TableStore.CreateCloudTableClient();
+            Client = MvcApplication.AzureStorageAccount.CreateCloudTableClient();
             var p =  Client.GetEntities<Product>();
             var dropList = p.Select(i => new SelectListItem { Value = i.Name, Text = i.Name }).ToList();
             return dropList;

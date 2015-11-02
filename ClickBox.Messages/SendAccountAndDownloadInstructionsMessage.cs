@@ -1,8 +1,11 @@
-﻿using ClickBox.CreateAccounts.Mail;
+﻿using ClickBox.Mail;
 
-namespace ClickBox.CreateAccounts.Messages
+namespace ClickBox.Messages
 {
-    public class SendAccountAndDownloadInstructionsMessage : IHaveDataForMail
+    using System.Diagnostics.CodeAnalysis;
+
+    [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
+    public class SendAccountAndDownloadInstructionsMessage : IHaveDataForMail, IAzureQueueMessage
     {
         public string ContactName
         {
@@ -31,6 +34,7 @@ namespace ClickBox.CreateAccounts.Messages
         }
         public string Password { get; set; }
         public string ProductName { get; set; }
+        public bool PaymentReceived { get; set; }
         public string To
         {
             get; set;
@@ -41,5 +45,7 @@ namespace ClickBox.CreateAccounts.Messages
                     "To:" + To + ", ContactName:" + ContactName + ", " +
                     "MessageBody:" + MessageBody + ", DowloadLink:" + DowloadLink + "}";
         }
+
+        public string QueueName => "account-created";
     }
 }

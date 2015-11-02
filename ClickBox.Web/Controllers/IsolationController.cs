@@ -47,7 +47,7 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
-                var data = await this.Client.GetEntityByPartitionAndRowKeyAsync<Product>("QCAT-Odes");
+                var data = await this.Client.GetEntityByPartitionAndRowKeyAsync<Product>("ODES");
                 var account = this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", isolatedBatch.UserName).Result;
 
                 var persistedIsolatedBatch = Mapper.Map<PersistedIsolatedBatch>(isolatedBatch);
@@ -76,7 +76,7 @@ namespace ClickBox.Web.Controllers
                     await
                     this.Client.GetEntityByPartitionAndRowKeyAsync<PersistedIsolatedBatch>(
                         partitionKey,
-                        rowKey, true);
+                        rowKey);
 
                 if (doc == null)
                 {
@@ -125,6 +125,7 @@ namespace ClickBox.Web.Controllers
             }
             catch (Exception ex)
             {
+                //log to table storage
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError,
                     "Some bad shit happened",

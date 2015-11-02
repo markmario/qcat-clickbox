@@ -1,11 +1,12 @@
-﻿using Mandrill;
+﻿using ClickBox.Email;
+using Mandrill;
 using Mandrill.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ClickBox.CreateAccounts.Mail
+namespace ClickBox.Mail
 {
     public class Mailer
     {
@@ -17,12 +18,12 @@ namespace ClickBox.CreateAccounts.Mail
             to.Name = msg.ContactName;
 
             var assembly = Assembly.GetExecutingAssembly();
-            var imageStream = assembly.GetManifestResourceStream("ClickBox.CreateAccounts.azureMail.png");
+            var imageStream = assembly.GetManifestResourceStream("ClickBox.Email.azureMail.png");
             var imgBytes = new byte[imageStream.Length];
             imageStream.Read(imgBytes, 0, (int)imageStream.Length);
             var base64 = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
 
-            var html = Resource.TrialSuccessHtml;
+            var html = Resources.TrialSuccessHtml;
 
             var images = new[]{
                         new Image
@@ -54,6 +55,7 @@ namespace ClickBox.CreateAccounts.Mail
             email.AddGlobalVariable("downloadlink", msg.DowloadLink);
             email.AddGlobalVariable("password", msg.Password);
             email.AddGlobalVariable("licenseName", msg.To);
+            email.AddGlobalVariable("paymentReceived", msg.PaymentReceived);
 
             var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
 

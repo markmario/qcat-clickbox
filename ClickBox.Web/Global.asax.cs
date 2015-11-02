@@ -37,7 +37,7 @@ namespace ClickBox.Web
     {
         #region Public Properties
         
-        public static CloudStorageAccount TableStore { get; private set; }
+        public static CloudStorageAccount AzureStorageAccount { get; private set; }
         public static string TableStoreConnectionString { get; private set; }
         public static string StripePurchaseString { get; private set; }
 
@@ -55,7 +55,7 @@ namespace ClickBox.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            TableStore = GetStorageAccount();
+            AzureStorageAccount = GetStorageAccount();
             SetStripeKeyForPurchaseRequests();
 
             SetAutoMappings();
@@ -64,7 +64,7 @@ namespace ClickBox.Web
 
         private async Task PrimeTableStorage()
         {
-            var client = TableStore.CreateCloudTableClient();
+            var client = AzureStorageAccount.CreateCloudTableClient();
             await client.PrimeTable<PersistedUserAccount>();
             await client.PrimeTable<Product>();
             await client.PrimeTable<ClientIssuedLicense>();

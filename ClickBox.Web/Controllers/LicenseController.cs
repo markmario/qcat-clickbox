@@ -264,7 +264,9 @@ namespace ClickBox.Web.Controllers
                                }, 
                                { "CompanyName", account.CompanyName }, 
                                { "ContactName", account.ContactName }, 
-                               { "MaxVersion", account.MaxVersionNumber }, 
+                               { "MaxVersion", account.MaxVersionNumber },
+                               { "ProductName", product.Name },
+                               { "AccountName", licx.Email },
                                { "IsEnterprise", account.IsEnterprise.ToString() }
                            };
             }

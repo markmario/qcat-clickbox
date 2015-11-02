@@ -41,7 +41,7 @@
         }
 
         public static async Task<IEnumerable<T>> GetEntitiesAsync<T>(
-            this CloudTableClient client, 
+            this CloudTableClient client,
             string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -83,9 +83,9 @@
         }
 
         public static T GetEntityByPartitionAndRowKey<T>(
-            this CloudTableClient client, 
-            string rowKey, 
-            string partitionKey = null, 
+            this CloudTableClient client,
+            string rowKey,
+            string partitionKey = null,
             bool withPrefix = false) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -110,9 +110,9 @@
         }
 
         public static async Task<T> GetEntityByPartitionAndRowKeyAsync<T>(
-            this CloudTableClient client, 
-            string rowKey, 
-            string partitionKey = null, 
+            this CloudTableClient client,
+            string rowKey,
+            string partitionKey = null,
             bool withPrefix = false) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -137,9 +137,9 @@
         }
 
         public static T GetEntityByPropertyFilter<T>(
-            this CloudTableClient client, 
-            string propertyName, 
-            string filterValue, 
+            this CloudTableClient client,
+            string propertyName,
+            string filterValue,
             string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -154,8 +154,8 @@
             var partitionScanQuery =
                 new TableQuery<T>().Where(
                     TableQuery.CombineFilters(
-                        TableQuery.GenerateFilterCondition(propertyName, QueryComparisons.Equal, filterValue), 
-                        TableOperators.And, 
+                        TableQuery.GenerateFilterCondition(propertyName, QueryComparisons.Equal, filterValue),
+                        TableOperators.And,
                         TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition)));
 
             var tableClientRef = client.GetTableReferene(tableOfT);
@@ -164,9 +164,9 @@
         }
 
         public static async Task<T> GetEntityByPropertyFilterAsync<T>(
-            this CloudTableClient client, 
-            string propertyName, 
-            string filterValue, 
+            this CloudTableClient client,
+            string propertyName,
+            string filterValue,
             string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -181,8 +181,8 @@
             var partitionScanQuery =
                 new TableQuery<T>().Where(
                     TableQuery.CombineFilters(
-                        TableQuery.GenerateFilterCondition(propertyName, QueryComparisons.Equal, filterValue), 
-                        TableOperators.And, 
+                        TableQuery.GenerateFilterCondition(propertyName, QueryComparisons.Equal, filterValue),
+                        TableOperators.And,
                         TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partition)));
 
             var tableClientRef = client.GetTableReferene(tableOfT);
@@ -191,8 +191,8 @@
         }
 
         public static T GetEntityByPropertyFilterList<T>(
-            this CloudTableClient client, 
-            string filters, 
+            this CloudTableClient client,
+            string filters,
             string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -205,8 +205,8 @@
         }
 
         public static async Task<T> GetEntityByPropertyFilterListAsync<T>(
-            this CloudTableClient client, 
-            string filters, 
+            this CloudTableClient client,
+            string filters,
             string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -219,8 +219,8 @@
         }
 
         public static IEnumerable<T> GetEntityListByPropertyFilterList<T>(
-            this CloudTableClient client, 
-            string filters, 
+            this CloudTableClient client,
+            string filters,
             string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -233,8 +233,8 @@
         }
 
         public static async Task<IEnumerable<T>> GetEntityListByPropertyFilterListAsync<T>(
-            this CloudTableClient client, 
-            string filters, 
+            this CloudTableClient client,
+            string filters,
             string partitionKey = null) where T : TableEntity, IContainTableReference, new()
         {
             var tableOfT = new T();
@@ -311,7 +311,7 @@
             return tableClientRef;
         }
 
-        private static CloudTable GetTableReferene<T>(this CloudTableClient client, T tableOfT)
+        public static CloudTable GetTableReferene<T>(this CloudTableClient client, T tableOfT)
             where T : TableEntity, IContainTableReference, new()
         {
             var tableClientRef = client.GetTableReference(tableOfT.TableName);

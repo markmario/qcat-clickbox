@@ -17,6 +17,8 @@ namespace ClickBox.CreateAccounts
     using Microsoft.WindowsAzure.Storage.Table;
 
     using Newtonsoft.Json;
+    using System;
+    using Web.TableStorage;
 
     public class ExistingAccount
     {
@@ -32,8 +34,21 @@ namespace ClickBox.CreateAccounts
                         TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, new PersistedUserAccount().PartitionKey)));
 
             var existingAccount = table.ExecuteQuery(tableQuery).FirstOrDefault();
+
             if (existingAccount != null)
             {
+                //is it a payment and if so then if its a trial account and if it is then upgrade to subscription and change expiry date
+                var downloadDetail = ProductDownloadLinkResolver
+                                    .ResolveDownloadLinkFromProductName(accountTryingToCreate.AccountProductName);
+                //the purchase controller in clickbox will send a subscription message
+                if (accountTryingToCreate.AccountLicenseType == "Subscription" && existingAccount.AccountType == "Trial")
+                {
+                    existingAccount.AccountType = "Subscription";
+                    existingAccount.SupportEndDate = DateTime.Now.AddDays(downloadDetail.DaysLicensed);
+                    var mergeOperation = TableOperation.InsertOrMerge(existingAccount);
+                    var tableClientRef = table.ServiceClient.GetTableReferene(existingAccount);
+                    tableClientRef.Execute(mergeOperation);
+                }
                 SendQueueMessageToCreateMailForExistingAccountForTheGivenProduct(accountTryingToCreate, binder, existingAccount);
             }
             return existingAccount != null;

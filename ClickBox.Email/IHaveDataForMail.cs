@@ -1,4 +1,4 @@
-﻿namespace ClickBox.CreateAccounts.Mail
+﻿namespace ClickBox.Mail
 {
     public interface IHaveDataForMail
     {
@@ -12,5 +12,6 @@
         string LicenseName { get; set; }
         string Password { get; set; }
         string ProductName { get; set; }
+        bool PaymentReceived { get; set; }
     }
 }

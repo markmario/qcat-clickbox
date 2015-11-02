@@ -22,6 +22,7 @@ namespace ClickBox.Web
     using ClickBox.Web.Controllers;
 
     using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
 
     public static class AutofactMvcConfig
@@ -63,10 +64,14 @@ namespace ClickBox.Web
             // builder.Register(c => MvcApplication.DocumentStore.OpenSession())
             // .As<IDocumentSession>()
             // .InstancePerRequest();
-            builder.Register(c => MvcApplication.TableStore).As<CloudStorageAccount>().SingleInstance();
+            builder.Register(c => MvcApplication.AzureStorageAccount).As<CloudStorageAccount>().SingleInstance();
 
-            builder.Register(c => MvcApplication.TableStore.CreateCloudTableClient())
+            builder.Register(c => MvcApplication.AzureStorageAccount.CreateCloudTableClient())
                 .As<CloudTableClient>()
+                .InstancePerRequest();
+
+            builder.Register(c => MvcApplication.AzureStorageAccount.CreateCloudQueueClient())
+                .As<CloudQueueClient>()
                 .InstancePerRequest();
 
             // Register the Web API controllers.

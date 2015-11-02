@@ -1,22 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------
-//  <copyright file="PageMergerTrialMessage.cs" company="QCAT Pty Ltd.">
-//    Copyright (c) 2015 QCAT Pty Ltd. All rights reserved.
-//  </copyright>
-// --------------------------------------------------------------------------------------------------
-namespace ClickBox.CreateAccounts.Messages
+﻿namespace ClickBox.Messages
 {
-    using ClickBox.Util;
+    using Util;
     using System;
 
-    public class AccountCreationMessage
+    public class AccountCreationMessage : IAzureQueueMessage
     {
-        public Guid Id
-        {
-            get
-            {
-                return new Guid(this.AccountPassword);
-            }
-        }
+        public Guid Id => new Guid(this.AccountPassword);
 
         public string AccountProductName { get; set; }
 
@@ -32,7 +21,7 @@ namespace ClickBox.CreateAccounts.Messages
         {
             get
             {
-                return this.Id.ToShortString();
+                return Id.ToShortString();
             }
         }
 
@@ -46,5 +35,9 @@ namespace ClickBox.CreateAccounts.Messages
                     "AccountOrganisation:" + AccountOrganisation + ", AccountPassword:"+ AccountPassword +", "+
                     "AccountRequestMessage:" + AccountRequestMessage + ", AccountProductName:" + AccountProductName +"}";
         }
+
+        public bool PaymentReceived { get; set; }
+
+        public string QueueName => "create-account";
     }
 }

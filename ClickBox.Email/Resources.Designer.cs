@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ClickBox.CreateAccounts {
+namespace ClickBox.Email {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ClickBox.CreateAccounts {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource() {
+        internal Resources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ClickBox.CreateAccounts {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ClickBox.CreateAccounts.Resource", typeof(Resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ClickBox.Email.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,14 +63,16 @@ namespace ClickBox.CreateAccounts {
         /// <summary>
         ///   Looks up a localized string similar to &lt;div style=&quot;float:left;&quot;&gt;&lt;img src=&quot;cid:qcatlogo&quot; style=&quot;height:100px;&quot; /&gt;&lt;/div&gt;
         ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:220px;&quot;&gt;&lt;/div&gt;
-        ///&lt;p  style=&quot;float:left;&quot;&gt;
-        ///	&lt;div style=&quot;margin-top:10px;&quot;&gt;{{welcome}}&lt;/div&gt;
-        ///	&lt;div style=&quot;margin-top:10px;&quot;&gt;{{instructions}}&lt;/div&gt;
-        ///	&lt;div style=&quot;margin-top:10px;&quot;&gt;
-        ///		&lt;a href=&quot;{{downloadlink}}&quot;&gt;{{downloadlink}}&lt;/a&gt;
-        ///	&lt;/div&gt;
-        ///	&lt;div style=&quot;margin-top:30px;&quot;&gt;&lt;strong&gt;License Name: &lt;/strong&gt;&lt;span&gt;{{licenseName}}&lt;/span&gt;&lt;/div&gt;
-        ///	&lt;div&gt;&lt;strong&gt;Pas [rest of string was truncated]&quot;;.
+        ///&lt;p style=&quot;float:left;&quot;&gt;
+        ///    &lt;div class=&quot;entry&quot;&gt;
+        ///        {{#if paymentReceived}}
+        ///        &lt;p&gt;We&apos;ve received your payment, thank you.&lt;/p&gt;
+        ///        {{/if}}
+        ///    &lt;/div&gt;
+        ///    &lt;div style=&quot;margin-top:10px;&quot;&gt;{{welcome}}&lt;/div&gt;
+        ///    &lt;div style=&quot;margin-top:10px;&quot;&gt;{{instructions}}&lt;/div&gt;
+        ///    &lt;div style=&quot;margin-top:10px;&quot;&gt;
+        ///        &lt;a href=&quot;{{downl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TrialSuccessHtml {
             get {

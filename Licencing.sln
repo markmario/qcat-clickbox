@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Util", "ClickBox.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBoxCreateAccountsWebJob", "ClickBox.CreateAccountsWebJob\ClickBoxCreateAccountsWebJob.csproj", "{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Messages", "ClickBox.Messages\ClickBox.Messages.csproj", "{104FC3F3-A9A3-4765-AAF9-732A1170A0D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Email", "ClickBox.Email\ClickBox.Email.csproj", "{70C1A3EB-9451-4CCE-9A06-A1465F50BCCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B04A1EB9-2AC0-4507-ACD6-6F2406D0D20D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104FC3F3-A9A3-4765-AAF9-732A1170A0D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104FC3F3-A9A3-4765-AAF9-732A1170A0D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104FC3F3-A9A3-4765-AAF9-732A1170A0D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104FC3F3-A9A3-4765-AAF9-732A1170A0D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70C1A3EB-9451-4CCE-9A06-A1465F50BCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70C1A3EB-9451-4CCE-9A06-A1465F50BCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70C1A3EB-9451-4CCE-9A06-A1465F50BCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70C1A3EB-9451-4CCE-9A06-A1465F50BCCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

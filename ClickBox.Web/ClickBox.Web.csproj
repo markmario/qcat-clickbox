@@ -303,6 +303,7 @@
     <Compile Include="Controllers\IsolationController.cs" />
     <Compile Include="Controllers\KodingController.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
+    <Compile Include="Exceptions\StripeClickboxStorageException.cs" />
     <Compile Include="Infrastructure\ApplicationOAuthProvider.cs" />
     <Compile Include="Infrastructure\ChallengeResult.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\WebLicenseRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueueStorage\QueueStorageUtil.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TableStorage\TableStorageUtil.cs" />
   </ItemGroup>
@@ -571,6 +573,7 @@
     <Content Include="Content\kendo\2014.1.318\Uniform\sprite.png" />
     <Content Include="Content\kendo\2014.1.318\Uniform\sprite_2x.png" />
     <Content Include="Global.asax" />
+    <Content Include="MailTemplates\LicenseSuccessEmail.html" />
     <Content Include="Scripts\kendo.modernizr.custom.js" />
     <Content Include="Content\kendo\2014.1.318\images\kendoui.ttf" />
     <Content Include="Content\kendo\2014.1.318\images\kendoui.woff" />
@@ -1180,6 +1183,7 @@
   <ItemGroup>
     <Folder Include="angularModules\templates\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Messages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -1187,6 +1191,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClickBox.Messages\ClickBox.Messages.csproj">
+      <Project>{104FC3F3-A9A3-4765-AAF9-732A1170A0D0}</Project>
+      <Name>ClickBox.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ClickBox.Util\ClickBox.Util.csproj">
       <Project>{ba7587e1-b6d8-4c24-a985-44df1154b2ff}</Project>
       <Name>ClickBox.Util</Name>

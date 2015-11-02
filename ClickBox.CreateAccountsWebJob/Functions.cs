@@ -5,7 +5,6 @@
     using Microsoft.Azure.WebJobs;
     using System.IO;
     using System;
-    using System.Linq;
 
     using Messages;
     using Microsoft.WindowsAzure.Storage.Queue;
@@ -75,7 +74,8 @@
                     FromName = "QCAT Licensing Team",
                     Password = msg.Password,
                     LicenseName = msg.AccountName,
-                    ProductName = msg.AccountProductName
+                    ProductName = msg.AccountProductName,
+                    PaymentReceived = msg.PaymentReceived
                 };
                 outputQueue.AddMessage(new CloudQueueMessage(JsonConvert.SerializeObject(accountVerify)));
             }
@@ -85,8 +85,14 @@
                                                                             SendAccountAndDownloadInstructionsMessage msg,
                                                                             IBinder binder, TextWriter log)
         {
+            //need to store record of failed mails
+            //TODO: create a poision message handler to store in table
             var sent = await Mailer.SendMail(msg);
-            //if sent ok then send message that mail was sent
+            if(!sent)
+            {
+                //five fails and into poison queue
+                throw new Exception("Failed to send registration email to customer:" + msg);
+            }
         }
     }
 }

@@ -11,20 +11,30 @@ using System.Web.Mvc;
 
 namespace ClickBox.Web.Controllers
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    using ClickBox.Messages;
+    using ClickBox.Web.QueueStorage;
+
+    using Microsoft.WindowsAzure.Storage.Queue;
+
     [RequireHttps(Order = 1)]
+    [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
     public class PurchaseController : Controller
     {
-        private CloudTableClient client;
+        private CloudTableClient _client;
+        private CloudQueueClient _queueClient;
 
-        public PurchaseController(CloudTableClient client)
+        public PurchaseController(CloudTableClient tableClient, CloudQueueClient queueClient)
         {
-            this.client = client;
+            _client = tableClient;
+            _queueClient = queueClient;
         }
 
         // GET: Purchase
         public async Task<ActionResult> Index(string productId)
         {
-            var toRet = await client.GetEntityByPropertyFilterAsync<Product>("Id", productId);
+            var toRet = await this._client.GetEntityByPropertyFilterAsync<Product>("Id", productId);
             if (toRet == null)
             {
                 return View("InvalidProduct", new UnavailableProduct()
@@ -34,13 +44,16 @@ namespace ClickBox.Web.Controllers
                     
                 });
             }
+
             if (!toRet.HasStripePaymentPage)
             {
-                return View("InvalidProduct", new UnavailableProduct(){
+                return View("InvalidProduct", new UnavailableProduct()
+                {
                     HttpCode = 400,
                     ErrorMessage = "Invalid Product!",
                 });
             }
+
             var model = new { Product = toRet };
             return View(model);
         }
@@ -92,8 +105,19 @@ namespace ClickBox.Web.Controllers
                         DateTimeCreated = stripeCharge.Created
                     };
 
-                    await client.InsertStorageEntityAsync(chargeRequest);
-                    await client.InsertStorageEntityAsync(stripeChargeResponse);
+                    var account = new AccountCreationMessage()
+                                      {
+                                          AccountProductName = "",
+                                          AccountEmail = charge.Email,
+                                          AccountLicenseType = "Subscription",
+                                          AccountName = charge.Email,
+                                          AccountOrganisation = charge.Organisation,
+                                          AccountPassword = "",
+                                      };
+
+                    await this._client.InsertStorageEntityAsync(chargeRequest);
+                    await this._client.InsertStorageEntityAsync(stripeChargeResponse);
+                    await this._queueClient.SendMessageAync(account);
 
                     dynamic data = new
                     {
@@ -119,7 +143,7 @@ namespace ClickBox.Web.Controllers
                     SupportId = supportId
                 };
 
-                await client.InsertStorageEntityAsync(failedCharge);
+                await this._client.InsertStorageEntityAsync(failedCharge);
 
                 dynamic data = new
                 {
@@ -143,7 +167,7 @@ namespace ClickBox.Web.Controllers
                     SupportId = supportId
                 };
 
-                await client.InsertStorageEntityAsync(failedCharge);
+                await this._client.InsertStorageEntityAsync(failedCharge);
 
                 dynamic data = new
                 {

@@ -51,7 +51,7 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
-                var data = this.Client.GetEntityByPartitionAndRowKey<Product>("QCAT-Odes");
+                var data = this.Client.GetEntityByPartitionAndRowKey<Product>("ODES");
                 var account =
                     this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", codedDoc.UserName).Result;
 
@@ -73,8 +73,7 @@ namespace ClickBox.Web.Controllers
                     await
                     this.Client.GetEntityByPartitionAndRowKeyAsync<PersistedDocumentCoded>(
                         persistedDoc.Id, 
-                        persistedDoc.ProjectId.ToString(), 
-                        true);
+                        persistedDoc.ProjectId.ToString());
 
                 if (doc == null)
                 {
@@ -102,6 +101,7 @@ namespace ClickBox.Web.Controllers
             }
             catch (Exception ex)
             {
+                //log error to table storage
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError, 
                     "Some bad shit happened", 
