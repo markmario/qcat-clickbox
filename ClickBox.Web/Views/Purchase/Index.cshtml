@@ -111,14 +111,18 @@
 
             var qty = scope.order.quantity;
             var org = scope.order.org;
+            var contact = scope.order.contact;
+
             console.log(token, scope);
+
             var charge = {
                 Quantity: qty,
                 Organisation: org,
                 TokenId: token.id,
                 Email: token.email,
                 ProductId: scope.viewModel.Product.Id,
-                Price:scope.viewModel.Product.Price
+                Price: scope.viewModel.Product.Price,
+                Contact: contact
             };
 
             console.log("The charge object for the server", charge);
@@ -222,13 +226,3 @@
     });
 
 </script>
-
-@*<script>
-
-        var purchaseOrderModule = angular.module("purchaseOrderModule", []);
-        var data = @Html.Raw(Json.Encode(Model));
-        purchaseOrderModule.value("ViewModel", data);
-
-</script>
-
-<script src="~/AngularModules/modules/purchase-order.module.js" language="javascript"></script>*@

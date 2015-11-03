@@ -67,14 +67,16 @@ namespace ClickBox.Web.Controllers
             {
                 return await Task.Run<JsonResult>(async () =>
                 {
+                    //check if the clients exists with a paid up account and if so 
+                    //skip the charge and only send the email reminding them.
+                    var prod = await this._client.GetEntityByPropertyFilterAsync<Product>("Id", charge.ProductId);
 
                     var myCharge = new StripeChargeCreateOptions();
 
                     myCharge.Amount = ((charge.Quantity * (int)charge.Price) * 100);
                     myCharge.Currency = "aud";
                     myCharge.Capture = true;
-                    myCharge.Description = string.Format("ProductID: {0} | SupportID: {1}", 
-                                                        charge.ProductId, supportId);
+                    myCharge.Description = $"ProductID: {charge.ProductId} | SupportID: {supportId}";
 
                     myCharge.Source = new StripeSourceOptions()
                     {
@@ -107,12 +109,13 @@ namespace ClickBox.Web.Controllers
 
                     var account = new AccountCreationMessage()
                                       {
-                                          AccountProductName = "",
+                                          AccountProductName = prod.Name,
                                           AccountEmail = charge.Email,
                                           AccountLicenseType = "Subscription",
-                                          AccountName = charge.Email,
+                                          AccountName = charge.Contact,
                                           AccountOrganisation = charge.Organisation,
-                                          AccountPassword = "",
+                                          AccountPassword = Guid.NewGuid().ToString(),
+                                          PaymentReceived = true
                                       };
 
                     await this._client.InsertStorageEntityAsync(chargeRequest);

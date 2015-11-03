@@ -62,7 +62,7 @@ namespace ClickBox.Email {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;div style=&quot;float:left;&quot;&gt;&lt;img src=&quot;cid:qcatlogo&quot; style=&quot;height:100px;&quot; /&gt;&lt;/div&gt;
-        ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:220px;&quot;&gt;&lt;/div&gt;
+        ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:330px;&quot;&gt;&lt;/div&gt;
         ///&lt;p style=&quot;float:left;&quot;&gt;
         ///    &lt;div class=&quot;entry&quot;&gt;
         ///        {{#if paymentReceived}}

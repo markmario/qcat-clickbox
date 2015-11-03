@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ClickBox.Web.Models
+﻿namespace ClickBox.Web.Models
 {
     public class ChargeData
     {
@@ -13,5 +8,6 @@ namespace ClickBox.Web.Models
         public string Email { get; set; }
         public string ProductId { get; set; }
         public decimal Price { get; set; }
+        public string Contact { get; set; }
     }
 }
