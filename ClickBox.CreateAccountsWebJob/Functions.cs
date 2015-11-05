@@ -19,6 +19,9 @@
         {
             var existingAccount = new ExistingAccount();
             var exists = existingAccount.DoesAccountForThisGivenProductExist(msg, tableBinding, binder);
+            //if it exists and the payment was received and charged by the controller then
+            //we need update the account with a new expiration date and send a different
+            //email - perhaps a different message
             if (exists)
             {
                 log.WriteLine($"Account {msg} exists and will now resend email with existing License details");
@@ -46,8 +49,10 @@
                 PageMakerEnabled = false,
                 Password = msg.Password,
                 SupportEndDate = DateTime.Now.AddDays(downloadDetail.DaysLicensed),
-                Product = msg.AccountProductName
+                Product = msg.AccountProductName,
+                PaymentReceived = msg.PaymentReceived
             };
+
             //check to see if the account exists?
             var insertOperation = TableOperation.Insert(account);
             //put the message on the queue only if table insert succeeds

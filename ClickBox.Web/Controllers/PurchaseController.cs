@@ -3,18 +3,15 @@ using ClickBox.Web.TableStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Stripe;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ClickBox.Web.Controllers
 {
     using System.Diagnostics.CodeAnalysis;
 
-    using ClickBox.Messages;
-    using ClickBox.Web.QueueStorage;
+    using Messages;
+    using QueueStorage;
 
     using Microsoft.WindowsAzure.Storage.Queue;
 
@@ -69,7 +66,23 @@ namespace ClickBox.Web.Controllers
                 {
                     //check if the clients exists with a paid up account and if so 
                     //skip the charge and only send the email reminding them.
+                    //instead of charging and sending account create message we should
+                    //send account-renewed message which will send a different email
                     var prod = await this._client.GetEntityByPropertyFilterAsync<Product>("Id", charge.ProductId);
+
+                    var paidUpAccountExists = DoesPaidUpClientAccountExist(charge.Email, charge.ProductId);
+                    if (paidUpAccountExists) {
+
+                        dynamic noData = new
+                        {
+                            State = "Success",
+                            Email = charge.Email,
+                            ChargedAmount = 0,
+                            SupportId = supportId
+                        };
+
+                        return new JsonResult() { Data = noData };
+                    }
 
                     var myCharge = new StripeChargeCreateOptions();
 
@@ -107,6 +120,7 @@ namespace ClickBox.Web.Controllers
                         DateTimeCreated = stripeCharge.Created
                     };
 
+                    //TODO: SHOULD THIS BE A ACCOUNT CREATION OR RENEWAL
                     var account = new AccountCreationMessage()
                                       {
                                           AccountProductName = prod.Name,
@@ -152,7 +166,7 @@ namespace ClickBox.Web.Controllers
                 {
                     State = "Failed",
                     Email = charge.Email,
-                    Error = stex.StripeError.Code != null ? stex.StripeError.Code : "Please contact QCAT Support",
+                    Error = stex.StripeError.Code ?? "Please contact QCAT Support",
                     SupportId = supportId
                 };
                 return new JsonResult() { Data = data };
@@ -181,6 +195,11 @@ namespace ClickBox.Web.Controllers
                 };
                 return new JsonResult() { Data = data };
             }
+        }
+
+        private bool DoesPaidUpClientAccountExist(string email, string productId)
+        {
+            return false;
         }
     }
 }

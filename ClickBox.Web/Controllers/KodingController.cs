@@ -13,8 +13,8 @@ namespace ClickBox.Web.Controllers
 
     using AutoMapper;
 
-    using ClickBox.Web.Models;
-    using ClickBox.Web.TableStorage;
+    using Models;
+    using TableStorage;
 
     using Microsoft.WindowsAzure.Storage.Table;
 
@@ -33,7 +33,7 @@ namespace ClickBox.Web.Controllers
 
         public KodingController(CloudTableClient client)
         {
-            this.Client = client;
+            Client = client;
         }
 
         #endregion
@@ -56,6 +56,10 @@ namespace ClickBox.Web.Controllers
                     this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", codedDoc.UserName).Result;
 
                 var persistedDoc = Mapper.Map<PersistedDocumentCoded>(codedDoc);
+
+                var monthlyStatUserName = string.IsNullOrEmpty(persistedDoc.UserName) 
+                                             ? persistedDoc.UserName :"Unknown koding user";
+
                 if (account != null)
                 {
                     persistedDoc.Id = account.Id + ":" + persistedDoc.ProjectId + ":" + persistedDoc.DocumentId;
@@ -67,14 +71,13 @@ namespace ClickBox.Web.Controllers
                                       + persistedDoc.DocumentId;
                 }
 
-                // var doc =
-                // await this.Client.GetEntityByPropertyFilterAsync<PersistendDocumentCoded>("Id", persistedDoc.Id);
                 var doc =
                     await
                     this.Client.GetEntityByPartitionAndRowKeyAsync<PersistedDocumentCoded>(
                         persistedDoc.Id, 
                         persistedDoc.ProjectId.ToString());
 
+                //if its being reviewed (i.e not null) then don't record in storage
                 if (doc == null)
                 {
                     //this is the weird line of code
@@ -83,28 +86,25 @@ namespace ClickBox.Web.Controllers
                     var monthlyDoc = new MonthlyCodedDocument()
                                          {
                                              RowKey = persistedDoc.DocumentId.ToString(), 
-                                             ProjectId = persistedDoc.ProjectId
-                                         };
+                                             ProjectId = persistedDoc.ProjectId,
+                                             UserName = monthlyStatUserName,
+                                             CompanyName = account != null ? account.CompanyName : "Unknown company",
+                                             AccountId = account != null ? account.Id : "Unknown company Id",
+                    };
                     await this.Client.InsertStorageEntityAsync(monthlyDoc);
                 }
 
-                if (accountFound)
-                {
-                    return this.Request.CreateResponse(HttpStatusCode.Created);
-                }
-                else
-                {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
+                return accountFound ? this.Request.CreateResponse(HttpStatusCode.Created) 
+                                    : this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
 
-                    // change this to forbidden when we want to stop clients from connecting
-                }
+                // change this to forbidden when we want to stop clients from connecting
             }
             catch (Exception ex)
             {
                 //log error to table storage
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError, 
-                    "Some bad shit happened", 
+                    ex.Message, 
                     ex);
             }
         }

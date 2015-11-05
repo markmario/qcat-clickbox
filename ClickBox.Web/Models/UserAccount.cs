@@ -79,6 +79,8 @@ namespace ClickBox.Web.Models
 
         public string UserName { get; set; }
 
+        public bool PaymentReceived { get; set; }
+
         #endregion
 
         public UserAccount()

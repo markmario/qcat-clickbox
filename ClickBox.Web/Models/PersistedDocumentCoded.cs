@@ -27,7 +27,7 @@ namespace ClickBox.Web.Models
             set
             {
                 this.projectId = value;
-                this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + value;
+                this.PartitionKey = value.ToString();
             }
         }
         public Guid DocumentId { get; set; }

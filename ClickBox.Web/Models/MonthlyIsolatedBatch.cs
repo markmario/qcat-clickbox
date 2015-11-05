@@ -17,8 +17,8 @@ namespace ClickBox.Web.Models
     {
         public MonthlyIsolatedBatch()
         {
-            var monthAndYear = DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString();
-            this.PartitionKey = TableStorageUtil.GetPartitionPrefix() + monthAndYear;
+            var monthAndYear = DateTime.Now.Month + DateTime.Now.Year.ToString();
+            this.PartitionKey = monthAndYear;
         }
 
         public string TableName
@@ -30,5 +30,8 @@ namespace ClickBox.Web.Models
         }
 
         public Guid ProjectId { get; set; }
+        public string UserName { get; set; }
+        public string CompanyName { get; set; }
+        public string AccountId { get; set; }
     }
 }
