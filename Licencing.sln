@@ -17,6 +17,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Messages", "ClickB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Email", "ClickBox.Email\ClickBox.Email.csproj", "{70C1A3EB-9451-4CCE-9A06-A1465F50BCCC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClickBox.Linqpad.Reports", "ClickBox.Linqpad.Reports", "{964860EA-16ED-4B68-81E5-37655603CDA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monthly", "Monthly", "{2CF13478-D24A-45B8-BC2C-3019FB27496F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scatchpad", "Scatchpad", "{89C2166C-F9F9-4DE2-85F9-B8AF1C979C3A}"
+	ProjectSection(SolutionItems) = preProject
+		ClickBox.Linqpad.Reports\Scratchpad\ClickBox Montly Report Design 1.linq = ClickBox.Linqpad.Reports\Scratchpad\ClickBox Montly Report Design 1.linq
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +63,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2CF13478-D24A-45B8-BC2C-3019FB27496F} = {964860EA-16ED-4B68-81E5-37655603CDA0}
+		{89C2166C-F9F9-4DE2-85F9-B8AF1C979C3A} = {964860EA-16ED-4B68-81E5-37655603CDA0}
 	EndGlobalSection
 EndGlobal
