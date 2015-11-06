@@ -52,13 +52,6 @@ namespace ClickBox.Web.Models
 
         public string OldBatchValues { get; set; }
 
-        public string TableName
-        {
-            get
-            {
-                return "BatchesIsolated";
-            }
-            
-        }
+        public string TableName => "BatchesIsolated";
     }
 }

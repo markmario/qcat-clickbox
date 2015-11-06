@@ -24,6 +24,8 @@ namespace ClickBox.Web.Controllers
     [RequireHttps(Order = 1)]
     public class IsolationController : ClickBoxApiController
     {
+        private const string UnknownAccount = "Unknown account (possibly unlicensed)";
+
         #region Constructors and Destructors
 
         public IsolationController(CloudTableClient client)
@@ -60,7 +62,7 @@ namespace ClickBox.Web.Controllers
                 if (account != null)
                 {
                     rowKey = persistedIsolatedBatch.BatchId.ToString();
-                    partitionKey = account.CompanyName + ":" + persistedIsolatedBatch.ProjectId;
+                    partitionKey = persistedIsolatedBatch.ProjectId.ToString();
                     persistedIsolatedBatch.RowKey = rowKey;
                     persistedIsolatedBatch.PartitionKey = partitionKey;
                     accountFound = true;
@@ -71,7 +73,7 @@ namespace ClickBox.Web.Controllers
                     // this is unlicensed---------------------------------------------------
                     // need to check again why we are allowing this for now - so it can be documented
                     rowKey = persistedIsolatedBatch.BatchId.ToString();
-                    partitionKey = persistedIsolatedBatch.UserName + ":" + persistedIsolatedBatch.ProjectId;
+                    partitionKey = persistedIsolatedBatch.ProjectId.ToString();
                     persistedIsolatedBatch.RowKey = rowKey;
                     persistedIsolatedBatch.PartitionKey = partitionKey;
                 }
@@ -79,8 +81,7 @@ namespace ClickBox.Web.Controllers
                 var existingBatch =
                     await
                     this.Client.GetEntityByPartitionAndRowKeyAsync<PersistedIsolatedBatch>(
-                        partitionKey,
-                        rowKey);
+                        rowKey, partitionKey);
 
                 if (existingBatch == null)
                 {
@@ -91,8 +92,8 @@ namespace ClickBox.Web.Controllers
                         RowKey = persistedIsolatedBatch.BatchId.ToString(),
                         ProjectId = persistedIsolatedBatch.ProjectId,
                         UserName = persistedIsolatedBatch.UserName,
-                        CompanyName = account != null ? account.CompanyName : "Unknown account",
-                        AccountId = account != null ? account.Id : "Unknown company Id",
+                        CompanyName = account != null ? account.CompanyName : UnknownAccount,
+                        AccountId = account != null ? account.Id : UnknownAccount,
                     };
                     await this.Client.InsertStorageEntityAsync(monthlyIsolatedBatch);
                 }
@@ -108,6 +109,8 @@ namespace ClickBox.Web.Controllers
                     if (existingBatch.DocumentsCreated > isolatedBatch.DocumentsCreated)
                     {
                         // Notify that this happened.
+                        // this batch would now have less documents to re code
+                        // and should be charged less??? do we care?
                     }
 
                     //if (doc.OldBatchValues.Count >= 3)

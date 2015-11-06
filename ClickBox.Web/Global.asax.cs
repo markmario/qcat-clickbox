@@ -57,7 +57,7 @@ namespace ClickBox.Web
 
             AzureStorageAccount = GetStorageAccount();
             SetStripeKeyForPurchaseRequests();
-
+ 
             SetAutoMappings();
             await this.PrimeTableStorage();
         }

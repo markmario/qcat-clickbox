@@ -25,6 +25,8 @@ namespace ClickBox.Web.Controllers
     [RequireHttps(Order = 1)]
     public class KodingController : ClickBoxApiController
     {
+        private const string UnknownAccount = "Unknown account (possibly unlicensed)";
+
         #region Constructors and Destructors
 
         public KodingController()
@@ -58,7 +60,7 @@ namespace ClickBox.Web.Controllers
                 var persistedDoc = Mapper.Map<PersistedDocumentCoded>(codedDoc);
 
                 var monthlyStatUserName = string.IsNullOrEmpty(persistedDoc.UserName) 
-                                             ? persistedDoc.UserName :"Unknown koding user";
+                                             ? "Unknown koding user" : persistedDoc.UserName;
 
                 if (account != null)
                 {
@@ -88,8 +90,8 @@ namespace ClickBox.Web.Controllers
                                              RowKey = persistedDoc.DocumentId.ToString(), 
                                              ProjectId = persistedDoc.ProjectId,
                                              UserName = monthlyStatUserName,
-                                             CompanyName = account != null ? account.CompanyName : "Unknown company",
-                                             AccountId = account != null ? account.Id : "Unknown company Id",
+                                             CompanyName = account != null ? account.CompanyName : UnknownAccount,
+                                             AccountId = account != null ? account.Id : UnknownAccount,
                     };
                     await this.Client.InsertStorageEntityAsync(monthlyDoc);
                 }
