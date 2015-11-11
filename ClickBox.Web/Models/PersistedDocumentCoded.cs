@@ -37,6 +37,7 @@ namespace ClickBox.Web.Models
         public string SId { get; set; }
         public DateTimeOffset DateCreated { get; set; }
         public string TableName { get { return "DocumentsCoded"; } }
+        public string AccountId { get; set; }
         public override string ToString()
         {
             return this.RowKey + "\t\t" + this.Id + "]";

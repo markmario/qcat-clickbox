@@ -51,10 +51,18 @@ namespace ClickBox.Web.Controllers
 
                 //get the product and then account that the user post the isolated batch is associated to
                 var data = await this.Client.GetEntityByPartitionAndRowKeyAsync<Product>("ODES");
-                var account = this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", isolatedBatch.UserName).Result;
+                var filters =
+                    TableQuery.CombineFilters(
+                        TableQuery.GenerateFilterCondition("UserName", QueryComparisons.Equal, isolatedBatch.UserName),
+                            TableOperators.And,
+                            TableQuery.GenerateFilterCondition("Product", QueryComparisons.Equal, "ODES"));
+
+                
+                var account = await this.Client.GetEntityByPropertyFilterListAsync<UserAccount>(filters);
 
                 //map to storage type
                 var persistedIsolatedBatch = Mapper.Map<PersistedIsolatedBatch>(isolatedBatch);
+                persistedIsolatedBatch.AccountId = account == null ? "Unknown account" : account.Id;
 
                 string rowKey;
                 string partitionKey;

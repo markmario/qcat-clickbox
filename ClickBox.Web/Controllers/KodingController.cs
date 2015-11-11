@@ -53,11 +53,18 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
-                var data = this.Client.GetEntityByPartitionAndRowKey<Product>("ODES");
+                var data = await this.Client.GetEntityByPartitionAndRowKeyAsync<Product>("ODES");
+
+                var filters =
+                    TableQuery.CombineFilters(
+                        TableQuery.GenerateFilterCondition("UserName", QueryComparisons.Equal, codedDoc.UserName),
+                            TableOperators.And,
+                            TableQuery.GenerateFilterCondition("Product", QueryComparisons.Equal, "ODES"));
                 var account =
-                    this.Client.GetEntityByPropertyFilterAsync<UserAccount>("UserName", codedDoc.UserName).Result;
+                    await this.Client.GetEntityByPropertyFilterListAsync<UserAccount>(filters);
 
                 var persistedDoc = Mapper.Map<PersistedDocumentCoded>(codedDoc);
+                persistedDoc.AccountId = account == null ? "Unknown account" : account.Id;
 
                 var monthlyStatUserName = string.IsNullOrEmpty(persistedDoc.UserName) 
                                              ? "Unknown koding user" : persistedDoc.UserName;
@@ -86,12 +93,12 @@ namespace ClickBox.Web.Controllers
                     codedDoc.DateCreated = new DateTimeOffset(DateTime.Now); 
                     await this.Client.InsertStorageEntityAsync(persistedDoc);
                     var monthlyDoc = new MonthlyCodedDocument()
-                                         {
-                                             RowKey = persistedDoc.DocumentId.ToString(), 
-                                             ProjectId = persistedDoc.ProjectId,
-                                             UserName = monthlyStatUserName,
-                                             CompanyName = account != null ? account.CompanyName : UnknownAccount,
-                                             AccountId = account != null ? account.Id : UnknownAccount,
+                    {
+                        RowKey = persistedDoc.DocumentId.ToString(), 
+                        ProjectId = persistedDoc.ProjectId,
+                        UserName = monthlyStatUserName,
+                        CompanyName = account != null ? account.CompanyName : UnknownAccount,
+                        AccountId = account != null ? account.Id : UnknownAccount
                     };
                     await this.Client.InsertStorageEntityAsync(monthlyDoc);
                 }
