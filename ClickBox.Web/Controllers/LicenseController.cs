@@ -186,26 +186,33 @@ namespace ClickBox.Web.Controllers
 
                 account.IssuedLicenses = account.IssuedLicenses + 1;
 
-                await client.InsertStorageEntityAsync(lic);
+                await this.client.InsertStorageEntityAsync(lic);
                 await this.client.InsertStorageEntityAsync(licx);
-                await client.UpdateEntityAsync(account);
+                await this.client.UpdateEntityAsync(account);
                 return this.Request.CreateResponse(HttpStatusCode.Created, key);
             }
             catch (Exception ex)
             {
                 Trace.TraceError("My error statement", ex.StackTrace, ex.Message);
-                await
-                    client.InsertStorageEntityAsync(
+
+                var request = licx == null
+                                  ? "No request object sent to API"
+                                  : Newtonsoft.Json.JsonConvert.SerializeObject(licx);
+                var requestId = licx == null
+                                  ? Guid.NewGuid().ToString()
+                                  : licx.RequestId.ToString();
+
+                await this.client.InsertStorageEntityAsync(
                         new PostLicenseRequestFailure()
                             {
-                                RowKey = licx.RequestId.ToString(),
+                                RowKey = requestId,
                                 Exception = ex.Message,
                                 StackTrace = ex.StackTrace,
-                                Request = Newtonsoft.Json.JsonConvert.SerializeObject(licx)
-                            });
+                                Request = request
+                        });
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError, 
-                    new HttpError("License error: "+ licx.RequestId));
+                    new HttpError("License error: "+ requestId));
             }
         }
 
