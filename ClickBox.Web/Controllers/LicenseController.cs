@@ -83,7 +83,9 @@ namespace ClickBox.Web.Controllers
         {
             try
             {
+                //licx = null;
                 //throw new Exception("Some great big dirty exception shite", new DBConcurrencyException());
+
                 if (licx == null)
                 {
                     return this.Request.CreateErrorResponse(

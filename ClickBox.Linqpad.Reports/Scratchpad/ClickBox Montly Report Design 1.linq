@@ -20,7 +20,7 @@
 //BATCHES ISOLATED THIS MONTH
 
 var thisMonth = DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString();
-var companyName = "QCAT";
+var companyName = "Ninjar";
 
 //ALL BATCHES ISOLATED THIS MONTH
 
@@ -46,4 +46,3 @@ allDocumentsKodedThisMonth.Dump(numberOfAllDocsThisMonthTitle);
 //DOCUMENTS KODED THIS MONTH BY COMPANY
 
 MonthlyDocuments.Where (mb => mb.PartitionKey == thisMonth && mb.CompanyName == companyName).Dump("ALL DOCUMENTS KODED BY " +companyName+ " MONTH");
-

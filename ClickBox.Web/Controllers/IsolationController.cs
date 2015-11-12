@@ -100,6 +100,7 @@ namespace ClickBox.Web.Controllers
                         RowKey = persistedIsolatedBatch.BatchId.ToString(),
                         ProjectId = persistedIsolatedBatch.ProjectId,
                         UserName = persistedIsolatedBatch.UserName,
+                        DocumentCount = persistedIsolatedBatch.DocumentsCreated,
                         CompanyName = account != null ? account.CompanyName : UnknownAccount,
                         AccountId = account != null ? account.Id : UnknownAccount,
                     };

@@ -33,5 +33,6 @@ namespace ClickBox.Web.Models
         public string UserName { get; set; }
         public string CompanyName { get; set; }
         public string AccountId { get; set; }
+        public int DocumentCount { get; set; }
     }
 }
