@@ -53,13 +53,13 @@ namespace ClickBox.Web.Controllers
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
-                var data = await this.Client.GetEntityByPartitionAndRowKeyAsync<Product>("ODES");
+                var data = await this.Client.GetEntityByPartitionAndRowKeyAsync<Product>("QCAT-Odes");
 
                 var filters =
                     TableQuery.CombineFilters(
                         TableQuery.GenerateFilterCondition("UserName", QueryComparisons.Equal, codedDoc.UserName),
                             TableOperators.And,
-                            TableQuery.GenerateFilterCondition("Product", QueryComparisons.Equal, "ODES"));
+                            TableQuery.GenerateFilterCondition("Product", QueryComparisons.Equal, "QCAT-Odes"));
                 var account =
                     await this.Client.GetEntityByPropertyFilterListAsync<UserAccount>(filters);
 
