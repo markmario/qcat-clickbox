@@ -113,6 +113,8 @@ namespace ClickBox.Web.Controllers
 
                     StripeCharge stripeCharge = chargeService.Create(myCharge);
 
+                    //TODO: need to correlate this record the account
+                    //not yet created below....
                     var stripeChargeResponse = new SuccessfulStripeCharge(charge.TokenId)
                     {
                         SupportId = supportId,
