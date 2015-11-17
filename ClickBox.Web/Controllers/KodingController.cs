@@ -90,7 +90,7 @@ namespace ClickBox.Web.Controllers
                 if (doc == null)
                 {
                     //this is the weird line of code
-                    codedDoc.DateCreated = new DateTimeOffset(DateTime.Now); 
+                    persistedDoc.DateCreated = new DateTimeOffset(DateTime.Now); 
                     await this.Client.InsertStorageEntityAsync(persistedDoc);
                     var monthlyDoc = new MonthlyCodedDocument()
                     {
