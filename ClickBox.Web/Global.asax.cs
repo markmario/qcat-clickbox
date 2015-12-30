@@ -47,6 +47,9 @@ namespace ClickBox.Web
 
         protected async void Application_Start()
         {
+            Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active.InstrumentationKey =
+                Environment.GetEnvironmentVariable("AzureInsightsKey");
+
             SetStorageAccountConnectionString();
             ApplicationUserManager.StartupAsync();
             AreaRegistration.RegisterAllAreas();

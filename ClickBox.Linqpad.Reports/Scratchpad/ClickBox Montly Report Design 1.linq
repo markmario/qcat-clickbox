@@ -20,7 +20,7 @@
 //BATCHES ISOLATED THIS MONTH
 
 var thisMonth = DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString();
-var companyName = "QCAT";
+var companyName = "Law Image";
 
 //ALL BATCHES ISOLATED THIS MONTH
 

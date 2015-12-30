@@ -12,6 +12,9 @@ namespace ClickBox.Web.Controllers
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using AutoMapper;
+
+    using Microsoft.ApplicationInsights;
+
     using Models;
     using TableStorage;
     using Microsoft.WindowsAzure.Storage.Table;
@@ -41,6 +44,8 @@ namespace ClickBox.Web.Controllers
         public async Task<HttpResponseMessage> PostIsoaltionBatch(BatchIsolated isolatedBatch)
         {
             //return  this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,  "Incomplete");
+            var telemetry = new TelemetryClient();
+
             var accountFound = false;
             try
             {
@@ -57,7 +62,7 @@ namespace ClickBox.Web.Controllers
                             TableOperators.And,
                             TableQuery.GenerateFilterCondition("Product", QueryComparisons.Equal, "QCAT-Odes"));
 
-                
+
                 var account = await this.Client.GetEntityByPropertyFilterListAsync<UserAccount>(filters);
 
                 //map to storage type
@@ -108,11 +113,11 @@ namespace ClickBox.Web.Controllers
                 }
                 else
                 {
-                    var oldbatchValues = new List<OldDocmentCount>();;
+                    var oldbatchValues = new List<OldDocmentCount>(); ;
 
                     if (existingBatch.OldBatchValues == null)
                     {
-                        oldbatchValues =  new List<OldDocmentCount>();
+                        oldbatchValues = new List<OldDocmentCount>();
                     }
 
                     if (existingBatch.DocumentsCreated > isolatedBatch.DocumentsCreated)
@@ -131,7 +136,7 @@ namespace ClickBox.Web.Controllers
                     {
                         oldbatchValues = JsonConvert.DeserializeObject<List<OldDocmentCount>>(existingBatch.OldBatchValues);
                     }
-                    
+
                     //record old data for batches that re isolated
                     oldbatchValues.Add(new OldDocmentCount(existingBatch.DocumentsCreated, existingBatch.DateCreated));
                     existingBatch.OldBatchValues = JsonConvert.SerializeObject(oldbatchValues);
@@ -139,13 +144,47 @@ namespace ClickBox.Web.Controllers
                     existingBatch.DateCreated = isolatedBatch.DateCreated;
                     await this.Client.UpdateEntityAsync(existingBatch);
                 }
-                
-                return accountFound ? this.Request.CreateResponse(HttpStatusCode.Created) : 
+
+                if (accountFound==false)
+                {
+                    telemetry.TrackTrace("Invalid Account Usage", new Dictionary<string, string>
+                    {
+                        {"Posted Account User Name", string.IsNullOrEmpty(isolatedBatch.UserName) ? "Unknown Account" : isolatedBatch.UserName}
+                    });
+                }
+
+                return accountFound ? this.Request.CreateResponse(HttpStatusCode.Created) :
                                       this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Account Details");
             }
             catch (Exception ex)
             {
-                //log to table storage
+                Dictionary<string, string> properties;
+
+                if (isolatedBatch == null)
+                {
+                    properties = new Dictionary<string, string>
+                                     {
+                                         {
+                                             "OccuredAt",
+                                             new DateTimeOffset(DateTime.Now).ToString()
+                                         },
+                                         {
+                                             "EmptyPostDataType", typeof(BatchIsolated).FullName
+                                         }
+                                     };
+                     telemetry.TrackException(ex, properties);
+                }
+                else
+                {
+                    properties = new Dictionary<string, string>
+                                     {
+                                         { "OccuredAt", isolatedBatch.DateCreated.ToString()},
+                                         { "User Name", isolatedBatch.UserName }
+                                     };
+                    var measurements = new Dictionary<string, double> { { "DocumentsInFailedCountedBatch", isolatedBatch.DocumentsCreated} };
+                    telemetry.TrackException(ex, properties, measurements);
+                }
+                
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError,
                     ex.Message,
