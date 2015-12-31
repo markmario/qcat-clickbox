@@ -6,12 +6,15 @@
 namespace ClickBox.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Mvc;
 
     using AutoMapper;
+
+    using Microsoft.ApplicationInsights;
 
     using Models;
     using TableStorage;
@@ -45,11 +48,14 @@ namespace ClickBox.Web.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> PostCodedDocument(DocumentCoded codedDoc)
         {
+            var telemetry = new TelemetryClient();
+
             var accountFound = false;
             try
             {
                 if (codedDoc == null)
                 {
+                    telemetry.TrackTrace("Invalid Koding Post without post data");
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
@@ -110,6 +116,16 @@ namespace ClickBox.Web.Controllers
             }
             catch (Exception ex)
             {
+                Dictionary<string, string> properties;
+
+                properties = new Dictionary<string, string>
+                                     {
+                                         { "OccuredAt", new DateTimeOffset(DateTime.Now).ToString()},
+                                         { "User Name", codedDoc != null ? codedDoc.UserName : "Unknown Account" }
+                                     };
+                
+                telemetry.TrackException(ex, properties);
+
                 //log error to table storage
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError, 

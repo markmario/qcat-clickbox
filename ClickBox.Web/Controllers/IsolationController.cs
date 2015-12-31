@@ -51,6 +51,7 @@ namespace ClickBox.Web.Controllers
             {
                 if (isolatedBatch == null)
                 {
+                    telemetry.TrackTrace("Invalid Isolation Post without post data");
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
