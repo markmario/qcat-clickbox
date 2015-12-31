@@ -141,7 +141,7 @@ namespace ClickBox.Web.Controllers
                     oldbatchValues.Add(new OldDocmentCount(existingBatch.DocumentsCreated, existingBatch.DateCreated));
                     existingBatch.OldBatchValues = JsonConvert.SerializeObject(oldbatchValues);
                     existingBatch.DocumentsCreated = isolatedBatch.DocumentsCreated;
-                    existingBatch.DateCreated = isolatedBatch.DateCreated;
+                    existingBatch.DateCreated = new DateTimeOffset(DateTime.Now);
                     await this.Client.UpdateEntityAsync(existingBatch);
                 }
 
@@ -178,7 +178,7 @@ namespace ClickBox.Web.Controllers
                 {
                     properties = new Dictionary<string, string>
                                      {
-                                         { "OccuredAt", isolatedBatch.DateCreated.ToString()},
+                                         { "OccuredAt", new DateTimeOffset(DateTime.Now).ToString()},
                                          { "User Name", isolatedBatch.UserName }
                                      };
                     var measurements = new Dictionary<string, double> { { "DocumentsInFailedCountedBatch", isolatedBatch.DocumentsCreated} };
