@@ -13,7 +13,8 @@
 </Query>
 
 var i = BatchesIsolated.Where (bi => bi.DateCreated > DateTime.Now.AddDays(-1)).ToArray();
-var k = i.OrderBy (x => x.DateCreated);
+var k = i.OrderBy (x => x.DateCreated).ToArray();
+k.ToList().ForEach(b => b.DateCreated = new Nullable<DateTime>(b.DateCreated.Value.ToLocalTime));
 k.Dump();
 //var j = k.
 //j.DateCreated.Value.Dump();
