@@ -51,7 +51,7 @@ namespace ClickBox.Web.Controllers
             {
                 if (isolatedBatch == null)
                 {
-                    telemetry.TrackTrace("Invalid Isolation Post without post data");
+                    telemetry.TrackTrace("Invalid Isolation Request");
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
@@ -150,7 +150,7 @@ namespace ClickBox.Web.Controllers
                 {
                     telemetry.TrackTrace("Invalid Account Usage", new Dictionary<string, string>
                     {
-                        {"Posted Account User Name", string.IsNullOrEmpty(isolatedBatch.UserName) ? "Unknown Account" : isolatedBatch.UserName}
+                        {"Invalid Account Usage", string.IsNullOrEmpty(isolatedBatch.UserName) ? "Unknown Account" : isolatedBatch.UserName}
                     });
                 }
 
@@ -170,7 +170,7 @@ namespace ClickBox.Web.Controllers
                                              new DateTimeOffset(DateTime.Now).ToString()
                                          },
                                          {
-                                             "EmptyPostDataType", typeof(BatchIsolated).FullName
+                                             "Invalid Isolation Request", typeof(BatchIsolated).FullName
                                          }
                                      };
                      telemetry.TrackException(ex, properties);

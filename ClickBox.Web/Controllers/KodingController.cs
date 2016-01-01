@@ -6,6 +6,7 @@
 namespace ClickBox.Web.Controllers
 {
     using System;
+    using System.CodeDom;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -55,7 +56,7 @@ namespace ClickBox.Web.Controllers
             {
                 if (codedDoc == null)
                 {
-                    telemetry.TrackTrace("Invalid Koding Post without post data");
+                    telemetry.TrackTrace("Invalid Koding Request");
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
                 }
 
@@ -107,6 +108,14 @@ namespace ClickBox.Web.Controllers
                         AccountId = account != null ? account.Id : UnknownAccount
                     };
                     await this.Client.InsertStorageEntityAsync(monthlyDoc);
+                }
+
+                if (accountFound == false)
+                {
+                    telemetry.TrackTrace("Invalid Account Usage", new Dictionary<string, string>
+                    {
+                        {"Invalid Account Usage", string.IsNullOrEmpty(codedDoc.UserName) ? "Unknown Account" : codedDoc.UserName}
+                    });
                 }
 
                 return accountFound ? this.Request.CreateResponse(HttpStatusCode.Created) 
