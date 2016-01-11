@@ -3,6 +3,9 @@
   "WebJobs": [
     {
       "filePath": "../ClickBox.CreateAccountsWebJob/ClickBoxCreateAccountsWebJob.csproj"
+    },
+    {
+      "filePath": "../ClickBoxOdesClickCountReports/ClickBoxOdesClickCountReports.csproj"
     }
   ]
 }

@@ -47,8 +47,12 @@ namespace ClickBox.Web
 
         protected async void Application_Start()
         {
-            Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active.InstrumentationKey =
-                System.Web.Configuration.WebConfigurationManager.AppSettings["AzureInsightsKey"];
+            var runtime = System.Configuration.ConfigurationManager.AppSettings["Runtime"];
+            if (runtime != "debug")
+            {
+                Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active.InstrumentationKey =
+                    System.Web.Configuration.WebConfigurationManager.AppSettings["AzureInsightsKey"];
+            }
 
             SetStorageAccountConnectionString();
             ApplicationUserManager.StartupAsync();

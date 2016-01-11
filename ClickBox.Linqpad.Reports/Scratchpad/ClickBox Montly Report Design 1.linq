@@ -1,14 +1,13 @@
 <Query Kind="Statements">
   <Connection>
-    <ID>c7cbf417-e23f-4c46-9318-4bcd0860c0a5</ID>
+    <ID>898042e4-f676-4c29-8008-4d76cbad8f62</ID>
     <Persist>true</Persist>
     <Driver Assembly="Madd0.AzureStorageDriver" PublicKeyToken="47842961fb3025d7">Madd0.AzureStorageDriver.AzureDriver</Driver>
     <DriverData>
       <UseHttps>true</UseHttps>
       <NumberOfRows>100</NumberOfRows>
-      <UseLocalStorage>false</UseLocalStorage>
-      <AccountName>clickboxdev</AccountName>
-      <AccountKey>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASuj6IA5IykWEyFcFK9OzEQAAAAACAAAAAAAQZgAAAAEAACAAAADa/w+/R6QfA//votbv83jDGo/8SNAs4dSCn/wn0NZDEQAAAAAOgAAAAAIAACAAAADqMtrKSE2qbBj//yQCIzsS3z1VFk5apwBGap1fvqeSimAAAAAkgNik9jhOdSX2jKgxWiOQiTFDlGx5jyatdHtIAB/06F0mQpb/2l9vm8tyKZXN0xehv7BgCjaOjNhZYPkuLnRyn6XXKvPKWZsmuu0QjJQHZeHV6lIqHLFhmjh1+yyEnKJAAAAAlX6b7icQlmz0foTfbFy6+lZQ0gjvF1MlVCN87dWXtDE707kXMMeX9lz5lFI7HZFVX6BRh05iP+1yU5yC6aMP2w==</AccountKey>
+      <AccountName>clickbox</AccountName>
+      <AccountKey>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfrBKKxNOUkujb+4N87yM5wAAAAACAAAAAAAQZgAAAAEAACAAAABhXo/MUxfdEvRJT0peWDHa7w/V+XuMFvSIpoccAxH+1gAAAAAOgAAAAAIAACAAAADmy3WFCUIo6Txs2BwmI37Ll5R6TIC186V/RE1QA91A6WAAAABwveedq2mLuxxH05Y/1AkDvOHT8elInkNJOEYHP3tUPXJA0VosgWQr5RZLWYTiXYZIgKhv1P0IEMJj0IPQV2EICQ3ZUt/egFXG7zc7AfmHWB37rY5E7WtIyiGKUOjTcU5AAAAAAX+OOny6MmpYG2Y4jQeA6sWiBEm2NFOmZ0+A5z5ARYLHrrw1y9rQTXhM+kugLQ7AeqFQA4MkmZBoMawdxFgofg==</AccountKey>
     </DriverData>
   </Connection>
 </Query>
@@ -45,4 +44,14 @@ allDocumentsKodedThisMonth.Dump(numberOfAllDocsThisMonthTitle);
 
 //DOCUMENTS KODED THIS MONTH BY COMPANY
 
-MonthlyDocuments.Where (mb => mb.PartitionKey == thisMonth && mb.CompanyName == companyName).Dump("ALL DOCUMENTS KODED BY " +companyName+ " MONTH");
+var allDocsKodedThisMonthBy = MonthlyDocuments.Where (mb => mb.PartitionKey == thisMonth && mb.CompanyName == companyName);
+var countDocsKodedThisMonthBy = allDocsKodedThisMonthBy.ToList().Count();
+var numberKodedByTitle = string.Format("ALL {0} DOCUMENTS KODED THIS MONTH BY {1}", countDocsKodedThisMonthBy, companyName);
+allDocsKodedThisMonthBy.Dump(numberKodedByTitle);
+
+
+
+
+
+
+

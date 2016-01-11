@@ -14,7 +14,7 @@
 
     public class Functions
     {
-        public static void ProcessAccountCreationMessage([QueueTrigger("create-account")] AccountCreationMessage msg,
+        public static async void ProcessAccountCreationMessage([QueueTrigger("create-account")] AccountCreationMessage msg,
             [Table("UserAccounts")] CloudTable tableBinding, IBinder binder, TextWriter log)
         {
             var existingAccount = new ExistingAccount();
@@ -82,7 +82,7 @@
                     ProductName = msg.AccountProductName,
                     PaymentReceived = msg.PaymentReceived
                 };
-                outputQueue.AddMessage(new CloudQueueMessage(JsonConvert.SerializeObject(accountVerify)));
+                await outputQueue.AddMessageAsync(new CloudQueueMessage(JsonConvert.SerializeObject(accountVerify)));
             }
         }
 
