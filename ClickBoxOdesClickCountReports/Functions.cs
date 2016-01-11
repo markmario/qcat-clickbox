@@ -19,7 +19,7 @@ namespace ClickBoxOdesClickCountReports
             log.WriteLine("Following message will be written on the Queue={0}", message);
        }
 
-        public static void TimerJob([TimerTrigger("00:00:15")] TimerInfo timerInfo,
+        public static void TimerJob([TimerTrigger("12:00:00")] TimerInfo timerInfo,
                                     TextWriter log)
         {
             log.WriteLine("Running ODES Reports every fifteen seconds");
