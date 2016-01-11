@@ -17,12 +17,12 @@ namespace ClickBoxOdesClickCountReports
             log.WriteLine("Function is invoked with value={0}", value);
             message = value.ToString();
             log.WriteLine("Following message will be written on the Queue={0}", message);
-            RunClickboxOdesReports(log);
-        }
+       }
 
-        private static void RunClickboxOdesReports(TextWriter log)
+        public static void TimerJob([TimerTrigger("00:00:15")] TimerInfo timerInfo,
+                                    TextWriter log)
         {
-            log.WriteLine("Running ODES Reports");
+            log.WriteLine("Running ODES Reports every fifteen seconds");
         }
     }
 }

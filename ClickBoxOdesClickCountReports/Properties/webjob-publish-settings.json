@@ -1,9 +1,9 @@
 ﻿{
   "$schema": "http://schemastore.org/schemas/json/webjob-publish-settings.json",
   "webJobName": "ClickBoxOdesClickCountReports",
-  "startTime": "2016-01-10T00:00:00+10:00",
+   "startTime": null,
   "endTime": null,
-  "jobRecurrenceFrequency": "Minute",
-  "interval": 1,
-  "runMode": "Scheduled"
+  "jobRecurrenceFrequency": null,
+  "interval": null,
+  "runMode": "Continuous"
 }

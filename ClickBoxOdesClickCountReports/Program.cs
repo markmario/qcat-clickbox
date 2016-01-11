@@ -24,13 +24,13 @@ namespace ClickBoxOdesClickCountReports
             _config = System.Configuration.ConfigurationManager.AppSettings;
             var hostConfig = new JobHostConfiguration(
                 SetStorageAccountConnectionString());
-            
+            hostConfig.UseTimers();
             var host = new JobHost(hostConfig);
             
             // The following code will invoke a function called ManualTrigger and 
             // pass in data (value in this case) to the function
-            host.Call(typeof(Functions).GetMethod("ManualTrigger"), new { value = 20 });
-            //host.RunAndBlock();
+            //host.Call(typeof(Functions).GetMethod("ManualTrigger"), new { value = 20 });
+            host.RunAndBlock();
         }
 
         private static string SetStorageAccountConnectionString()
