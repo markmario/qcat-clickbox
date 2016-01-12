@@ -117,6 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="OdesWeeklyStatsReport" xml:space="preserve">
+    <value>&lt;div style="float:left;"&gt;&lt;img src="cid:qcatlogo" style="height:100px;" /&gt;&lt;/div&gt;
+&lt;div style="border-left:thick solid #8B4513; width:20px; float:left; height:330px;"&gt;&lt;/div&gt;
+&lt;p style="float:left;"&gt;
+    &lt;div class="entry" style="font-size:22px; text-decoration:underline;"&gt;
+       Weekly Koder Click Usage Reports
+    &lt;/div&gt;
+    
+    &lt;div style="margin-top:20px; margin-bottom:10px; font-weight: bold;"&gt;Statistics for {{allBatchCount}} Batches Isolated to date this month.&lt;/div&gt;
+    
+    {{#each montlyBatches}}
+     
+    &lt;div&gt;{{ReportLine}}&lt;/div&gt;
+     
+     {{/each}}
+    
+    &lt;div style="margin-top:20px; margin-bottom:10px; font-weight: bold;"&gt;Statistics for {{allDocCount}} Documents Koded to date this month.&lt;/div&gt;
+    
+    {{monthlyDocuments}}
+     
+    &lt;div&gt;{{ReportLine}}&lt;/div&gt;
+     
+    {{/each}}
+    
+&lt;/p&gt;
+&lt;hr style="margin-top:40px;"&gt;
+&lt;p style="font-size:10pt; margin-top:10px;"&gt;
+    Privileged/Confidential Information may be contained in this message. If you are not the addressee indicated in this message (or responsible for delivery of the message to such person) you may not copy or deliver this message to anyone. In such case, you should destroy this message and kindly notify the sender by reply email
+&lt;/p&gt;</value>
+  </data>
   <data name="TrialSuccessHtml" xml:space="preserve">
     <value>&lt;div style="float:left;"&gt;&lt;img src="cid:qcatlogo" style="height:100px;" /&gt;&lt;/div&gt;
 &lt;div style="border-left:thick solid #8B4513; width:20px; float:left; height:330px;"&gt;&lt;/div&gt;

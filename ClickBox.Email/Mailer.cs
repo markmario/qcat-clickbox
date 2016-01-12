@@ -61,5 +61,49 @@ namespace ClickBox.Mail
 
             return response[0].Status == EmailResultStatus.Sent;
         }
+
+        public static async Task<bool> SendMonthlyOdesReports<T>(T msg) where T : IAmTheWeeklyStatsForTheMonthOdesReport
+        {
+            var api = new MandrillApi(Program.MandrillKey, true);
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var imageStream = assembly.GetManifestResourceStream("ClickBox.Email.azureMail.png");
+            var imgBytes = new byte[imageStream.Length];
+            imageStream.Read(imgBytes, 0, (int)imageStream.Length);
+            var base64 = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
+
+            var html = Resources.OdesWeeklyStatsReport;
+
+            var images = new[]{
+                        new Image
+                            {
+                                Name = "qcatlogo",
+                                Type = "image/png",
+                                Content = base64
+                            }};
+
+            var email = new EmailMessage
+            {
+                To = new List<EmailAddress>(msg.To),
+                BccAddress = msg.From,
+                FromEmail = msg.From,
+                FromName = msg.FromName,
+                Text = "Usage Report",
+                Html = html,
+                Subject = "QCAT Objective Koding Weekly Stastistic Report",
+                Images = images,
+                MergeLanguage = "handlebars"
+            };
+
+            email.AddGlobalVariable("allBatchCount", msg.AllBatchesCount);
+            email.AddGlobalVariable("allDocCount", msg.AllDocumentsCount);
+            email.AddGlobalVariable("monthlyBatches", msg.MonthlyBatchLines);
+            email.AddGlobalVariable("monthlyDocuments", msg.MonthlyDocumentLines);
+
+            var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
+
+            return response[0].Status == EmailResultStatus.Sent;
+        }
+
     }
 }

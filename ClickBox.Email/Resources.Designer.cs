@@ -64,6 +64,24 @@ namespace ClickBox.Email {
         ///   Looks up a localized string similar to &lt;div style=&quot;float:left;&quot;&gt;&lt;img src=&quot;cid:qcatlogo&quot; style=&quot;height:100px;&quot; /&gt;&lt;/div&gt;
         ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:330px;&quot;&gt;&lt;/div&gt;
         ///&lt;p style=&quot;float:left;&quot;&gt;
+        ///    &lt;div class=&quot;entry&quot; style=&quot;font-size:22px; text-decoration:underline;&quot;&gt;
+        ///       Weekly Koder Click Usage Reports
+        ///    &lt;/div&gt;
+        ///    
+        ///    &lt;div style=&quot;margin-top:20px; margin-bottom:10px; font-weight: bold;&quot;&gt;Statistics for {{allBatchCount}} Batches Isolated to date this month.&lt;/div&gt;
+        ///    
+        ///    {{#each montlyBatch [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OdesWeeklyStatsReport {
+            get {
+                return ResourceManager.GetString("OdesWeeklyStatsReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;div style=&quot;float:left;&quot;&gt;&lt;img src=&quot;cid:qcatlogo&quot; style=&quot;height:100px;&quot; /&gt;&lt;/div&gt;
+        ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:330px;&quot;&gt;&lt;/div&gt;
+        ///&lt;p style=&quot;float:left;&quot;&gt;
         ///    &lt;div class=&quot;entry&quot;&gt;
         ///        {{#if paymentReceived}}
         ///        &lt;p&gt;We&apos;ve received your payment, thank you.&lt;/p&gt;

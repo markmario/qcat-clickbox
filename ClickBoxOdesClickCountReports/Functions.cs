@@ -9,6 +9,8 @@ namespace ClickBoxOdesClickCountReports
 {
     using System;
 
+    using ClickBox.Mail;
+
     using Microsoft.WindowsAzure.Storage.Table;
 
     public class Functions
@@ -23,20 +25,24 @@ namespace ClickBoxOdesClickCountReports
             log.WriteLine("Following message will be written on the Queue={0}", message);
        }
 
-        public static void TimerJob([TimerTrigger("00:00:15")] TimerInfo timerInfo,
+        public static async void TimerJob([TimerTrigger("00:00:15")] TimerInfo timerInfo,
                                     TextWriter log, [Table("UserAccounts")] CloudTable tableBinding,
                                     [Table("MonthlyBatches")] CloudTable monthlyBatchesCloudTable,
                                     [Table("MonthlyDocuments")] CloudTable monthlyDocumentsCloudTable)
         {
-            var thisMonth = "122015";// DateTime.Now.Month - 1 + DateTime.Now.Year.ToString();
+            var thisMonth = "122015";  // DateTime.Now.Month - 1 + DateTime.Now.Year.ToString();
 
             log.WriteLine("Running ODES Reports every fifteen seconds");
 
             var filter = TableQuery.GenerateFilterCondition("Product", QueryComparisons.Equal, "QCAT-Odes");
 
-            var query = new TableQuery().Where(filter).Select(new List<string>{ "Product", "CompanyName", "UserName"});
+            var query = new TableQuery().Where(filter).Select(new List<string> { "Product", "CompanyName", "UserName" });
 
             var results = tableBinding.ExecuteQuery(query);
+            var monthlyBatchLines = new List<MonthlyBatchLine>();
+            var monthlyDocumentLines = new List<MonthlyDocumentLine>();
+            var allBatchesCount = 0L;
+            var allDocsCount = 0L;
 
             foreach (var result in results)
             {
@@ -53,14 +59,34 @@ namespace ClickBoxOdesClickCountReports
                     companyName,
                     monthlyDocumentsCloudTable);
 
+                allBatchesCount += numberOfBatchesForTheMonthForCo;
+                allDocsCount += numberOfDocumentsForTheMonthForCo;
+
                 var printBatchData = $"{companyName} has Isolated {numberOfBatchesForTheMonthForCo} batches this month";
+                monthlyBatchLines.Add(new MonthlyBatchLine() {ReportLine = printBatchData });
                 var printDocsData = $"{companyName} has Koded {numberOfDocumentsForTheMonthForCo} documents this month";
+                monthlyDocumentLines.Add(new MonthlyDocumentLine() { ReportLine = printDocsData});
 
                 log.WriteLine(printBatchData);
                 log.WriteLine(printDocsData);
 
                 Console.WriteLine(printBatchData);
                 Console.WriteLine(printDocsData);
+            }
+
+            var report = new IAmTheWeeklyStatsForTheMonthOdesReport()
+                             {
+                                 AllBatchesCount = allBatchesCount,
+                                 AllDocumentsCount = allDocsCount,
+                                 MonthlyDocumentLines =  monthlyDocumentLines,
+                                 MonthlyBatchLines = monthlyBatchLines
+                             };
+
+            var sent = await Mailer.SendMonthlyOdesReports(report);
+            if (!sent)
+            {
+                //five fails and into poison queue
+                throw new Exception("Failed to send montly reports");
             }
         }
 
