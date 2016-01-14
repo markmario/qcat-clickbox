@@ -99,6 +99,8 @@ namespace ClickBox.Mail
             email.AddGlobalVariable("allDocCount", msg.AllDocumentsCount);
             email.AddGlobalVariable("monthlyBatches", msg.MonthlyBatchLines);
             email.AddGlobalVariable("monthlyDocuments", msg.MonthlyDocumentLines);
+            email.AddGlobalVariable("monthlyBatchesAsString", msg.MonthlyBatchLinesAsString);
+            email.AddGlobalVariable("monthlyDocumentsAsString", msg.MontlyDocumentLinesAsString);
 
             var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
 

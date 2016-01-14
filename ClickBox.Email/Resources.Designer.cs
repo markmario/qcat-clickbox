@@ -70,7 +70,7 @@ namespace ClickBox.Email {
         ///    
         ///    &lt;div style=&quot;margin-top:20px; margin-bottom:10px; font-weight: bold;&quot;&gt;Statistics for {{allBatchCount}} Batches Isolated to date this month.&lt;/div&gt;
         ///    
-        ///    {{#each montlyBatch [rest of string was truncated]&quot;;.
+        ///    &lt;div&gt;{{{monthlyBatc [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string OdesWeeklyStatsReport {
             get {

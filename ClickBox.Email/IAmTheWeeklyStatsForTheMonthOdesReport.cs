@@ -11,7 +11,7 @@ namespace ClickBox.Mail
         public List<EmailAddress> To =>  new List<EmailAddress>
         {
             new EmailAddress("simon@qcat.com.au"),
-            //new EmailAddress("mark@qcat.com.au"),
+            new EmailAddress("mark@qcat.com.au"),
             //new EmailAddress("jlakshman@lawimage.com.au"),
             //new EmailAddress("mik@lawimage.com.au")
         };
@@ -19,6 +19,10 @@ namespace ClickBox.Mail
         public long AllBatchesCount { get; set; }
         public List<MonthlyBatchLine> MonthlyBatchLines { get; set; }
         public List<MonthlyDocumentLine> MonthlyDocumentLines { get; set; }
+
+        public string MontlyDocumentLinesAsString { get; set; }
+
+        public string MonthlyBatchLinesAsString { get; set; }
     }
 
     public class MonthlyBatchLine

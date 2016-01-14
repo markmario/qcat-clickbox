@@ -127,19 +127,11 @@
     
     &lt;div style="margin-top:20px; margin-bottom:10px; font-weight: bold;"&gt;Statistics for {{allBatchCount}} Batches Isolated to date this month.&lt;/div&gt;
     
-    {{#each montlyBatches}}
-     
-    &lt;div&gt;{{ReportLine}}&lt;/div&gt;
-     
-     {{/each}}
+    &lt;div&gt;{{{monthlyBatchesAsString}}}&lt;/div&gt;
     
     &lt;div style="margin-top:20px; margin-bottom:10px; font-weight: bold;"&gt;Statistics for {{allDocCount}} Documents Koded to date this month.&lt;/div&gt;
     
-    {{monthlyDocuments}}
-     
-    &lt;div&gt;{{ReportLine}}&lt;/div&gt;
-     
-    {{/each}}
+    &lt;div&gt;{{{monthlyDocumentsAsString}}}&lt;/div&gt;
     
 &lt;/p&gt;
 &lt;hr style="margin-top:40px;"&gt;
