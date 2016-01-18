@@ -30,7 +30,7 @@ namespace ClickBoxOdesClickCountReports
                                     [Table("MonthlyBatches")] CloudTable monthlyBatchesCloudTable,
                                     [Table("MonthlyDocuments")] CloudTable monthlyDocumentsCloudTable)
         {
-            var thisMonth = DateTime.Now.Month - 1 + DateTime.Now.Year.ToString();
+            var thisMonth = DateTime.Now.Month + DateTime.Now.Year.ToString();
 
             log.WriteLine("Running ODES Reports every fifteen seconds");
 
