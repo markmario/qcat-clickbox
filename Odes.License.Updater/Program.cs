@@ -19,6 +19,7 @@ namespace Odes.License.Updater
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Net.Http.Headers;
+    using System.Net.Sockets;
     using System.Security.Principal;
     using System.Text;
 
@@ -112,15 +113,39 @@ namespace Odes.License.Updater
             //Licence.UserName = "tobymasterson";
 
             /*SIMON*/
-            Licence.ServiceQueue = "SNOODLEBUG";
-            Licence.Email = "simon@qcat.com.au";
-            Licence.Password = "jy4agzeipxwuhd4x7xrw3h4h64";
+            //Licence.ServiceQueue = "SNOODLEBUG";
+            //Licence.Email = "simon@qcat.com.au";
+            //Licence.Password = "jy4agzeipxwuhd4x7xrw3h4h64";
 
-            Licence.SystemMachineName = "SNOODLEBUG"; ;
-            Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            Licence.UserName = @"simon";
-            Licence.SystemNetworkCredential = Licence.UserName;
+            //Licence.SystemMachineName = "SNOODLEBUG"; ;
+            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            //Licence.UserName = @"simon";
+            //Licence.SystemNetworkCredential = Licence.UserName;
             /* */
+
+            //iCourts
+            Licence.ServiceQueue = "SNOODLEBUG"; //ICDSVR01
+            Licence.Email = "m.lan@icourts.com.au";
+            Licence.Password = "6bmtgdcr2c3uhh63doisdhfosq";
+
+            Licence.SystemMachineName = "SNOODLEBUG"; //use the fully qualified instance name ICDSVR01/etc
+            Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            Licence.UserName = @"m.lan@icourts.com.au";
+            Licence.SystemNetworkCredential = Licence.UserName;
+            GenerateLicenseFileForODESV2(Licence);
+        }
+
+        private static void GenerateLicenseFileForODESV2(LicenseRequest request, string productName = "QCAT-Odes")
+        {
+            var licensor = new ProductLicenser();
+            request.ProductName = productName;
+            var rep  =licensor.GeneratedLisenseV2(request, Resources.appid);
+
+            var licxpath = "License.xml";
+
+            // SaveToDb(Guid.NewGuid(), rep);
+            File.WriteAllText(licxpath, rep.LicenseText, Encoding.UTF8);
+            Console.WriteLine(Resources.savelicx, licxpath);
         }
 
         private static void GenerateLicenceFile(string productName = "ODES")
@@ -191,7 +216,8 @@ namespace Odes.License.Updater
         private static void Main(string[] args)
         {
             Automatic();
-            GenerateLicenceFile();
+            //GenerateLicenseFileForODESV2
+            //GenerateLicenceFile();
 
             // Console.ReadLine();
         }
