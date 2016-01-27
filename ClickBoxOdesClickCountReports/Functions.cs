@@ -25,14 +25,14 @@ namespace ClickBoxOdesClickCountReports
             log.WriteLine("Following message will be written on the Queue={0}", message);
        }
 
-        public static async void TimerJob([TimerTrigger("24:00:00")] TimerInfo timerInfo,
+        public static async void TimerJob([TimerTrigger("12:00:00")] TimerInfo timerInfo,
                                     TextWriter log, [Table("UserAccounts")] CloudTable tableBinding,
                                     [Table("MonthlyBatches")] CloudTable monthlyBatchesCloudTable,
                                     [Table("MonthlyDocuments")] CloudTable monthlyDocumentsCloudTable)
         {
             var thisMonth = DateTime.Now.Month + DateTime.Now.Year.ToString();
 
-            log.WriteLine("Running ODES Reports every fifteen seconds");
+            log.WriteLine("Running ODES Reports every 12 Hours");
 
             var filter = TableQuery.GenerateFilterCondition("Product", QueryComparisons.Equal, "QCAT-Odes");
 

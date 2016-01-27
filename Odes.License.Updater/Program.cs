@@ -123,12 +123,12 @@ namespace Odes.License.Updater
             //Licence.SystemNetworkCredential = Licence.UserName;
             /* */
 
-            //iCourts
-            Licence.ServiceQueue = "SNOODLEBUG"; //ICDSVR01
+            //iCourts was licensed with THIS!!!!!
+            Licence.ServiceQueue = "ICDSRV01"; //"ICDSVR01"; //ICDSVR01\ICDSQLSRV
             Licence.Email = "m.lan@icourts.com.au";
             Licence.Password = "6bmtgdcr2c3uhh63doisdhfosq";
-
-            Licence.SystemMachineName = "SNOODLEBUG"; //use the fully qualified instance name ICDSVR01/etc
+            //"ICDSVR01\\ICDSQLSRV"
+            Licence.SystemMachineName = @"ICDSRV01\ICDSQLSRV";// "ICDSQLSRV"; //use the fully qualified instance name ICDSVR01/etc
             Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
             Licence.UserName = @"m.lan@icourts.com.au";
             Licence.SystemNetworkCredential = Licence.UserName;
