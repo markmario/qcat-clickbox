@@ -64,7 +64,7 @@ namespace ClickBoxOdesClickCountReports
                 allBatchesCount += numberOfBatchesForTheMonthForCo;
                 allDocsCount += numberOfDocumentsForTheMonthForCo;
 
-                var printBatchData = $"{companyName} has Isolated {numberOfBatchesForTheMonthForCo} batche(s) this month";
+                var printBatchData = $"{companyName} has Isolated {numberOfBatchesForTheMonthForCo} batch(s) this month";
                 monthlyBatchLinesAsString += "<div style='margin-bottom:10px;'>" + printBatchData + "</div>";
                 monthlyBatchLines.Add(new MonthlyBatchLine() {ReportLine = printBatchData });
                 var printDocsData = $"{companyName} has Koded {numberOfDocumentsForTheMonthForCo} document(s) this month";
