@@ -96,7 +96,7 @@ namespace Odes.License.Updater
             // Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
             // Licence.UserName = "offline.gen";
 
-            /*ASIC*/
+            /*ASIC - OLD CLICKBOX*/
             //Licence.ServiceQueue = "SYDSQL4";
             //Licence.Email = "asic";
             //Licence.Password = "as1c";
@@ -106,6 +106,18 @@ namespace Odes.License.Updater
             //Licence.UserName = @"a1\Svc.qcat";
             //Licence.SystemNetworkCredential = Licence.UserName;
             /* */
+
+            /*ASIC - NEW CLICKBOX*/
+            Licence.ServiceQueue = "SYDSQL4";
+            Licence.Email = "michael.debono@asic.gov.au";
+            Licence.Password = "il2abnglnhdercitmavszbhq3m";
+
+            Licence.SystemMachineName = "SYDSQL4"; ;
+            Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            Licence.UserName = @"michael.debono@asic.gov.au";
+            Licence.SystemNetworkCredential = Licence.UserName;
+
+
 
             /*KORDA MENTHA*/
             //Licence.Email = "tobymasterson";
@@ -124,14 +136,14 @@ namespace Odes.License.Updater
             /* */
 
             //iCourts was licensed with THIS!!!!!
-            Licence.ServiceQueue = "ICDSRV01"; //"ICDSVR01"; //ICDSVR01\ICDSQLSRV
-            Licence.Email = "m.lan@icourts.com.au";
-            Licence.Password = "6bmtgdcr2c3uhh63doisdhfosq";
-            //"ICDSVR01\\ICDSQLSRV"
-            Licence.SystemMachineName = @"ICDSRV01\ICDSQLSRV";// "ICDSQLSRV"; //use the fully qualified instance name ICDSVR01/etc
-            Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            Licence.UserName = @"m.lan@icourts.com.au";
-            Licence.SystemNetworkCredential = Licence.UserName;
+            //Licence.ServiceQueue = "ICDSRV01"; //"ICDSVR01"; //ICDSVR01\ICDSQLSRV
+            //Licence.Email = "m.lan@icourts.com.au";
+            //Licence.Password = "6bmtgdcr2c3uhh63doisdhfosq";
+            ////"ICDSVR01\\ICDSQLSRV"
+            //Licence.SystemMachineName = @"ICDSRV01\ICDSQLSRV";// "ICDSQLSRV"; //use the fully qualified instance name ICDSVR01/etc
+            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            //Licence.UserName = @"m.lan@icourts.com.au";
+            //Licence.SystemNetworkCredential = Licence.UserName;
             GenerateLicenseFileForODESV2(Licence);
         }
 
