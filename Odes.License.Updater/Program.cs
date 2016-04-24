@@ -108,16 +108,24 @@ namespace Odes.License.Updater
             /* */
 
             /*ASIC - NEW CLICKBOX*/
-            Licence.ServiceQueue = "SYDSQL4";
+            //Licence.ServiceQueue = "SYDSQL4";
+            //Licence.Email = "michael.debono@asic.gov.au";
+            //Licence.Password = "il2abnglnhdercitmavszbhq3m";
+
+            //Licence.SystemMachineName = "SYDSQL4"; ;
+            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+            //Licence.UserName = @"michael.debono@asic.gov.au";
+            //Licence.SystemNetworkCredential = Licence.UserName;
+
+            /*ASIC TEST SERVER - NEW CLICKBOX*/
+            Licence.ServiceQueue = "AGSQLDEVD1";
             Licence.Email = "michael.debono@asic.gov.au";
             Licence.Password = "il2abnglnhdercitmavszbhq3m";
 
-            Licence.SystemMachineName = "SYDSQL4"; ;
+            Licence.SystemMachineName = "AGSQLDEVD1"; ;
             Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
             Licence.UserName = @"michael.debono@asic.gov.au";
             Licence.SystemNetworkCredential = Licence.UserName;
-
-
 
             /*KORDA MENTHA*/
             //Licence.Email = "tobymasterson";

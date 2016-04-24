@@ -65,15 +65,18 @@
                 var outputQueueName = "account-created";
                 var queueAttribute = new QueueAttribute(outputQueueName);
                 var outputQueue = binder.Bind<CloudQueue>(queueAttribute);
-                
+
+                var extraInstructions = string.IsNullOrEmpty(downloadDetail.ExtraInstructions) == false
+                               ? ". " + downloadDetail.ExtraInstructions
+                               : string.Empty;
                 var accountVerify = new SendAccountAndDownloadInstructionsMessage()
                 {
                     From = "licensing@qcat.com.au",
                     To = msg.AccountEmail,
                     DowloadLink = downloadDetail.DownloadLink, 
                     Instructions = "Click the link to download your copy of " + msg.AccountProductName + 
-                                    " and use your License Name and Password to obtain your "  + msg.AccountLicenseType +
-                                    downloadDetail.ExtraInstructions,
+                                   " and use your License Name and Password to obtain your "  + msg.AccountLicenseType 
+                                   + extraInstructions,
                     MessageBody = "Welcome to your " + msg.AccountProductName + " " + msg.AccountLicenseType,
                     ContactName = msg.AccountName,
                     FromName = "QCAT Licensing Team",

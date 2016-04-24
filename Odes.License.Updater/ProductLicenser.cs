@@ -124,12 +124,12 @@
                 if(baseUrl == null){ actualUrl = "https://clickboxweb.azurewebsites.net/";}
                 var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
 #else
-                if (baseUrl == null) { actualUrl = "https://localhost:44302/"; }
-                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
+                //if (baseUrl == null) { actualUrl = "https://localhost:44302/"; }
+                //var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
                 //****************************************************************
                 //FOR AUTOMATIC WHEN GENERATING A ENTERPRISE LICENSE
-                //if (baseUrl == null) { actualUrl = "https://clickboxweb.azurewebsites.net/"; }
-                //var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
+                if (baseUrl == null) { actualUrl = "https://clickboxweb.azurewebsites.net/"; }
+                var client = new HttpClient { BaseAddress = new Uri(actualUrl) };
 #endif
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

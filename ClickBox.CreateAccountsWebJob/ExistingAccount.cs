@@ -61,6 +61,9 @@ namespace ClickBox.CreateAccounts
             var outputQueue = binder.Bind<CloudQueue>(queueAttribute);
             var downloadDetail = ProductDownloadLinkResolver
                                 .ResolveDownloadLinkFromProductName(msg.AccountProductName);
+            var extraInstructions = string.IsNullOrEmpty(downloadDetail.ExtraInstructions) == false
+                               ? ". " + downloadDetail.ExtraInstructions
+                               : string.Empty;
             var accountVerify = new SendAccountAndDownloadInstructionsMessage()
             {
                 From = "licensing@qcat.com.au",
@@ -68,7 +71,7 @@ namespace ClickBox.CreateAccounts
                 DowloadLink = downloadDetail.DownloadLink,
                 Instructions = "Click the link to download your copy of " + msg.AccountProductName +
                                     " and use your License Name and Password to obtain your " + msg.AccountLicenseType +
-                                    downloadDetail.ExtraInstructions,
+                                    extraInstructions,
                 MessageBody = "You already have an account for a " + msg.AccountProductName + " " + msg.AccountLicenseType + " with the following details: ",
                 ContactName = msg.AccountName,
                 FromName = "QCAT Licensing Team",

@@ -1,6 +1,6 @@
 ﻿namespace ClickBox.CreateAccounts.Util
 {
-    public class PageMergerDownloadDetail : IDownloadDetail
+    public class CasehubIoRazorReviewDownloadDetail : IDownloadDetail
     {
         public int DaysLicensed
         {
@@ -12,14 +12,14 @@
 
         public string DownloadLink
         {
-            get { return "http://install.qcat.com.au/pagemerger/PageMerger.application"; }
+            get { return "http://install.qcat.com.au/razor/installer64/Setup.exe"; }
         }
 
         public string ExtraInstructions
         {
             get
             {
-                return string.Empty;
+                return "Once installed, import the attached license file called razor.licx.json.";
             }
         }
     }

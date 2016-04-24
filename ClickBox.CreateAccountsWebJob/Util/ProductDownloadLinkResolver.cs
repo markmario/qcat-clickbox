@@ -12,6 +12,8 @@
                     return new PageStreamerDownloadDetail();
                 case "Pagemerger":
                     return new PageMergerDownloadDetail();
+                case "casehub.io Razor Review":
+                    return new CasehubIoRazorReviewDownloadDetail();
                 default:
                     return null;
             }
