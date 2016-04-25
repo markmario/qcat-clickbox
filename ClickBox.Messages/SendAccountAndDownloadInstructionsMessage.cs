@@ -2,6 +2,7 @@
 
 namespace ClickBox.Messages
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
@@ -35,10 +36,7 @@ namespace ClickBox.Messages
         public string Password { get; set; }
         public string ProductName { get; set; }
         public bool PaymentReceived { get; set; }
-        public string To
-        {
-            get; set;
-        }
+        public string To { get; set; }
         public override string ToString()
         {
             return "{From:" + From + ", FromName:" + FromName + "," +
@@ -47,5 +45,9 @@ namespace ClickBox.Messages
         }
 
         public string QueueName => "account-created";
+
+        public DateTime ExpiryDate { get; set; }
+
+        public string AccountType { get; set; }
     }
 }

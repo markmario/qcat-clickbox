@@ -1,5 +1,7 @@
 ﻿namespace ClickBox.Mail
 {
+    using System;
+
     public interface IHaveDataForMail
     {
         string MessageBody { get; set; }
@@ -13,5 +15,7 @@
         string Password { get; set; }
         string ProductName { get; set; }
         bool PaymentReceived { get; set; }
+        DateTime ExpiryDate { get; set; }
+        string AccountType { get; set; }
     }
 }

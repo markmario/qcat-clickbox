@@ -23,5 +23,7 @@ namespace ClickBox.CreateAccounts.Util
                     " If you do not have Access installed, download the OLEDB Drivers here http://www.microsoft.com/en-us/download/confirmation.aspx?id=23734";
             }
         }
+
+        public bool UsesFreeLicenseFileImport => false;
     }
 }

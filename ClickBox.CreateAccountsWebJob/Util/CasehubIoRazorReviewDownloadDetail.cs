@@ -12,7 +12,7 @@
 
         public string DownloadLink
         {
-            get { return "http://install.qcat.com.au/razor/installer64/Setup.exe"; }
+            get { return "http://www.qcat.com.au/casehub.io/downloads"; }
         }
 
         public string ExtraInstructions
@@ -22,5 +22,7 @@
                 return "Once installed, import the attached license file called razor.licx.json.";
             }
         }
+
+        public bool UsesFreeLicenseFileImport => true;
     }
 }

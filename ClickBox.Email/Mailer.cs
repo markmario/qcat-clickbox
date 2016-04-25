@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace ClickBox.Mail
 {
+    using System.Text;
+
     public class Mailer
     {
-        public static async Task<bool> SendMail<T>(T msg) where T : IHaveDataForMail
+        public static async Task<bool> SendMail<T>(T msg, bool createLicenseFile = false) where T : IHaveDataForMail
         {
             var api = new MandrillApi(Program.MandrillKey, true);
             var to = new EmailAddress();
@@ -57,9 +59,22 @@ namespace ClickBox.Mail
             email.AddGlobalVariable("licenseName", msg.To);
             email.AddGlobalVariable("paymentReceived", msg.PaymentReceived);
 
+            if (createLicenseFile)
+            {
+                var licxAttachment = new EmailAttachment();
+                licxAttachment.Base64 = false;
+                licxAttachment.Content = new LicenseFileCreator().Create(msg);
+                licxAttachment.Name = "razor.licx.json";
+                licxAttachment.Type = "application/json";
+                var attachments = new List<EmailAttachment>() {licxAttachment};
+                email.Attachments = attachments;
+            }
+
             var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
 
-            return response[0].Status == EmailResultStatus.Sent;
+            var status = response[0].Status;
+            bool emailSent = status != EmailResultStatus.Rejected || status != EmailResultStatus.Invalid;
+            return emailSent;
         }
 
         public static async Task<bool> SendMonthlyOdesReports<T>(T msg) where T : IAmTheWeeklyStatsForTheMonthOdesReport

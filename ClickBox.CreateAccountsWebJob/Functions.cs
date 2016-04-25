@@ -83,7 +83,9 @@
                     Password = msg.Password,
                     LicenseName = msg.AccountName,
                     ProductName = msg.AccountProductName,
-                    PaymentReceived = msg.PaymentReceived
+                    PaymentReceived = msg.PaymentReceived,
+                    AccountType = ((dynamic)result.Result).AccountType,
+                    ExpiryDate = ((dynamic)result.Result).SupportEndDate
                 };
                 await outputQueue.AddMessageAsync(new CloudQueueMessage(JsonConvert.SerializeObject(accountVerify)));
             }
@@ -95,7 +97,10 @@
         {
             //need to store record of failed mails
             //TODO: create a poision message handler to store in table
-            var sent = await Mailer.SendMail(msg);
+
+            var downloadDetail = ProductDownloadLinkResolver
+                                .ResolveDownloadLinkFromProductName(msg.ProductName);
+            var sent = await Mailer.SendMail(msg, downloadDetail.UsesFreeLicenseFileImport);
             if(!sent)
             {
                 //five fails and into poison queue

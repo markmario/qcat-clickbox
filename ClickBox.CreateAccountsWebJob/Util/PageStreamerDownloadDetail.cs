@@ -24,5 +24,7 @@ namespace ClickBox.CreateAccounts.Util
                 return string.Empty;
             }
         }
+
+        public bool UsesFreeLicenseFileImport => false;
     }
 }
