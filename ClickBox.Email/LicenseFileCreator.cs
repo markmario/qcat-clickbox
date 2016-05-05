@@ -13,7 +13,7 @@ namespace ClickBox.Email
     {
         public string Create(IHaveDataForMail msg)
         {
-            var s = $"'UserName': '{msg.To}', 'AccountType': '{msg.AccountType}', 'ProductName': '{msg.ProductName}','ExpiryDate': '{msg.ExpiryDate.ToString("dd-MM-yyyy")}'";
+            var s = $"\"UserName\": \"{msg.To}\", \"AccountType\": \"{msg.AccountType}\", 'ProductName': \"{msg.ProductName}\",'ExpiryDate': \"{msg.ExpiryDate.ToString("dd-MM-yyyy")}\"";
             s = "{" + s + "}";
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(s);
             return Convert.ToBase64String(plainTextBytes);
