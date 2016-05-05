@@ -77,8 +77,12 @@ namespace ClickBox.CreateAccounts
                 FromName = "QCAT Licensing Team",
                 Password = existingAccount.Password,
                 LicenseName = msg.AccountName,
-                ProductName = msg.AccountProductName
+                ProductName = msg.AccountProductName,
+                PaymentReceived = msg.PaymentReceived,
+                AccountType =  existingAccount.AccountType, // ((dynamic)result.Result).AccountType,
+                ExpiryDate = existingAccount.SupportEndDate // ((dynamic)result.Result).SupportEndDate
             };
+
             outputQueue.AddMessage(new CloudQueueMessage(JsonConvert.SerializeObject(accountVerify)));
         }
     }
