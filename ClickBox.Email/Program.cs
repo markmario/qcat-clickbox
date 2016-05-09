@@ -19,6 +19,11 @@
             SetStorageAccountConnectionString();
         }
 
+        Program(bool withoutStorage)
+        {
+            _mandrillKey = default(string);
+        }
+
         private static string SetStorageAccountConnectionString()
         {
             var runtime = _config["Runtime"];

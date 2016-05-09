@@ -65,6 +65,28 @@ namespace ClickBox.Email {
         ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:330px;&quot;&gt;&lt;/div&gt;
         ///&lt;p style=&quot;float:left;&quot;&gt;
         ///    &lt;div class=&quot;entry&quot; style=&quot;font-size:22px; text-decoration:underline;&quot;&gt;
+        ///       {{header}}
+        ///    &lt;/div&gt;
+        ///    
+        ///    &lt;div style=&quot;margin-top:20px; margin-bottom:10px; font-weight: bold;&quot;&gt;{{subHeader}} &lt;/div&gt;
+        ///    
+        ///    &lt;div&gt;{{{bodyText}}}&lt;/div&gt;
+        ///    
+        ///&lt;/p&gt;
+        ///&lt;hr style=&quot;margin-top:40px;&quot;&gt;
+        ///&lt;p style=&quot;font-size:10pt;  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GenericEmail {
+            get {
+                return ResourceManager.GetString("GenericEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;div style=&quot;float:left;&quot;&gt;&lt;img src=&quot;cid:qcatlogo&quot; style=&quot;height:100px;&quot; /&gt;&lt;/div&gt;
+        ///&lt;div style=&quot;border-left:thick solid #8B4513; width:20px; float:left; height:330px;&quot;&gt;&lt;/div&gt;
+        ///&lt;p style=&quot;float:left;&quot;&gt;
+        ///    &lt;div class=&quot;entry&quot; style=&quot;font-size:22px; text-decoration:underline;&quot;&gt;
         ///       Weekly Koder Click Usage Reports
         ///    &lt;/div&gt;
         ///    

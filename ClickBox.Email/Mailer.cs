@@ -124,5 +124,46 @@ namespace ClickBox.Mail
             return response[0].Status == EmailResultStatus.Sent;
         }
 
+        public static async Task<bool> SendGenericMail<T>(T msg, string key = null) where T : IAmAGenericMailMessage
+        {
+            var api = new MandrillApi(key ?? Program.MandrillKey);
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var imageStream = assembly.GetManifestResourceStream("ClickBox.Email.azureMail.png");
+            var imgBytes = new byte[imageStream.Length];
+            imageStream.Read(imgBytes, 0, (int)imageStream.Length);
+            var base64 = Convert.ToBase64String(imgBytes, 0, imgBytes.Length);
+
+            var html = Resources.GenericEmail;
+
+            var images = new[]{
+                        new Image
+                            {
+                                Name = "qcatlogo",
+                                Type = "image/png",
+                                Content = base64
+                            }};
+
+            var email = new EmailMessage
+            {
+                To = new List<EmailAddress> {new EmailAddress(msg.To)},
+                BccAddress = msg.From,
+                FromEmail = msg.From,
+                FromName = msg.FromName,
+                Text = msg.MessageBody,
+                Html = html,
+                Subject = msg.Subject,
+                Images = images,
+                MergeLanguage = "handlebars"
+            };
+
+            email.AddGlobalVariable("header", msg.Header);
+            email.AddGlobalVariable("subHeader", msg.SubHeader);
+            email.AddGlobalVariable("bodyText", msg.BodyText);
+
+            var response = await api.SendMessage(new Mandrill.Requests.Messages.SendMessageRequest(email));
+
+            return response[0].Status == EmailResultStatus.Sent;
+        }
     }
 }
