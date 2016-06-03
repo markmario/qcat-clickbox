@@ -12,7 +12,7 @@
 
         public string DownloadLink
         {
-            get { return "http://www.qcat.com.au/casehub.io/downloads"; }
+            get { return "http://qcatinstalls.blob.core.windows.net/razor/Setup.exe"; }
         }
 
         public string ExtraInstructions
