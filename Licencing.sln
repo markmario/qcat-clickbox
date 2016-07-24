@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odes.Licence.Model", "Odes.Licence.Model\Odes.Licence.Model.csproj", "{0C438FDE-D5DE-4AF2-B4FC-57CD0ACD4C8D}"
 EndProject
@@ -18,12 +18,25 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBox.Email", "ClickBox.Email\ClickBox.Email.csproj", "{70C1A3EB-9451-4CCE-9A06-A1465F50BCCC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClickBox.Linqpad.Reports", "ClickBox.Linqpad.Reports", "{964860EA-16ED-4B68-81E5-37655603CDA0}"
+	ProjectSection(SolutionItems) = preProject
+		ClickBox.Linqpad.Reports\mark1.linq = ClickBox.Linqpad.Reports\mark1.linq
+		ClickBox.Linqpad.Reports\mark2.linq = ClickBox.Linqpad.Reports\mark2.linq
+		ClickBox.Linqpad.Reports\prototype ui reporting.linq = ClickBox.Linqpad.Reports\prototype ui reporting.linq
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monthly", "Monthly", "{2CF13478-D24A-45B8-BC2C-3019FB27496F}"
+	ProjectSection(SolutionItems) = preProject
+		ClickBox.Linqpad.Reports\Monthly\batches isolated today.linq = ClickBox.Linqpad.Reports\Monthly\batches isolated today.linq
+		ClickBox.Linqpad.Reports\Monthly\monthly batches isolated today.linq = ClickBox.Linqpad.Reports\Monthly\monthly batches isolated today.linq
+		ClickBox.Linqpad.Reports\Monthly\query run for efile.linq = ClickBox.Linqpad.Reports\Monthly\query run for efile.linq
+		ClickBox.Linqpad.Reports\Monthly\query run for icourts.linq = ClickBox.Linqpad.Reports\Monthly\query run for icourts.linq
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scatchpad", "Scatchpad", "{89C2166C-F9F9-4DE2-85F9-B8AF1C979C3A}"
 	ProjectSection(SolutionItems) = preProject
+		ClickBox.Linqpad.Reports\Scratchpad\Clean up Dev Storage for Click Count (dev helper).linq = ClickBox.Linqpad.Reports\Scratchpad\Clean up Dev Storage for Click Count (dev helper).linq
 		ClickBox.Linqpad.Reports\Scratchpad\ClickBox Montly Report Design 1.linq = ClickBox.Linqpad.Reports\Scratchpad\ClickBox Montly Report Design 1.linq
+		ClickBox.Linqpad.Reports\Scratchpad\Todays Docs.linq = ClickBox.Linqpad.Reports\Scratchpad\Todays Docs.linq
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickBoxOdesClickCountReports", "ClickBoxOdesClickCountReports\ClickBoxOdesClickCountReports.csproj", "{AEE500D5-3634-44D7-AF45-648F2435625D}"
