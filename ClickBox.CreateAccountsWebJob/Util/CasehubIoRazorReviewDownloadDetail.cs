@@ -6,13 +6,13 @@
         {
             get
             {
-                return 370;
+                return 90;
             }
         }
 
         public string DownloadLink
         {
-            get { return "http://qcatinstalls.blob.core.windows.net/razor/Setup.exe"; }
+            get { return "http://install.qcat.com.au/razor/Setup.exe"; }
         }
 
         public string ExtraInstructions
