@@ -6,7 +6,7 @@
         {
             get
             {
-                return 30;
+                return 35;
             }
         }
 
