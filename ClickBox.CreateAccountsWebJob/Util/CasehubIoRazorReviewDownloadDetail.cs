@@ -19,10 +19,9 @@
         {
             get
             {
-                return "Once installed, import the attached license file called razor.licx.json. " +
-                        "To convert load files for importing into casehub.io, please read the instructions " +
-                        "contained in the readme file contained in the download on how to download and " +
-                        "use the casehub-loadfile2json application.";
+                return "Once installed, import the attached license file called razor.licx.json. "
+                       + "For converting load files to import into casehub.io, please read the instructions "
+                       + "contained in the readme file contained in the download";
             }
         }
 
