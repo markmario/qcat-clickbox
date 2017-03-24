@@ -70,7 +70,7 @@ namespace ClickBox.Web.Controllers
                     new Odes.Licence.Model.Product { Id = prod.Id, PrivateKey = prod.PrivateKey });
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "No Product Found");
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, new HttpError("No Product Found"));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace ClickBox.Web.Controllers
             {
                 if (licx == null)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Request");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new HttpError("Invalid Request. No license request provided."));
                 }
 
                 if (licx.ProductId == Guid.Empty)
@@ -110,7 +110,7 @@ namespace ClickBox.Web.Controllers
                 }
                 else
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invaid Account Details");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Forbidden, new HttpError("Invaid Account Details"));
                 }
 
                 IList<ClientIssuedLicense> oldRequests =
@@ -136,7 +136,7 @@ namespace ClickBox.Web.Controllers
                 {
                     return this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
-                        "Too many activations please contact qcat");
+                        new HttpError("Too many activations please contact QCAT"));
                 }
 
                 var generator = new LicenseGenerator(data.PrivateKey);
@@ -171,7 +171,7 @@ namespace ClickBox.Web.Controllers
             {
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.InternalServerError, 
-                    "Some bad things happened", 
+                    "There was a problem licensing your product. Please contant QCAT.", 
                     ex);
             }
         }

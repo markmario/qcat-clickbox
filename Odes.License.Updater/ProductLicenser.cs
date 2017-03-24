@@ -4,6 +4,7 @@
     using System.DirectoryServices;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security.Principal;
@@ -66,12 +67,16 @@
                         LicenseText = rep
                     };
                 }
+
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) 
+                    + @"\error_licx.log", response.ToString(), Encoding.UTF8);
+
                 return new ProductLicenseResponse
                 {
                     RespondingWithSuccess = false,
                     FailureDetails = new FailedResponseDetails()
                                         {
-                                            Error = response.ToString(),
+                                            Reason = response.Content.ReadAsAsync<MessageDeserial>().Result.Message,
                                             StatusCode = (int)response.StatusCode
                                         },
                     LicenseText = response.ToString()
@@ -85,6 +90,11 @@
                 return new ProductLicenseResponse
                 {
                     RespondingWithSuccess = false,
+                    FailureDetails = new FailedResponseDetails()
+                    {
+                        Reason = "There was a problem licensing your product. Please contant QCAT.",
+                        StatusCode = (int)HttpStatusCode.InternalServerError
+                    },
                     ContainsException = new Tuple<bool, string>(true, exFile)
                 };
             }
@@ -108,6 +118,11 @@
             public string Reason { get; set; }
 
             public string Error { get; set; }
+        }
+
+        public class MessageDeserial
+        {
+            public string Message { get; set; }
         }
 
     }
