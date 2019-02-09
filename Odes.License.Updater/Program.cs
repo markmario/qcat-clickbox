@@ -159,7 +159,7 @@ namespace Odes.License.Updater
         {
             var licensor = new ProductLicenser();
             request.ProductName = productName;
-            var rep  =licensor.GeneratedLisenseV2(request, Resources.appid);
+            var rep = licensor.GeneratedLisenseV2(request, Resources.appid);
 
             var licxpath = "License.xml";
 
