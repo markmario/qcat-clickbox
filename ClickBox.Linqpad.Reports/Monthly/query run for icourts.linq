@@ -14,7 +14,7 @@
 </Query>
 
 var all = MonthlyDocuments.ToList();
-all.Where (a => a.PartitionKey.Contains("2016") && a.CompanyName == "iCourts").Dump();
+all.Where (a => a.PartitionKey.Contains("2016") && a.CompanyName == "iCourts" && a.Timestamp.Date >= DateTimeOffset.Parse("1/10/2016").Date && a.Timestamp.Date < DateTimeOffset.Parse("1/01/2017").Date).Dump("Monthly Documents");
 
 var allIsolated = BatchesIsolated.ToList();
-allIsolated.Where (i => i.AccountId == "e9f9d179-dd4a-4d18-a344-88983e9ed6cc").Dump();
+allIsolated.Where (i => i.AccountId == "e9f9d179-dd4a-4d18-a344-88983e9ed6cc" && i.Timestamp.Date >= DateTimeOffset.Parse("1/10/2016").Date && i.Timestamp.Date < DateTimeOffset.Parse("1/01/2017").Date).Dump("Batches Isolated");

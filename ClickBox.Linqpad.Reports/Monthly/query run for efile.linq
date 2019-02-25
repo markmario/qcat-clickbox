@@ -21,5 +21,6 @@ totalDocs.Distinct().Count().Dump("Total Koded");
 
 var allIsolated = BatchesIsolated.ToList();
 var allUnique = allIsolated.Where (i => i.AccountId == "020d0cf0-29a2-4d45-9f12-c9a2c4318ca8" && i.OldBatchValues == null);
-allUnique.OrderBy (u => u.Timestamp).Dump();
+var nov = allUnique.OrderBy (u => u.Timestamp).ToList().Where (u => u.Timestamp.DateTime > DateTime.Parse("01-11-2016")).Dump();
+nov.Sum(a => a.DocumentsCreated).Dump("Total Isolated");
 allUnique.Sum(a => a.DocumentsCreated).Dump("Total Isolated");
