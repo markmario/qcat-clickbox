@@ -63,3 +63,4 @@ Temporary Items
 tsconfig.json
 tsKey.json
 .vs/*
+/.idea/*
