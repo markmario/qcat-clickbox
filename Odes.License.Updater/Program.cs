@@ -107,22 +107,18 @@ namespace Odes.License.Updater
             //Licence.SystemNetworkCredential = Licence.UserName;
             /* */
 
-            /*ASIC - NEW CLICKBOX*/
-           // Licence.ServiceQueue = "AGSQLPRODA2";
-            //Licence.Email = "Christopher.Smogavec@asic.gov.au";
-            //Licence.Password = "il2abnglnhdercitmavszbhq3m";
+            /*ASIC - NEW PROD */
+             Licence.ServiceQueue = "AGPRSQL12A";
+            Licence.Email = "Christopher.Smogavec@asic.gov.au";
+            Licence.Password = "il2abnglnhdercitmavszbhq3m";
 
-            //Licence.SystemMachineName = "AGSQLPRODA2";
-            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            //Licence.UserName = @"Christopher.Smogavec@asic.gov.au";
-            //Licence.SystemNetworkCredential = Licence.UserName; //*/
-
-            /*ASIC TEST SERVER - NEW CLICKBOX*/
+          
+            /*ASIC TEST SERVER - NEW CLICKBOX * /
             Licence.ServiceQueue = "AGSQLDEVD1";
            Licence.Email = "Christopher.Smogavec@asic.gov.au";
-           Licence.Password = "il2abnglnhdercitmavszbhq3m";
+           Licence.Password = "il2abnglnhdercitmavszbhq3m";*/
 
-            Licence.SystemMachineName = "AGPRSQL12A"; ;
+            Licence.SystemMachineName = "AGPRSQL12A"; 
             Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
             Licence.UserName = @"Christopher.Smogavec@asic.gov.au";
            Licence.SystemNetworkCredential = Licence.UserName;
