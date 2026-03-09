@@ -104,22 +104,22 @@ namespace ClickBox.Web
         private static string SetStorageAccountConnectionString()
         {
             var runtime = System.Configuration.ConfigurationManager.AppSettings["Runtime"];
-            if (runtime == "debug")
-            {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
-                var lines = File.ReadAllLines(dbPath);
-                var dbBase64Text = Convert.FromBase64String(lines[1]);
+            //if (runtime == "debug")
+            //{
+            //    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            //    var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
+            //    var lines = File.ReadAllLines(dbPath);
+            //    var dbBase64Text = Convert.FromBase64String(lines[1]);
 
-                string filepath;
-                filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
-                           + CloudConfigurationManager.GetSetting("AzureDevConnection");
+            //    string filepath;
+            //    filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
+            //               + CloudConfigurationManager.GetSetting("AzureDevConnection");
 
-                var conJson = JObject.Parse(File.ReadAllText(filepath));
-                var constring = conJson["azure"].ToString();
-                TableStoreConnectionString = constring;
-                return constring;
-            }
+            //    var conJson = JObject.Parse(File.ReadAllText(filepath));
+            //    var constring = conJson["azure"].ToString();
+            //    TableStoreConnectionString = constring;
+            //    return constring;
+            //}
             TableStoreConnectionString =
                 System.Configuration.ConfigurationManager.ConnectionStrings["AzureProdConnection"].ToString();
             return TableStoreConnectionString;
@@ -128,28 +128,28 @@ namespace ClickBox.Web
         private static void SetStripeKeyForPurchaseRequests()
         {
             var runtime = System.Configuration.ConfigurationManager.AppSettings["Runtime"];
-            if (runtime == "debug")
-            {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
-                var lines = File.ReadAllLines(dbPath);
-                var dbBase64Text = Convert.FromBase64String(lines[1]);
+            //if (runtime == "debug")
+            //{
+            //    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            //    var dbPath = Path.Combine(appDataPath, CloudConfigurationManager.GetSetting("DropBoxDb"));
+            //    var lines = File.ReadAllLines(dbPath);
+            //    var dbBase64Text = Convert.FromBase64String(lines[1]);
 
-                string filepath;
-                filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
-                           + CloudConfigurationManager.GetSetting("AzureStripeKey");
+            //    string filepath;
+            //    filepath = System.Text.Encoding.ASCII.GetString(dbBase64Text)
+            //               + CloudConfigurationManager.GetSetting("AzureStripeKey");
 
-                var conJson = JObject.Parse(File.ReadAllText(filepath));
-                var constring = conJson["AzureStripeKey"].ToString();
-                StripePurchaseString = constring;
-            }
-            else
-            {
+            //    var conJson = JObject.Parse(File.ReadAllText(filepath));
+            //    var constring = conJson["AzureStripeKey"].ToString();
+            //    StripePurchaseString = constring;
+            //}
+            //else
+            //{
                 StripePurchaseString = System.Configuration
                                              .ConfigurationManager
-                                             .ConnectionStrings["AzureStripeKey"]
+                                             .AppSettings["AzureStripeKey"]
                                              .ToString();
-            }
+            //}
         }
 
         private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)

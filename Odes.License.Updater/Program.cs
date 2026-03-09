@@ -49,105 +49,32 @@ namespace Odes.License.Updater
         {
             Licence.LicenceType = LicenceTypes.Client;
 
-            //Licence.SystemMachineName = "LINUIX01";// Environment.MachineName;
-            //Licence.SystemId = "S-1-5-21-3115597392-398023741-1760809799";// new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            //Licence.UserName = Environment.UserName + "@" + Environment.UserDomainName;
 
-            /// *####NULEGAL
-            //// Licence.Email = "peter.cryan@nulegal.com.au";
-            //// Licence.Password = "nul3g@l";
-            // */
-
-            /*
-             *EFILE
-            
-            Licence.Email = "cholmes@e-file.com.au";
-            Licence.Password = "3fil3";
-            Licence.ServiceQueue = "BRIEFCASE";
-             */
-            /*
-            *LEXDATA
-                        Licence.Email = "Ajnesh.Ram@lexdata.com.au";
-            Licence.Password = "l3xd@ta";
-            Licence.ServiceQueue = "APP01PNSWLD";
-             **/
-            /*ROyAL Commission DEV */
-
-            //Licence.Email = "training";
-            //Licence.Password = "training";
-
-            /*ROyAL Commission DEV
-
-            ////Licence.Email = "rcircsa";
-            ////Licence.Password = "rc1rcs@";
-            ////Licence.ServiceQueue = "srvwsapp600";
-
-            ////Licence.SystemMachineName = "srvwsdbs600";
-            ////Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            ////Licence.UserName = "offline.gen";
-            */
-
-            /*ROyAL Commission PROD */
-            //Licence.Email = "rcircsa";
-            //Licence.Password = "rc1rcs@";
-            //Licence.ServiceQueue = "srvwsapp004";
-
-            // Licence.SystemMachineName = "srvwsdbs001";
-            // Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            // Licence.UserName = "offline.gen";
-
-            /*ASIC - OLD CLICKBOX*/
-            //Licence.ServiceQueue = "SYDSQL4";
-            //Licence.Email = "asic";
-            //Licence.Password = "as1c";
-
-            //Licence.SystemMachineName = "SYDSQL4"; ;
-            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            //Licence.UserName = @"a1\Svc.qcat";
-            //Licence.SystemNetworkCredential = Licence.UserName;
-            /* */
-
-            /*ASIC - NEW PROD */
-             Licence.ServiceQueue = "AGPRSQL12A";
+            /*ASIC - NEW PROD 
+            Licence.ServiceQueue = "AGPRSQL12A";
             Licence.Email = "Christopher.Smogavec@asic.gov.au";
-            Licence.Password = "il2abnglnhdercitmavszbhq3m";
+            Licence.Password = "il2abnglnhdercitmavszbhq3m";  */
 
-          
+
             /*ASIC TEST SERVER - NEW CLICKBOX * /
             Licence.ServiceQueue = "AGSQLDEVD1";
            Licence.Email = "Christopher.Smogavec@asic.gov.au";
            Licence.Password = "il2abnglnhdercitmavszbhq3m";*/
 
-            Licence.SystemMachineName = "AGPRSQL12A"; 
+            /* Licence.SystemMachineName = "AGPRSQL12A"; 
+             Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+             Licence.UserName = @"Christopher.Smogavec@asic.gov.au";
+            Licence.SystemNetworkCredential = Licence.UserName;*/
+
+            Licence.Email = "mark";
+            Licence.Password = "khzbupyimysebg22ra77b2ydje";
+            Licence.UserName = "mark";
+
+
             Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            Licence.UserName = @"Christopher.Smogavec@asic.gov.au";
-           Licence.SystemNetworkCredential = Licence.UserName;
-
-            /*KORDA MENTHA*/
-            //Licence.Email = "tobymasterson";
-            //Licence.Password = "lawimagetest01";
-            //Licence.UserName = "tobymasterson";
-
-            /*SIMON*/
-            //Licence.ServiceQueue = "SNOODLEBUG";
-            //Licence.Email = "simon@qcat.com.au";
-            //Licence.Password = "jy4agzeipxwuhd4x7xrw3h4h64";
-
-            //Licence.SystemMachineName = "SNOODLEBUG"; ;
-            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
             //Licence.UserName = @"simon";
             //Licence.SystemNetworkCredential = Licence.UserName;
-            /* */
 
-            //iCourts was licensed with THIS!!!!!
-            //Licence.ServiceQueue = "ICDSRV01"; //"ICDSVR01"; //ICDSVR01\ICDSQLSRV
-            //Licence.Email = "m.lan@icourts.com.au";
-            //Licence.Password = "6bmtgdcr2c3uhh63doisdhfosq";
-            ////"ICDSVR01\\ICDSQLSRV"
-            //Licence.SystemMachineName = @"ICDSRV01\ICDSQLSRV";// "ICDSQLSRV"; //use the fully qualified instance name ICDSVR01/etc
-            //Licence.SystemId = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
-            //Licence.UserName = @"m.lan@icourts.com.au";
-            //Licence.SystemNetworkCredential = Licence.UserName;
             GenerateLicenseFileForODESV2(Licence);
         }
 
@@ -177,9 +104,9 @@ namespace Odes.License.Updater
 #if DEBUG
                 var client = new HttpClient { BaseAddress = new Uri("https://accounts.qcat.com.au/") };
 #else
-                var client = new HttpClient { BaseAddress = new Uri("https://localhost:44302/") };
+     var client = new HttpClient { BaseAddress = new Uri("https://localhost:44302/") };
 #endif
-                
+
                 // Add an Accept header for JSON format.
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -205,8 +132,8 @@ namespace Odes.License.Updater
                 else
                 {
                     Console.WriteLine(
-                        Resources.Program_GenerateLicenceFile__0____1__, 
-                        (int)response.StatusCode, 
+                        Resources.Program_GenerateLicenceFile__0____1__,
+                        (int)response.StatusCode,
                         response.ReasonPhrase);
                     File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\error_licx.log", response.ToString(), Encoding.UTF8);
                 }
