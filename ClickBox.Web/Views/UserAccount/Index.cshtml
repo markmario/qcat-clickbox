@@ -26,8 +26,10 @@
               });
 
       })
+      .Sortable()
       .Pageable()
-      .Scrollable()
+      .Scrollable(s => s.Height("auto"))
+      .HtmlAttributes(new { style = "height: calc(100vh - 120px);" })
       .Selectable(s => s.Mode(GridSelectionMode.Multiple))
       .ToolBar(t => t.Create())
       .Editable(e => e.Mode(GridEditMode.PopUp))
@@ -41,4 +43,4 @@
           }).Read(read => read.Action("Get", "UserAccount").Type(HttpVerbs.Get))
           .Create(create => create.Action("Create", "UserAccount").Type(HttpVerbs.Post))
           .Destroy(destroy => destroy.Action("Delete", "UserAccount").Type(HttpVerbs.Post))
-          .Update(update => update.Action("Update", "UserAccount").Type(HttpVerbs.Post)).PageSize(1024).Events(events => events.Error("error_handler"))))
+          .Update(update => update.Action("Update", "UserAccount").Type(HttpVerbs.Post)).PageSize(1024).Sort(s => s.Add("SupportEndDate").Descending()).Events(events => events.Error("error_handler"))))
